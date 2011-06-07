@@ -1,0 +1,75 @@
+body{
+	margin: 0px;
+	padding-top: 20px;
+	background-color: #FFFFFF;
+	font-family: Helvetica, arial, sans-serif;
+	font-size: 12px;
+}
+
+p{
+	font-family: Helvetica, arial, sans-serif;
+}
+
+#loginform{
+
+}
+
+#loginform ul{
+	margin: 0px;
+	padding: 0px;
+	border: none;
+	list-style: none;
+}
+
+.textfield{
+	width: 125px;
+	background-color: #F4EFC9;
+}
+
+#usernamefield{
+	
+}
+
+#passwordfield{
+	margin-bottom: 5px;
+}
+
+.button{
+	border: 2px #000000 solid;
+	background-color: #EEEEEE;
+	width: 55px;
+	margin-bottom: 5px;
+}
+
+#errormessage{
+	background-color: #EEAAAA;
+	border: 1px #000000 solid;
+	padding: 5px;
+	visibility: hidden;
+}
+
+#container{
+	background-color: #E1DBAF;
+	border: 1px #000000 solid;
+	margin: 0 auto;
+	padding: 0px;
+	width: 400px;
+}
+
+#leftside{
+	float: left;
+	text-align: center;
+	padding: 3px;
+	width: 73px;
+}
+
+#rightside{
+	border-left: 1px #999999 dotted;
+	float: right;
+	padding: 5px;
+	width: 310px;
+}
+
+#clear_both{
+	clear: both;
+}
