@@ -40,7 +40,7 @@ function ajaxAuthenticate(){
 		
 		urlstring = "or-authenticate.php";
 		
-		params = "username=" + document.getElementById("authentication").username.value + "&password=" + document.getElementById("authentication").password.value + "&ajax_indicator=TRUE";
+		params = "username=" + encodeURIComponent(document.getElementById("authentication").username.value) + "&password=" + encodeURIComponent(document.getElementById("authentication").password.value) + "&ajax_indicator=TRUE";
 		
 		xmlHttp.open("POST",urlstring,true);
 		xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");	
