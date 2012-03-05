@@ -1,0 +1,327 @@
+body{
+	margin: 0px;
+	padding-top: 4px;
+	background-color: #FFFFFF;
+	font-family: Helvetica, arial, sans-serif;
+	font-size: 12px;
+}
+
+p{
+	font-family: Helvetica, arial, sans-serif;
+}
+
+#loginform{
+
+}
+
+#loginform ul{
+	margin: 0px;
+	padding: 0px;
+	border: none;
+	list-style: none;
+}
+
+.textfield{
+	width: 125px;
+	background-color: #F4EFC9;
+}
+
+#usernamefield{
+	
+}
+
+#passwordfield{
+	margin-bottom: 5px;
+}
+
+.button{
+	border: 2px #000000 solid;
+	background-color: #EEEEEE;
+	width: 55px;
+	margin-bottom: 5px;
+}
+
+#errormessage{
+	background-color: #EEAAAA;
+	border: 1px #000000 solid;
+	padding: 5px;
+	visibility: hidden;
+}
+
+#heading{
+	background-color: #FFFFFF;
+	border: 0px;
+	margin: 0 auto;
+	padding: 0px;
+	text-align: right;
+	width: 800px;
+}
+
+#remindermessage{
+	background-color: #FFFFDD;
+	border: 1px #AAAA00 solid;
+	margin: 0 auto;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	padding: 3px;
+	text-align: center;
+	width: 700px;
+}
+
+.remindermessage{
+	
+}
+
+#container{
+	background-color: #E1DBAF;
+	border: 1px #000000 solid;
+	margin: 0 auto;
+	padding: 0px;
+	width: 800px;
+}
+
+#leftside{
+	float: left;
+	padding: 10px;
+	text-align: center;
+	width: 160px;
+}
+
+#rightside{
+	border-left: 1px #999999 dotted;
+	float: right;
+	padding: 10px;
+	width: 599px;
+}
+
+#clear_both{
+	clear: both;
+}
+
+
+
+
+
+/*
+ * Calendar Module
+*/
+#calendarModule{
+	
+}
+
+#calendarTable{
+	border: 1px #CCCCCC solid;
+	width: 100%;
+}
+
+#calendarTableHeader{
+	border: 0px;
+	width: 100%;
+}
+
+#prevmonth{
+	background-color: #AD783F;
+	color: #FFFFDD;
+}
+
+#nextmonth{
+	background-color: #AD783F;
+	color: #FFFFDD;
+}
+
+#month{
+	background-color: #AD783F;
+	color: #FFFFDD;
+	width: 65%;
+}
+
+#calendarleftarrow{
+	font-size: 15px;
+	margin-right: 5px;
+	cursor: pointer;
+}
+
+#calendarrightarrow{
+	font-size: 15px;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+.dayname{
+	background-color: #D2A154;
+}
+
+.dayfiller{
+	background-color: #D0CA9E;
+}
+
+.calendarday{
+	background-color: #F2EDCB;
+	cursor: pointer;
+}
+
+.currentcalendarday{
+	background-color: #BBBBBB;
+	cursor: pointer;
+}
+
+.clickedday{
+	background-color: #FFFFFF;
+	cursor: pointer;
+}
+
+
+/*
+ * DayView Module
+*/
+
+#dayviewheader{
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.grouptab{
+	background-color: #C1BC98;
+	border-top: 1px #000000 solid;
+	border-left: 1px #000000 solid;
+	border-right: 1px #000000 solid;
+	cursor: pointer;
+	padding: 2px;
+}
+
+.selected{
+	background-color: #EFE9BA;
+	border-top: 1px #000000 solid;
+	border-left: 1px #000000 solid;
+	border-right: 1px #000000 solid;
+	cursor: pointer;
+	font-weight: bold;
+	padding: 2px;
+}
+
+.mousedoverrow{
+	background-color: #C1BC98;
+}
+
+.mousedoutrow{
+	background-color: #E1DBAF;
+}
+
+#dayviewTable{
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#dayviewTable th{
+	
+}
+
+.dayviewTime{
+	font-weight: bold;
+}
+
+.dayviewTD{
+	text-align: center;
+}
+
+
+#popup{
+	background-color: #ffffdd;
+	border: 1px #000000 solid;
+	display: none;
+	padding: 5px;
+	position: absolute;
+	visibility: hidden;
+	width: 300px;
+	z-index: 20000;
+	filter:alpha(opacity=90);
+	-moz-opacity:0.9;
+	-khtml-opacity: 0.9;
+	opacity: 0.9;
+}
+
+#popupClose{
+	background-color: #ffaaaa;
+	border: 1px #000000 dotted;
+	cursor: pointer;
+	float: right;
+	font-weight: bold;
+	margin: 5px;
+	padding: 3px;
+	text-align: right;
+}
+
+.requiredmarker{
+	color: #ff0000;
+}
+
+.requirednote{
+	font-size: 10px;
+	font-style: italic;
+}
+
+#roomdetails{
+	background-color: #ffffdd;
+	border: 1px #000000 solid;
+	display: none;
+	padding: 5px;
+	position: relative;
+	text-align: left;
+	visibility: hidden;
+}
+
+#roomdetailsname{
+	font-weight: bold;
+	width: 100%;
+}
+
+#roomdetailscapacitylabel{
+	font-weight: bold;
+}
+
+#roomdetailscapacity{
+	
+}
+
+#legend{
+	background-color: #ffffdd;
+	border: 1px #000000 solid;
+	padding: 5px;
+	position: relative;
+}
+
+#legendtitle{
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+#legendtable td{
+	text-align: left;
+}
+
+#successmsg{
+	border: 1px #00ff00 solid;
+	background-color: #ccffcc;
+	color: #009900;
+	width: 80%;
+}
+
+#errormsg{
+	border: 1px #ff0000 solid;
+	background-color: #ffcccc;
+	color: #990000;
+	width: 80%;
+}
+
+#themeswitch{
+	background: #f4fdcf;
+	border: 1px #cccccc solid;
+	color: #666666;
+	cursor: pointer;
+	font-size: 9px;
+	margin: 0 auto;
+	padding: 4px;
+	text-align: center;
+	width: 300px;
+}

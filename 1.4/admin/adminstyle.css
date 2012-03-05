@@ -1,0 +1,129 @@
+body{
+	margin: 0px;
+	padding-top: 4px;
+	background-color: #FFFFFF;
+	font-family: Helvetica, arial, sans-serif;
+	font-size: 12px;
+}
+
+#container{
+	background-color: #EEEEEE;
+	border: 1px #AAAAFF solid;
+	margin: 0 auto;
+	padding: 10px;
+	width: 780px;
+}
+
+#heading{
+	background-color: #FFFFFF;
+	border: 0px;
+	margin: 0 auto;
+	padding: 0px;
+	width: 800px;
+	text-align: right;
+}
+
+.roomname{
+	text-align: center;
+}
+
+h3{
+	font-size: 16px;
+	display: inline;
+}
+
+.smalltxt{
+	width: 30px;
+}
+
+.medtxt{
+	width: 75px;
+}
+
+.tabletitle{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.tableheader{
+	font-style: italic;
+	font-weight: bold;
+	text-align: center;
+}
+
+#successmsg{
+	border: 1px #00ff00 solid;
+	background-color: #ccffcc;
+	color: #009900;
+	height: 30px;
+	width: 50%;
+}
+
+#errormsg{
+	border: 1px #ff0000 solid;
+	background-color: #ffcccc;
+	color: #990000;
+	height: 30px;
+	width: 50%;
+}
+
+.roomslist tr{
+	vertical-align: baseline;
+}
+
+.defaulthourslist tr{
+	vertical-align: baseline;
+}
+
+.timeblock{
+	border: 1px #CCCCFF solid;
+}
+
+.timeblocktext{
+	font-size: 10px;
+}
+
+#settingsul li{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.notetext{
+	font-size: 12px;
+	font-style: italic;
+	font-weight: normal;
+}
+
+#customfieldstable td{
+	padding: 5px;
+}
+
+#reporttable td{
+	border: 1px #000000 solid;
+	height: 50px;
+	padding: 4px;
+}
+
+.reportodd{
+	background-color: #cccccc;
+	text-align: center;
+}
+
+.reporteven{
+	background-color: #eeeeee;
+	text-align: center;
+}
+
+.totalrow{
+	background-color: #aaaaaa;
+	font-weight: bold;
+	text-align: center;
+}
+
+.reportscroll{
+	text-align: left;
+}
+
+.datecolumn{
+	font-weight: bold;
+}

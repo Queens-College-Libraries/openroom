@@ -1,0 +1,286 @@
+body{
+	margin: 0px;
+	padding-top: 10px;
+	background-color: #FFFFFF;
+	font-family: Helvetica, arial, sans-serif;
+	font-size: 12px;
+}
+
+p{
+	font-family: Helvetica, arial, sans-serif;
+}
+
+#loginform{
+
+}
+
+#loginform ul{
+	margin: 0px;
+	padding: 0px;
+	border: none;
+	list-style: none;
+}
+
+.textfield{
+	width: 125px;
+	background-color: #F4EFC9;
+}
+
+#usernamefield{
+	
+}
+
+#passwordfield{
+	margin-bottom: 5px;
+}
+
+.button{
+	border: 2px #000000 solid;
+	background-color: #EEEEEE;
+	width: 55px;
+	margin-bottom: 5px;
+}
+
+#heading{
+	background-color: #FFFFFF;
+	border: 0px;
+	margin: 0 auto;
+	padding: 0px;
+	width: 320px;
+}
+
+#navigation_button{
+	border: 1px #000000 solid;
+	color: #000000;
+	float: right;
+	font-weight: bold;
+	height: 45px;
+	line-height: 44px;
+	margin-top: 5px;
+	margin-right: 5px;
+	padding: 4px;
+	padding-left: 6px;
+	padding-right: 6px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.logout{
+	background-color: #FFCA9E;
+}
+
+.viewreservations{
+	background-color: #D0FF9E;
+}
+
+.makereservation{
+	background-color: #D0CAFF;
+}
+
+#remindermessage{
+	background-color: #E8E8E8;
+	border: 1px #999999 solid;
+	margin: 0 auto;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	padding: 3px;
+	text-align: center;
+	width: 700px;
+}
+
+.remindermessage{
+	
+}
+
+#container{
+	background-color: #E1DBAF;
+	border: 1px #000000 solid;
+	margin: 0 auto;
+	padding: 0px;
+	padding-top: 4px;
+	text-align: center;
+	width: 320px;
+}
+
+.mobilelabel{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+select{
+	font-size: 18px;
+	margin-bottom: 15px;
+}
+
+.mobiletextfield{
+	font-size: 18px;
+	margin-bottom: 15px;
+}
+
+.find_room_button{
+	font-size: 18px;
+}
+
+.room_button{
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	background-color: #F3FDCF;
+	border: 1px #000000 solid;
+	cursor: pointer;
+	margin: 0 auto;
+	margin-bottom: 15px;
+	min-height: 65px;
+	padding: 5px;
+	text-align: left;
+	width: 90%;
+}
+
+.room_button table{
+	height: 65px;
+	width: 100%;
+}
+
+.room_name{
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.room_description{
+	font-size: 10px;
+}
+
+.room_reserve_arrow{
+	font-size: 35px;
+	font-weight: bold;
+	padding-left: 15px;
+	text-align: right;
+}
+
+#loader{
+	display: inline;
+}
+
+#error_msg{
+	background-color: #FFAAAA;
+	border: 1px #FF0000 solid;
+	margin: 20px;
+	text-align: left;
+}
+
+#success_msg{
+	background-color: #AAFFAA;
+	border: 1px #00FF00 solid;
+	margin: 20px;
+	text-align: center;
+}
+
+.reservation_button{
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	background-color: #F3FDCF;
+	border: 1px #000000 solid;
+	cursor: pointer;
+	margin: 0 auto;
+	margin-bottom: 15px;
+	min-height: 65px;
+	text-align: left;
+	width: 90%;
+}
+
+.reservation_button .roomname{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.reservation_button .resdate{
+	font-size: 11px;
+}
+
+.reservation_button .resduration{
+	font-size: 11px;
+}
+
+.reservation_button .resoption{
+	font-size: 11px;
+}
+
+.reservation_button table{
+	height: 65px;
+	width: 100%;
+}
+
+.reservation_button_left{
+	padding: 5px;
+}
+
+.reservation_button_middle{
+	padding: 5px;
+	font-size: 10px;
+}
+
+.reservation_button_right{
+	background-color: #FF8888;
+	border: 1px #FF5555 solid;
+	color: #FFFFFF;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 5px;
+	text-align: center;
+	width: 55px;
+}
+
+#noreservations{
+	font-size: 13px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#instructions{
+	font-size: 13px;
+	line-height: 20px;
+}
+
+#confirm{
+	background-color: #FF8888;
+	border: 1px #000000 solid;
+	display: none;
+	font-size: 15px;
+	padding: 10px;
+	position: absolute;
+	text-align: center;
+	width: 298px;
+}
+
+#confirm button{
+	font-size: 18px;
+	font-weight: bold;
+	height: 40px;
+	width: 90px;
+}
+
+#footnote{
+	font-size: 8px;
+	margin: 0 auto;
+	text-align: right;
+	width: 320px;
+}
+
+.note{
+	font-size: 10px;
+}
+
+#themeswitch{
+	background: #f4fdcf;
+	border: 1px #cccccc solid;
+	color: #666666;
+	cursor: pointer;
+	font-size: 9px;
+	margin: 0 auto;
+	padding: 4px;
+	text-align: center;
+	width: 300px;
+}
