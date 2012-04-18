@@ -1,3 +1,10 @@
+OpenRoom 1.4.1 - 4/18/2012
+========================================================================
+- Minor fix correcting an html special characters issue.
+	or-reserve.php (367)
+	
+	
+
 OpenRoom 1.4 - 3/5/2012
 ========================================================================
 -Corrected an issue that was causing room creation to fail silently when
