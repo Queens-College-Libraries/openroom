@@ -1,0 +1,6 @@
+.idea
+.git
+examples
+sql
+Tests
+excludeme.txt

@@ -12,14 +12,14 @@
  * (For LDAP authentication, you must provide a username for the person that you
  * wish to be the initial administrator.)
 */
-$admin_user = "admin";
+$admin_user = "khada";
 
 //Name
 /*
  * This will set the name of this instance of OpenRoom.
  * Default is "OpenRoom".
 */
-$instance_name = "OpenRoom";
+$instance_name = "Openroom Testing";
 
 //URL
 /*
@@ -27,7 +27,7 @@ $instance_name = "OpenRoom";
  * This should be the same address you provide to users.
  * DO NOT include protocol (http:// or https://) or filenames (index.html).
 */
-$instance_url = "www.example.com/openroom/";
+$instance_url = "library-test.qc.cuny.edu/or";
 
 //Theme
 /*
@@ -63,8 +63,8 @@ $login_method = "ldap";
 *$host contains the host name of your ldap server
 *$baseDN contains the base dn settings for you ldap server
 */
-$ldap_host = "";
-$ldap_baseDN = "";
+$ldap_host = "ldap://149.4.100.201:3268";
+$ldap_baseDN = "DC=qc,DC=ads";
 
 
 //Email Filter
@@ -79,8 +79,7 @@ $ldap_baseDN = "";
 *LEAVING THE EMAIL FILTER BLANK WHEN USING THE "normal" LOGIN METHOD MAY COMPROMISE SECURITY.
 *THIS SETTING ALLOWS YOU TO RESTRICT USERS TO ONLY THOSE WHO USE YOUR EMAIL SYSTEM.
 */
-$email_filter = array("bsu.edu");
-
+$email_filter = array("cuny.edu");
 
 
 //Interval
@@ -91,7 +90,6 @@ $email_filter = array("bsu.edu");
  * reservations of different durations than 30 minute blocks.
 */
 $interval = 30;
-
 
 
 //Time Format
@@ -153,7 +151,7 @@ $time_format = "g:i a";
  * and may make no more than 4 hours (240) worth or reservations per day.
 */
 $limit_duration = 240;
-$limit_total = array(240,"day");
-$limit_frequency = array(0,"day");
-$limit_window = array(6,"month");
+$limit_total = array(240, "day");
+$limit_frequency = array(0, "day");
+$limit_window = array(6, "month");
 ?>

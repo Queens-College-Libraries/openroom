@@ -1,14 +1,15 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 
 -- 
 -- Table structure for table `administrators`
 -- 
 
 CREATE TABLE IF NOT EXISTS `administrators` (
-  `username` varchar(255) NOT NULL,
+  `username` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- --------------------------------------------------------
 
@@ -17,11 +18,11 @@ CREATE TABLE IF NOT EXISTS `administrators` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `bannedusers` (
-  `username` varchar(255) NOT NULL,
+  `username` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -30,16 +31,17 @@ CREATE TABLE IF NOT EXISTS `bannedusers` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `cancelled` (
-  `reservationid` bigint(20) NOT NULL,
-  `start` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `end` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `roomid` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `timeofrequest` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `timeofcancel` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `reservationid` BIGINT(20)   NOT NULL,
+  `start`         TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `end`           TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `roomid`        INT(11)      NOT NULL,
+  `username`      VARCHAR(255) NOT NULL,
+  `timeofrequest` TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `timeofcancel`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`reservationid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- --------------------------------------------------------
 
@@ -48,14 +50,15 @@ CREATE TABLE IF NOT EXISTS `cancelled` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `deletedrooms` (
-  `roomid` int(11) NOT NULL,
-  `roomname` varchar(255) NOT NULL,
-  `roomcapacity` int(11) NOT NULL,
-  `roomgroupid` bigint(20) NOT NULL,
-  `roomdescription` longtext NOT NULL,
+  `roomid`          INT(11)      NOT NULL,
+  `roomname`        VARCHAR(255) NOT NULL,
+  `roomcapacity`    INT(11)      NOT NULL,
+  `roomgroupid`     BIGINT(20)   NOT NULL,
+  `roomdescription` LONGTEXT     NOT NULL,
   PRIMARY KEY (`roomid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -64,19 +67,22 @@ CREATE TABLE IF NOT EXISTS `deletedrooms` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `optionalfields` (
-  `optionname` varchar(255) NOT NULL,
-  `optionformname` varchar(255) NOT NULL COMMENT 'no spaces, a-z only',
-  `optiontype` int(11) NOT NULL COMMENT '0 = text, 1 = select',
-  `optionchoices` varchar(700) NOT NULL COMMENT '";" delimited',
-  `optionorder` int(11) NOT NULL,
-  `optionquestion` varchar(255) NOT NULL,
-  `optionprivate` tinyint(1) NOT NULL DEFAULT '0',
-  `optionrequired` tinyint(1) NOT NULL DEFAULT '0',
+  `optionname`     VARCHAR(255) NOT NULL,
+  `optionformname` VARCHAR(255) NOT NULL
+  COMMENT 'no spaces, a-z only',
+  `optiontype`     INT(11)      NOT NULL
+  COMMENT '0 = text, 1 = select',
+  `optionchoices`  VARCHAR(700) NOT NULL
+  COMMENT '";" delimited',
+  `optionorder`    INT(11)      NOT NULL,
+  `optionquestion` VARCHAR(255) NOT NULL,
+  `optionprivate`  TINYINT(1)   NOT NULL DEFAULT '0',
+  `optionrequired` TINYINT(1)   NOT NULL DEFAULT '0',
   PRIMARY KEY (`optionname`),
   UNIQUE KEY `optionformname` (`optionformname`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- --------------------------------------------------------
 
@@ -85,11 +91,11 @@ CREATE TABLE IF NOT EXISTS `optionalfields` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `reporters` (
-  `username` varchar(255) NOT NULL,
+  `username` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -98,14 +104,14 @@ CREATE TABLE IF NOT EXISTS `reporters` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `reservationoptions` (
-  `optionname` varchar(255) NOT NULL,
-  `reservationid` bigint(20) NOT NULL,
-  `optionvalue` varchar(700) NOT NULL,
-  PRIMARY KEY (`optionname`,`reservationid`),
+  `optionname`    VARCHAR(255) NOT NULL,
+  `reservationid` BIGINT(20)   NOT NULL,
+  `optionvalue`   VARCHAR(700) NOT NULL,
+  PRIMARY KEY (`optionname`, `reservationid`),
   KEY `reservationid` (`reservationid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- --------------------------------------------------------
 
@@ -114,17 +120,18 @@ CREATE TABLE IF NOT EXISTS `reservationoptions` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `reservations` (
-  `reservationid` bigint(20) NOT NULL AUTO_INCREMENT,
-  `start` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `end` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `roomid` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `numberingroup` int(11) NOT NULL,
-  `timeofrequest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `reservationid` BIGINT(20)   NOT NULL AUTO_INCREMENT,
+  `start`         TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `end`           TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `roomid`        INT(11)      NOT NULL,
+  `username`      VARCHAR(255) NOT NULL,
+  `numberingroup` INT(11)      NOT NULL,
+  `timeofrequest` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`reservationid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=90 ;
-
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1
+  AUTO_INCREMENT = 90;
 
 -- --------------------------------------------------------
 
@@ -133,12 +140,13 @@ CREATE TABLE IF NOT EXISTS `reservations` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `roomgroups` (
-  `roomgroupid` bigint(20) NOT NULL AUTO_INCREMENT,
-  `roomgroupname` varchar(255) NOT NULL,
+  `roomgroupid`   BIGINT(20)   NOT NULL AUTO_INCREMENT,
+  `roomgroupname` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`roomgroupid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
-
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1
+  AUTO_INCREMENT = 6;
 
 -- --------------------------------------------------------
 
@@ -147,15 +155,16 @@ CREATE TABLE IF NOT EXISTS `roomgroups` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `roomhours` (
-  `roomhoursid` bigint(20) NOT NULL AUTO_INCREMENT,
-  `roomid` int(11) NOT NULL,
-  `dayofweek` smallint(6) NOT NULL,
-  `start` time NOT NULL,
-  `end` time NOT NULL,
+  `roomhoursid` BIGINT(20)  NOT NULL AUTO_INCREMENT,
+  `roomid`      INT(11)     NOT NULL,
+  `dayofweek`   SMALLINT(6) NOT NULL,
+  `start`       TIME        NOT NULL,
+  `end`         TIME        NOT NULL,
   PRIMARY KEY (`roomhoursid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=298 ;
-
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1
+  AUTO_INCREMENT = 298;
 
 -- --------------------------------------------------------
 
@@ -164,16 +173,17 @@ CREATE TABLE IF NOT EXISTS `roomhours` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `rooms` (
-  `roomid` int(11) NOT NULL AUTO_INCREMENT,
-  `roomname` varchar(255) NOT NULL,
-  `roomposition` int(11) NOT NULL,
-  `roomcapacity` int(11) NOT NULL,
-  `roomgroupid` bigint(20) NOT NULL,
-  `roomdescription` longtext NOT NULL,
+  `roomid`          INT(11)      NOT NULL AUTO_INCREMENT,
+  `roomname`        VARCHAR(255) NOT NULL,
+  `roomposition`    INT(11)      NOT NULL,
+  `roomcapacity`    INT(11)      NOT NULL,
+  `roomgroupid`     BIGINT(20)   NOT NULL,
+  `roomdescription` LONGTEXT     NOT NULL,
   PRIMARY KEY (`roomid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
-
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1
+  AUTO_INCREMENT = 28;
 
 -- --------------------------------------------------------
 
@@ -182,16 +192,17 @@ CREATE TABLE IF NOT EXISTS `rooms` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `roomspecialhours` (
-  `roomspecialhoursid` bigint(20) NOT NULL AUTO_INCREMENT,
-  `roomid` int(11) NOT NULL,
-  `fromrange` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `torange` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `start` time NOT NULL,
-  `end` time NOT NULL,
+  `roomspecialhoursid` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `roomid`             INT(11)    NOT NULL,
+  `fromrange`          TIMESTAMP  NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `torange`            TIMESTAMP  NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `start`              TIME       NOT NULL,
+  `end`                TIME       NOT NULL,
   PRIMARY KEY (`roomspecialhoursid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1
+  AUTO_INCREMENT = 1;
 
 -- --------------------------------------------------------
 
@@ -200,48 +211,50 @@ CREATE TABLE IF NOT EXISTS `roomspecialhours` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `settings` (
-  `settingname` varchar(255) NOT NULL,
-  `settingvalue` longtext NOT NULL,
+  `settingname`  VARCHAR(255) NOT NULL,
+  `settingvalue` LONGTEXT     NOT NULL,
   PRIMARY KEY (`settingname`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- 
 -- Dumping data for table `settings`
 -- 
 
-INSERT INTO `settings` (`settingname`, `settingvalue`) VALUES 
-('allow_past_reservations', 'false'),
-('allow_simultaneous_reservations', 'false'),
-('email_can_gef', 'a:1:{i:0;s:0:"";}'),
-('email_can_terse', 'a:1:{i:0;s:0:"";}'),
-('email_can_verbose', 'a:1:{i:0;s:0:"";}'),
-('email_condition', ''),
-('email_condition_value', ''),
-('email_cond_gef', 'a:1:{i:0;s:0:"";}'),
-('email_cond_terse', 'a:1:{i:0;s:0:"";}'),
-('email_cond_verbose', 'a:1:{i:0;s:0:"";}'),
-('email_filter', 'a:1:{i:0;s:0:"";}'),
-('email_res_gef', 'a:1:{i:0;s:0:"";}'),
-('email_res_terse', 'a:1:{i:0;s:0:"";}'),
-('email_res_verbose', 'a:1:{i:0;s:0:"";}'),
-('email_system', ''),
-('https', 'true'),
-('instance_name', 'OpenRoom'),
-('instance_url', ''),
-('interval', '30'),
-('ldap_baseDN', ''),
-('ldap_host', ''),
-('limit_duration', '240'),
-('limit_frequency', 'a:2:{i:0;s:1:"0";i:1;s:3:"day";}'),
-('limit_openingday', ''),
-('limit_total', 'a:2:{i:0;s:3:"240";i:1;s:3:"day";}'),
-('limit_window', 'a:2:{i:0;i:0;i:1;s:8:"7/1/2010";}'),
-('login_method', 'normal'),
-('policies', ''),
-('remindermessage', ''),
-('systemid', '0000000001'),
-('theme', 'default'),
-('time_format', 'g:i a');
+INSERT INTO `settings` (`settingname`, `settingvalue`) VALUES
+  ('allow_past_reservations', 'false'),
+  ('allow_simultaneous_reservations', 'false'),
+  ('email_can_gef', 'a:1:{i:0;s:0:"";}'),
+  ('email_can_terse', 'a:1:{i:0;s:0:"";}'),
+  ('email_can_verbose', 'a:1:{i:0;s:0:"";}'),
+  ('email_condition', ''),
+  ('email_condition_value', ''),
+  ('email_cond_gef', 'a:1:{i:0;s:0:"";}'),
+  ('email_cond_terse', 'a:1:{i:0;s:0:"";}'),
+  ('email_cond_verbose', 'a:1:{i:0;s:0:"";}'),
+  ('email_filter', 'a:1:{i:0;s:0:"";}'),
+  ('email_res_gef', 'a:1:{i:0;s:0:"";}'),
+  ('email_res_terse', 'a:1:{i:0;s:0:"";}'),
+  ('email_res_verbose', 'a:1:{i:0;s:0:"";}'),
+  ('email_system', ''),
+  ('https', 'true'),
+  ('instance_name', 'OpenRoom'),
+  ('instance_url', ''),
+  ('interval', '30'),
+  ('ldap_baseDN', ''),
+  ('ldap_host', ''),
+  ('limit_duration', '240'),
+  ('limit_frequency', 'a:2:{i:0;s:1:"0";i:1;s:3:"day";}'),
+  ('limit_openingday', ''),
+  ('limit_total', 'a:2:{i:0;s:3:"240";i:1;s:3:"day";}'),
+  ('limit_window', 'a:2:{i:0;i:0;i:1;s:8:"7/1/2010";}'),
+  ('login_method', 'normal'),
+  ('policies', ''),
+  ('remindermessage', ''),
+  ('systemid', '0000000001'),
+  ('theme', 'default'),
+  ('time_format', 'g:i a');
 
 -- --------------------------------------------------------
 
@@ -250,11 +263,13 @@ INSERT INTO `settings` (`settingname`, `settingvalue`) VALUES
 -- 
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `lastlogin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `active` varchar(255) NOT NULL DEFAULT '0',
+  `username`  VARCHAR(255) NOT NULL,
+  `password`  VARCHAR(255) NOT NULL,
+  `email`     VARCHAR(255) NOT NULL,
+  `lastlogin` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `active`    VARCHAR(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 

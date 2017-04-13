@@ -44,7 +44,7 @@ function dateChooserSetDate(inputId, value) {
             input.DateChooser.setTime(
                 parseInt(theForm.elements[prefix + 'hour'].options[
                     theForm.elements[prefix + 'hour'].selectedIndex].value)
-                    + parseInt(theForm.elements[prefix + 'ampm'].options[
+                + parseInt(theForm.elements[prefix + 'ampm'].options[
                     theForm.elements[prefix + 'ampm'].selectedIndex].value),
                 parseInt(theForm.elements[prefix + 'min'].options[
                     theForm.elements[prefix + 'min'].selectedIndex].value));
@@ -67,13 +67,13 @@ function dateChooserDateChange(theForm, prefix) {
         1);
     // Try to preserve the day of month (watch out for months with 31 days)
     newDate.setDate(Math.max(1, Math.min(newDate.getDaysInMonth(),
-                    input.DateChooser._date.getDate())));
+        input.DateChooser._date.getDate())));
     input.DateChooser.setDate(newDate);
     if (input.DateChooser.isTimeChooser()) {
         input.DateChooser.setTime(
             parseInt(theForm.elements[prefix + 'hour'].options[
                 theForm.elements[prefix + 'hour'].selectedIndex].value)
-                + parseInt(theForm.elements[prefix + 'ampm'].options[
+            + parseInt(theForm.elements[prefix + 'ampm'].options[
                 theForm.elements[prefix + 'ampm'].selectedIndex].value),
             parseInt(theForm.elements[prefix + 'min'].options[
                 theForm.elements[prefix + 'min'].selectedIndex].value));
@@ -114,30 +114,26 @@ function DateChooser(input, div, start, end, format, isTimeChooser) {
 DateChooser.prototype._isVisible = false;
 
 // Returns true if the chooser is currently visible
-DateChooser.prototype.isVisible = function() {
+DateChooser.prototype.isVisible = function () {
     return this._isVisible;
-}
-
+};
 // Returns true if the chooser is to allow choosing the time as well as the date
-DateChooser.prototype.isTimeChooser = function() {
+DateChooser.prototype.isTimeChooser = function () {
     return this._isTimeChooser;
-}
-
+};
 // Gets the value, as a formatted string, of the date attached to the chooser
-DateChooser.prototype.getValue = function() {
+DateChooser.prototype.getValue = function () {
     return this._date.dateFormat(this._format);
-}
-
+};
 // Hides the chooser
-DateChooser.prototype.hide = function() {
+DateChooser.prototype.hide = function () {
     this._div.style.visibility = "hidden";
     this._div.style.display = "none";
     this._div.innerHTML = "";
     this._isVisible = false;
-}
-
+};
 // Shows the chooser on the page
-DateChooser.prototype.show = function() {
+DateChooser.prototype.show = function () {
     // calculate the position before making it visible
     var inputPos = getAbsolutePosition(this._input);
     this._div.style.top = (inputPos[0] + this._input.offsetHeight) + "px";
@@ -147,35 +143,31 @@ DateChooser.prototype.show = function() {
     this._div.style.visibility = "visible";
     this._div.style.position = "absolute";
     this._isVisible = true;
-}
-
+};
 // Sets the date to what is in the input box
-DateChooser.prototype.initializeDate = function() {
+DateChooser.prototype.initializeDate = function () {
     if (this._input.value != null && this._input.value != "") {
         this._date = Date.parseDate(this._input.value, this._format);
     }
     else {
         this._date = new Date();
     }
-}
-
+};
 // Sets the date attached to the chooser
-DateChooser.prototype.setDate = function(date) {
+DateChooser.prototype.setDate = function (date) {
     this._date = date ? date : new Date();
-}
-
+};
 // Sets the time portion of the date attached to the chooser
-DateChooser.prototype.setTime = function(hour, minute) {
+DateChooser.prototype.setTime = function (hour, minute) {
     this._date.setHours(hour);
     this._date.setMinutes(minute);
-}
-
+};
 // Creates the HTML for the whole chooser
-DateChooser.prototype.createChooserHtml = function() {
+DateChooser.prototype.createChooserHtml = function () {
     var formHtml = "<input type=\"hidden\" name=\""
         + this._prefix + "inputId\" value=\""
         + this._input.getAttribute('id') + "\">"
-        + "\r\n  <select name=\"" + this._prefix 
+        + "\r\n  <select name=\"" + this._prefix
         + "month\" onChange=\"dateChooserDateChange(this.form, '"
         + this._prefix + "');\">";
     for (var monIndex = 0; monIndex <= 11; monIndex++) {
@@ -197,10 +189,9 @@ DateChooser.prototype.createChooserHtml = function() {
         formHtml += this.createTimeChooserHtml();
     }
     return formHtml;
-}
-
+};
 // Creates the extra HTML needed for choosing the time
-DateChooser.prototype.createTimeChooserHtml = function() {
+DateChooser.prototype.createTimeChooserHtml = function () {
     // Add hours
     var result = "\r\n  <select name=\"" + this._prefix + "hour\">";
     for (var i = 0; i < 12; ++i) {
@@ -229,10 +220,9 @@ DateChooser.prototype.createTimeChooserHtml = function() {
         + "PM</option>";
     result += "\r\n  </select>";
     return result;
-}
-
+};
 // Creates the HTML for the actual calendar part of the chooser
-DateChooser.prototype.createCalendarHtml = function() {
+DateChooser.prototype.createCalendarHtml = function () {
     var result = "\r\n<table cellspacing=\"0\" class=\"dateChooser\">"
         + "\r\n  <tr><th>S</th><th>M</th><th>T</th>"
         + "<th>W</th><th>T</th><th>F</th><th>S</th></tr>\r\n  <tr>";
@@ -253,7 +243,7 @@ DateChooser.prototype.createCalendarHtml = function() {
             this._date.getMonth(), i);
         var js = '"dateChooserSetDate(\''
             + this._input.getAttribute('id') + "', '"
-            + thisDay.dateFormat(this._format) + '\');"'
+            + thisDay.dateFormat(this._format) + '\');"';
         result += "\r\n    <td class=\"dateChooserActive"
             // If the date is the currently chosen date, highlight it
             + (i == this._date.getDate() ? " dateChooserActiveToday" : "")
@@ -264,4 +254,5 @@ DateChooser.prototype.createCalendarHtml = function() {
         result += "<td colspan=\"" + (6 - lastDay) + "\">&nbsp;</td>";
     }
     return result + "\r\n  </tr>\r\n</table><!--[if lte IE 6.5]><iframe></iframe><![endif]-->";
-}
+};
+
