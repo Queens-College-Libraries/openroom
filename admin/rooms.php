@@ -54,21 +54,26 @@
 				$roomcapacity = isset($_REQUEST["roomcapacity"])?$_REQUEST["roomcapacity"]:"";
 				$roomdescription = isset($_REQUEST["roomdescription"])?$_REQUEST["roomdescription"]:"";
 				$roomgroupid = isset($_REQUEST["roomgroupid"])?$_REQUEST["roomgroupid"]:"";
-				$roompositionr = mysql_query("SELECT * FROM rooms WHERE roomgroupid = $roomgroupid ORDER BY roomposition DESC;");
-				if(mysql_num_rows($roompositionr) > 0){
-					$roompositiona = mysql_fetch_array($roompositionr);
-					$roomposition = $roompositiona["roomposition"] + 1;
-				}
-				else{
-					$roomposition = 0;
-				}
-				if($roomname != "" && $roomcapacity != "" && $roomdescription != "" && $roomgroupid != "" && $roomposition >= 0){
-					if(mysql_query("INSERT INTO rooms(roomname,roomposition,roomcapacity,roomgroupid,roomdescription) VALUES('$roomname',$roomposition,$roomcapacity,$roomgroupid,'$roomdescription');")){
-						$successmsg = "Room $roomname has been added!";
+				
+				if($roomgroupid != ""){
+					$roompositionr = mysql_query("SELECT * FROM rooms WHERE roomgroupid = $roomgroupid ORDER BY roomposition DESC;");
+					if(mysql_num_rows($roompositionr) > 0){
+						$roompositiona = mysql_fetch_array($roompositionr);
+						$roomposition = $roompositiona["roomposition"] + 1;
 					}
 					else{
-						$errormsg = "Unable to add room $roomname. (Make sure you've added a <a href=\"roomgroups.php\">Room Group</a> first!)";
+						$roomposition = 0;
 					}
+					if($roomname != "" && $roomcapacity != "" && $roomdescription != "" && $roomgroupid != "" && $roomposition >= 0){
+						if(mysql_query("INSERT INTO rooms(roomname,roomposition,roomcapacity,roomgroupid,roomdescription) VALUES('$roomname',$roomposition,$roomcapacity,$roomgroupid,'$roomdescription');")){
+							$successmsg = "Room $roomname has been added!";
+						}
+						else{
+							$errormsg = "Unable to add room $roomname. (Make sure you've added a <a href=\"roomgroups.php\">Room Group</a> first!)";
+						}
+					}
+				}else{
+					$errormsg = "Unable to add room $roomname. (Make sure you've added a <a href=\"roomgroups.php\">Room Group</a> first!)";
 				}
 				break;
 			//Edit an existing room

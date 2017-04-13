@@ -85,7 +85,7 @@ if($username != ""){
 				$errormsg .= "Another room has been reserved during this time.<br/>";
 			}
 			if($errormsg == ""){
-				if($reservation->username == $username && $settings["allow_simultaneous_reservations"] == "false"){
+				if($reservation->username == $username && $isadministrator != "TRUE" && $settings["allow_simultaneous_reservations"] == "false"){
 					$errormsg .= "You have already reserved another room during this time. Please select a different time and try again.<br/>";
 				}
 			}
@@ -364,8 +364,7 @@ if($username != ""){
 							if($opt_name_res){
 								$opt_name_a = mysql_fetch_array($opt_name_res);
 								$opt_name = $opt_name_a["optionname"];
-								$fixedofvalue = str_replace("'","&apos;",$ofvalue);
-								$fixedofvalue = str_replace('"',"&quot;",$fixedofvalue);
+								$fixedofvalue = htmlspecialchars($ofvalue, ENT_QUOTES);
 								$fixedofvalue = str_replace("\\","",$fixedofvalue);
 								
 								$opt_res = mysql_query("INSERT INTO reservationoptions VALUES('". $opt_name ."','". $reservationid ."','". $fixedofvalue ."');");

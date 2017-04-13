@@ -63,8 +63,8 @@ $login_method = "ldap";
 *$host contains the host name of your ldap server
 *$baseDN contains the base dn settings for you ldap server
 */
-$ldap_host = "ldap.bsu.edu";
-$ldap_baseDN = "cn=users,dc=bsu,dc=edu";
+$ldap_host = "";
+$ldap_baseDN = "";
 
 
 //Email Filter

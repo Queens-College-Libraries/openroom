@@ -5,9 +5,10 @@
 	
 	//Check for and enforce SSL
 	if($settings["https"] == "true" && $_COOKIE["redirected"] != "true"){
+		$op = isset($_GET["op"])?"?op=".$_GET["op"]:"";
 		setcookie("redirected", "true");
 		header("HTTP/1.1 301 Moved Permanently");
-		header("Location: https://". $settings["instance_url"]);
+		header("Location: https://". $settings["instance_url"] . $op);
 		exit();
 	}
 	if($_COOKIE["redirected"] == "true"){

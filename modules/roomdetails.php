@@ -23,7 +23,8 @@
 		roomDetails.style.visibility = "visible";
 		roomDetails.style.display = "block";
 		roomDetails.innerHTML = str;
-		var staticy = getScrollXY()[1] + 5;
+		var staticy = getScrollXY()[1] - 150;
+		if(staticy < 0) staticy = 0;
 		roomDetails.style.top = staticy +"px";
 	}
 </script>

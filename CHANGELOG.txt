@@ -1,0 +1,149 @@
+OpenRoom 1.4.1 - 4/18/2012
+========================================================================
+- Minor fix correcting an html special characters issue.
+	or-reserve.php (367)
+	
+	
+
+OpenRoom 1.4 - 3/5/2012
+========================================================================
+-Corrected an issue that was causing room creation to fail silently when
+there are no existing room groups, and also causing group deletion to
+work incorrectly.
+	admin/rooms.php
+	admin/roomgroups.php
+	https://sourceforge.net/tracker/?func=detail&aid=3364401&group_id=554062&atid=2248376
+
+-Corrected an issue that was causing the day view loader to hang when
+the dayviewer() function was called before the dayviewModule div was 
+loaded by the browser.
+	modules/calendar.php
+	https://sourceforge.net/tracker/?func=detail&aid=3364434&group_id=554062&atid=2248376
+	
+-Added encoding to params string to allow special characters in usernames and passwords.
+	modules/login.php
+	https://sourceforge.net/tracker/?func=detail&aid=3477760&group_id=554062&atid=2248376
+
+- Added mobile interface that works similarly to the Android app created by Budi Wibowo.
+*Also added buttons for user preference switch between desktop and mobile views.
+	includes/jquery.min.js
+	includes/mobile.php
+	themes/default/mobile/header.php
+	themes/default/mobile/content.php
+	themes/default/mobile/footer.php*
+	themes/default/mobile/style.css*
+	themes/default/mobile/images/ajax-loader.gif
+	index.php (small addition to carry over GET data after redirection)
+
+- Minor update of copyright information.
+*Also added buttons for user preference switch between desktop and mobile views.
+	themes/default/desktop/footer.php*
+	themes/default/desktop/style.php*
+
+- Added Mobile_Detect.php and limited mobile detection to only tested
+mobile devices.
+*Also added check for user preference switch between desktop and mobile views.
+	includes/Mobile_Detect.php
+	includes/or-theme.php*
+
+- Added isadministrator condition to prevent administrative users from
+seeing time limit errors.
+	or-reserve.php (line 88)
+
+- Adjusted positioning of room details box to correctly display on the screen.
+	modules/roomdetails.php
+	http://sourceforge.net/tracker/?func=detail&atid=2248376&aid=3491062&group_id=554062
+
+
+OpenRoom 1.3
+========================================================================
+- Corrected code in /includes/or-dbinfo.php to correctly sanitize data 
+in $_POST and $_GET. Due to a mistake, the previous code was doing
+nothing to arrays in these globals.
+	includes/or-dbinfo.php
+	
+
+
+OpenRoom 1.2 - 8/27/2010
+========================================================================
+- Corrected code in or-getroominfo.php to accuratly return Special Hours
+results. A mistake was made in the initial
+	(fromrange >= FROM_UNIXTIME(". $fromrange .") AND torange <= FROM_UNIXTIME(". $torange .")
+block that needed to be corrected to
+	(fromrange < FROM_UNIXTIME(". $fromrange .") AND torange > FROM_UNIXTIME(". $torange .")
+in order to catch all possible ranges.
+(The first line would only catch special hours that occur wholly within
+the day, while the second catches special hours that occur surrounding the
+day, while the other OR'd statements will trigger if the special hours
+occur within the day (either starting and ending, or starting, or just ending).)
+	or-getroominfo.php (one line change, old line commented out)
+
+
+OpenRoom 1.1 - 5/28/2010
+========================================================================
+- Added scrolling Room Details box so that users selecting rooms later
+in the evening can still easily see which room they are mousing over.
+	modules/roomdetails.php
+	themes/default/desktop/style.css
+	
+- Added Cancellations to "On Condition" emails so that cancellation
+emails can be more easily controlled.
+	admin/email.php
+	or-cancel.php (major changes)
+	
+- Fixed slowness issue when day view table was pre-loading over 1.5 MB
+of javascript code.
+	modules/dayview.php
+	modules/dayviewAJAX.php
+
+- Removed year from footer in default theme.
+	themes/default/desktop/footer.php
+
+- Added legend on left under room details.
+	modules/legend.php
+	themes/default/desktop/header.php
+	themes/default/desktop/style.css
+
+- Added "Policies"
+	modules/legend.php
+	modules/policies.php
+	
+- Added Examples directory
+	examples/
+	examples/EXAMPLE-ajaxlogin.php
+	examples/EXAMPLE-phplogin.php
+
+- Correcting problem with shared logons between separate
+instances on the same server ($_SESSION problem).
+	openroom.sql (systemid)
+	MySQL DB - "systemid" added to settings table with random value
+	index.php (systemid and matching systemid check)
+	install.php (randomly generated systemid added to settings)
+	or-authenticate.php (set systemid in session for comparison with db value)
+	themes/default/desktop/header.php (logged in as: correction if systemid doesn't match)
+	admin/index.php (correction for systemid here as well)
+	admin/administrators.php
+	admin/bans.php
+	admin/configuration.php
+	admin/customfields.php
+	admin/defaulthours.php
+	admin/multiplereservations.php
+	admin/policies.php
+	admin/reminder.php
+	admin/report-canceldaily.php
+	admin/email.php
+	admin/report-cancelmonthly.php
+	admin/report-daily.php
+	admin/reporters.php
+	admin/report-monthly.php
+	admin/report-userlookup.php
+	admin/roomgroups.php
+	admin/rooms.php
+	admin/specialhours.php
+	admin/timing.php
+	(for all admin files, just edited in an if statement at the top to check systemid)
+	editaccount.php
+	
+- Added license information.
+	GPL.txt
+	LICENSE.txt

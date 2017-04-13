@@ -313,3 +313,15 @@ p{
 	color: #990000;
 	width: 80%;
 }
+
+#themeswitch{
+	background: #f4fdcf;
+	border: 1px #cccccc solid;
+	color: #666666;
+	cursor: pointer;
+	font-size: 9px;
+	margin: 0 auto;
+	padding: 4px;
+	text-align: center;
+	width: 300px;
+}

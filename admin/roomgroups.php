@@ -35,16 +35,19 @@
 			case "deletegroup":
 				//When groups are deleted, move rooms from that group into no group.
 				$roomgroupid = isset($_REQUEST["roomgroupid"])?$_REQUEST["roomgroupid"]:"";
-				$roomsingroupa = mysql_query("SELECT * FROM rooms WHERE roomgroupid=". $roomgroupid .";");
-				while($roomingroup = mysql_fetch_array($roomsingroupa)){
-					if(mysql_query("UPDATE rooms SET roomgroupid=0 WHERE roomgroupid=". $roomgroupid .";")){
-						mysql_query("DELETE FROM roomgroups WHERE roomgroupid=". $roomgroupid .";");
-						$successmsg = "Group has been deleted!";
+				if($roomgroupid != ""){
+					$roomsingroupa = mysql_query("SELECT * FROM rooms WHERE roomgroupid=". $roomgroupid .";");
+					while($roomingroup = mysql_fetch_array($roomsingroupa)){
+						mysql_query("UPDATE rooms SET roomgroupid=0 WHERE roomgroupid=". $roomgroupid .";");
 					}
-					else{
+					if(mysql_query("DELETE FROM roomgroups WHERE roomgroupid=". $roomgroupid .";")){
+						$successmsg = "Group has been deleted!";
+					}else{
 						$errormsg = "There was a problem deleting the group. Please try again.";
 					}
-				}				
+				}else{
+					$errormsg = "There was a problem deleting the group. Please try again.";
+				}			
 				break;
 			case "addgroup":
 				$roomgroupname = isset($_REQUEST["roomgroupname"])?$_REQUEST["roomgroupname"]:"";
