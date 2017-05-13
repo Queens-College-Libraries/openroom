@@ -16,9 +16,8 @@ class Config
 
 }
 
-// db
-Config::write('db.host', '127.0.0.1');
-Config::write('db.port', '3306');
-Config::write('db.basename', 'rooms');
-Config::write('db.user', 'rooms');
-Config::write('db.password', 'password_here');
+Config::write('db.host', 'stampy.db.elephantsql.com');
+Config::write('db.port', '5432');
+Config::write('db.basename', 'iiqtmcdy');
+Config::write('db.user', 'iiqtmcdy');
+Config::write('db.password', 'M-BHbLIXej6eNP33fg1rda6obhHG7_Iz');
