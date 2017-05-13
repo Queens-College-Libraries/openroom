@@ -20,9 +20,7 @@ function getSettings(PDO $db)
 $db = \model\Db::getInstance();
 $myResult = getOptionalFields($db);
 foreach ($myResult as $result) {
-    echo $result[0]. PHP_EOL;
+    echo $result[0] . PHP_EOL;
 }
 
-$setting = model\Setting::fetch('policies');
-$policies = nl2br($setting->get_value());
-echo $policies;
+echo model\Setting::fetchValue($db, 'policies');

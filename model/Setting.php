@@ -1,4 +1,5 @@
 <?php
+
 namespace model;
 
 class Setting
@@ -41,6 +42,14 @@ class Setting
         $req->execute(array('name' => $settingname));
         $setting = $req->fetch();
         return new Setting($setting['name'], $setting['value']);
+    }
+
+    public static function fetchValue(\PDO $db, string $settingName): string
+    {
+        $req = $db->prepare('SELECT value FROM settings WHERE name = :name');
+        $req->execute(array('name' => $settingName));
+        $setting = $req->fetch();
+        return $setting['value'];
     }
 
     public static function update($settingname, $settingvalue): bool
