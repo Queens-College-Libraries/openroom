@@ -16,9 +16,7 @@ require_once("../includes/or-dbinfo.php");
 <h2>Policies</h2>
 <?php
 require_once(__DIR__ . '/../vendor/autoload.php');
-$db = \model\Db::getInstance();
-$policies = nl2br(model\Setting::fetchValue($db, 'policies'));
-echo $policies;
+echo preg_replace('/\v+|\\\r\\\n/','<br/>',model\Setting::fetchValue(\model\Db::getInstance(), 'policies'));
 ?>
 <br/>
 <center>
