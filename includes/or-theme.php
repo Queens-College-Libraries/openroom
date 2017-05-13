@@ -3,9 +3,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once("includes/or-dbinfo.php");
-require_once 'vendor/autoload.php';
-
 /*
 *Simply include this file and it will set SESSION["device"] appropriately.
 *This file determines the type of device through a simple detection script.
@@ -31,7 +28,9 @@ if ((isset($_COOKIE["theme"])) && ($_COOKIE["theme"] == "mobile" || $_COOKIE["th
     $_SESSION["device"] = $_COOKIE["theme"];
 }
 
-if ($settings["theme"] == "") $settings["theme"] = "default";
+if (model\Setting::fetchValue(\model\Db::getInstance(), 'theme') == "")
+{
+    $settings["theme"] = "default";
+}
 
-$_SESSION["themepath"] = "themes/" . $settings["theme"] . "/" . $_SESSION["device"] . "/";
-?>
+$_SESSION["themepath"] = "themes/" . model\Setting::fetchValue(\model\Db::getInstance(), 'theme') . "/" . $_SESSION["device"] . "/";
