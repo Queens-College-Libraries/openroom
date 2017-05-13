@@ -16,7 +16,7 @@ require_once("../includes/or-dbinfo.php");
 <h2>Policies</h2>
 <?php
 require_once(__DIR__ . '/../vendor/autoload.php');
-$setting = model\Setting::find('policies');
+$setting = model\Setting::fetch('policies');
 $policies = nl2br($setting->get_value());
 echo $policies;
 ?>

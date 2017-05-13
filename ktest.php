@@ -22,10 +22,7 @@ $myResult = getOptionalFields($db);
 foreach ($myResult as $result) {
     echo $result[0]. PHP_EOL;
 }
-$myResult = getSettings($db);
-foreach ($myResult as $result) {
-    foreach($result as $resultColumn)
-    {
-        echo $resultColumn . PHP_EOL;
-    }
-}
+
+$setting = model\Setting::fetch('policies');
+$policies = nl2br($setting->get_value());
+echo $policies;
