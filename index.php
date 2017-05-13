@@ -4,6 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require_once('vendor/autoload.php');
 include("includes/or-theme.php");
+require_once("includes/or-dbinfo.php");
 
 //Check for and enforce SSL
 if ($settings["https"] == "true" && $_COOKIE["redirected"] != "true") {

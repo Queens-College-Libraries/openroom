@@ -1,6 +1,3 @@
-<?php
-require_once("includes/or-dbinfo.php");
-?>
 <!DOCTYPE html>
 <html>
 
