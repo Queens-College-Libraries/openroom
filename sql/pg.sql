@@ -59,7 +59,7 @@ VALUES ('allow_past_reservations', 'false'), ('allow_simultaneous_reservations',
                'hours. The room will then be reassigned to you provided there are no other users awaiting use of ' ||
                'the room.'),
   ('remindermessage', 'The Library will be CLOSED, Monday, January 16.'), ('starttime', '8'), ('systemid', '80zhh73n5'),
-  ('theme', 'rosenthal'),
+  ('theme', 'default'),
   ('time_format', 'g:i a');
 
 SELECT *
