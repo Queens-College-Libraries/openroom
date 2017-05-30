@@ -1,4 +1,13 @@
 <?php
 require_once 'vendor/autoload.php';
-model\Setting::update(\model\Db::getInstance(), 'policies', 'I\'ve got values. They stack up nicely.');
+$newPolicy = 'Rosenthal Library usually has several rooms available to students for group study on a first-come, first-serve basis. These rooms are available to currently registered Queens College students only.
+
+Immediate use of a Group Study Room is made by presenting your valid Queens College ID at the Circulation Desk (located on Level 3 of the Library). If available, a room will be assigned to you for one 2-hour time block. If the room is in use a hold may be placed to secure the next available time slot. Room use, like book use, is assigned to your record in our automated circulation system. When a room is assigned to you, you will be handed a wooden block upon which the room number and policies governing Group Study Rooms is adhered. Upon completing your use of the room, the wooden block is to be returned to the Circulation Desk and the assignment of the room to your record will be released.
+
+Should you wish to extend the use of the room you are required to return to the Circulation desk with your ID and the wooden block at the end of the 2 hours. The room will then be reassigned to you provided there are no other users awaiting use of the room.';
+model\Setting::update(\model\Db::getInstance(), 'policies', $newPolicy);
 echo preg_replace('/\v+|\\\r\\\n/','<br/>',model\Setting::fetchValue(\model\Db::getInstance(), 'policies'));
+
+model\User::addUser(\model\Db::getInstance(), 'library2sa', 'Library 2 Service Account', '$2b$12$bVGt6HWAxldbT4f2krB02uPQJTv6vWlWZjVH33.JdbP6ToA4THt2W', 'hikingfan@gmail.com');
+$users = model\User::fetchAll();
+var_dump($users);
