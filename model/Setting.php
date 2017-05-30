@@ -1,7 +1,6 @@
 <?php
 
 namespace model;
-
 class Setting
 {
     private $name;
