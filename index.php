@@ -7,11 +7,11 @@ include("includes/or-theme.php");
 require_once("includes/or-dbinfo.php");
 
 //Check for and enforce SSL
-if ($settings["https"] == "true" && $_COOKIE["redirected"] != "true") {
+if (model\Setting::fetchValue(\model\Db::getInstance(), 'https') == "true" && $_COOKIE["redirected"] != "true") {
     $op = isset($_GET["op"]) ? "?op=" . $_GET["op"] : "";
     setcookie("redirected", "true");
     header("HTTP/1.1 301 Moved Permanently");
-    header("Location: https://" . $settings["instance_url"] . $op);
+    header("Location: https://" . model\Setting::fetchValue(\model\Db::getInstance(), 'instance_url') . $op);
     exit();
 }
 if (isset($_COOKIE["redirected"]) && $_COOKIE["redirected"] == "true") {

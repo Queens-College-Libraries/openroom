@@ -28,9 +28,9 @@ if ((isset($_COOKIE["theme"])) && ($_COOKIE["theme"] == "mobile" || $_COOKIE["th
     $_SESSION["device"] = $_COOKIE["theme"];
 }
 
-if (model\Setting::fetchValue(\model\Db::getInstance(), 'theme') == "")
-{
-    $settings["theme"] = "default";
-}
+//if (model\Setting::fetchValue(\model\Db::getInstance(), 'theme') == "")
+//{
+//    $settings["theme"] = "default";
+//}
 
 $_SESSION["themepath"] = "themes/" . model\Setting::fetchValue(\model\Db::getInstance(), 'theme') . "/" . $_SESSION["device"] . "/";

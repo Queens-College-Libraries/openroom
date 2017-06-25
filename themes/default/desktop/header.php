@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <title><?php echo $settings["instance_name"]; ?></title>
+    <title><?php echo model\Setting::fetchValue(\model\Db::getInstance(), 'instance_name'); ?></title>
     <link rel="stylesheet" type="text/css" href="<?php echo $_SESSION["themepath"]; ?>style.css"/>
     <meta http-equiv="Content-Script-Type" content="text/javascript"/>
 </head>
@@ -11,10 +11,10 @@
 <div id="heading">
 	<span class="username">
 	<?php
-    if ($_SESSION["systemid"] == $settings["systemid"]){
+    if ($_SESSION["systemid"] == model\Setting::fetchValue(\model\Db::getInstance(), 'systemid')){
     echo isset($_SESSION["displayname"]) ? "<strong>Logged in as</strong>: " . $_SESSION["displayname"] : "&nbsp;"; ?></span>&nbsp;<?php echo ($_SESSION["isadministrator"] == "TRUE") ? "<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;" : "";
     echo ($_SESSION["isreporter"] == "TRUE") ? "<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;" : "";
-    if ($settings["login_method"] == "normal" && $_SESSION["username"] != "") {
+    if (model\Setting::fetchValue(\model\Db::getInstance(), 'login_method') == "normal" && $_SESSION["username"] != "") {
         echo "|&nbsp;<a href=\"editaccount.php\">Edit Account</a>&nbsp;|";
     }
     if ($_SESSION["username"] != "") {
