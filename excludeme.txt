@@ -3,4 +3,5 @@
 examples
 sql
 Tests
+model/Config.php
 excludeme.txt
