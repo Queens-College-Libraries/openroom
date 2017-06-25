@@ -32,7 +32,7 @@ class User
                 ->setLastLogin($user['last_login'])
                 ->setIsActive($user['is_active'])
                 ->setIsAdministrator($user['is_administrator'])
-                ->setIsReporter($user['active'])
+                ->setIsReporter($user['is_reporter'])
                 ->setIsBanned($user['is_banned']));
         }
         return $users;
@@ -40,7 +40,7 @@ class User
 
     public function setIsBanned($input)
     {
-        $this->active = $input;
+        $this->isBanned = $input;
         return $this;
     }
 
@@ -121,7 +121,7 @@ class User
             ->setLastLogin($user['last_login'])
             ->setIsActive($user['is_active'])
             ->setIsAdministrator($user['is_administrator'])
-            ->setIsReporter($user['active'])
+            ->setIsReporter($user['is_reporter'])
             ->setIsBanned($user['is_banned']);
     }
 
@@ -165,7 +165,7 @@ class User
             ->setLastLogin($user['last_login'])
             ->setIsActive($user['is_active'])
             ->setIsAdministrator($user['is_administrator'])
-            ->setIsReporter($user['active'])
+            ->setIsReporter($user['is_reporter'])
             ->setIsBanned($user['is_banned']);
     }
 
