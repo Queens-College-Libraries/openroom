@@ -1,4 +1,5 @@
 <?php
+require_once('vendor/autoload.php');
 if (!isset($_SESSION)) {
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
@@ -53,9 +54,9 @@ require_once("includes/or-dbinfo.php");
  * @param array $settings
  * @return bool
  */
-function AuthenticateUser(string $username, string $password, array $settings): bool
+function AuthenticateUser(string $username, string $password, string $ldap_baseDN, string $service_username, string $service_password): bool
 {
-    if (ConnectLdap($username, $password, $settings)) {
+    if (ConnectLdap($username, $password, $ldap_baseDN, $service_username, $service_password)) {
         return true;
     }
     return false;
@@ -68,8 +69,11 @@ $username = stripslashes($username);
 $ajax_indicator = isset($_POST["ajax_indicator"]) ? $_POST["ajax_indicator"] : "FALSE";
 $output = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<authresponse>\n";
 if ($username != "" && $password != "" && $ajax_indicator != "") {
-    if ($settings["login_method"] == "ldap") {
-        if (AuthenticateUser($username, $password, $settings)) {
+    if (model\Setting::fetchValue(\model\Db::getInstance(), 'login_method') == "ldap") {
+        $ldap_baseDN = model\Setting::fetchValue(\model\Db::getInstance(), 'ldap_baseDN');
+        $service_username = model\Setting::fetchValue(\model\Db::getInstance(), 'service_username');
+        $service_password = model\Setting::fetchValue(\model\Db::getInstance(), 'service_password');
+        if (AuthenticateUser($username, $password, $ldap_baseDN, $service_username, $service_password)) {
             $isAuthenticated = true;
         } else {
             $isAuthenticated = false;
@@ -113,7 +117,7 @@ if ($username != "" && $password != "" && $ajax_indicator != "") {
             }
         }
     } //Normal
-    elseif ($settings["login_method"] == "normal") {
+    elseif (model\Setting::fetchValue(\model\Db::getInstance(), 'login_method') == "normal") {
         $encpass = sha1($password);
         $lresult = mysql_query("SELECT * FROM users WHERE username='" . $username . "' AND password='" . $encpass . "';");
         if (mysql_num_rows($lresult) == 1) {
