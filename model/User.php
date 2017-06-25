@@ -3,16 +3,16 @@
 namespace model;
 class User
 {
-    private $id;
-    private $username;
-    private $displayName;
-    private $password;
-    private $email;
-    private $lastLogin;
-    private $isActive;
-    private $isAdministrator;
-    private $isReporter;
-    private $isBanned;
+    public $id;
+    public $username;
+    public $displayName;
+    public $password;
+    public $email;
+    public $lastLogin;
+    public $isActive;
+    public $isAdministrator;
+    public $isReporter;
+    public $isBanned;
 
     function __construct()
     {
@@ -38,49 +38,49 @@ class User
         return $users;
     }
 
-    private function setIsBanned($input)
+    public function setIsBanned($input)
     {
         $this->active = $input;
         return $this;
     }
 
-    private function setIsReporter($input)
+    public function setIsReporter($input)
     {
         $this->isReporter = $input;
         return $this;
     }
 
-    private function setIsAdministrator($input)
+    public function setIsAdministrator($input)
     {
         $this->isAdministrator = $input;
         return $this;
     }
 
-    private function setIsActive($input)
+    public function setIsActive($input)
     {
         $this->isActive = $input;
         return $this;
     }
 
-    private function setLastLogin($input)
+    public function setLastLogin($input)
     {
         $this->lastlogin = $input;
         return $this;
     }
 
-    private function setEmail($input)
+    public function setEmail($input)
     {
         $this->email = $input;
         return $this;
     }
 
-    private function setPassword($input)
+    public function setPassword($input)
     {
-        $this->password = $input;
+        $this->password = password_hash($input, PASSWORD_DEFAULT);
         return $this;
     }
 
-    private function setDisplayName($input)
+    public function setDisplayName($input)
     {
         if ($input != null) {
             $this->displayName = $input;
@@ -95,7 +95,7 @@ class User
         return $this->username;
     }
 
-    private function setUsername($input)
+    public function setUsername($input)
     {
         $this->username = $input;
         return $this;
@@ -142,6 +142,11 @@ class User
         return $this->displayName;
     }
 
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
     public function getLastLogin()
     {
         return $this->lastLogin;
@@ -166,13 +171,13 @@ class User
 
     // INSERT INTO users (username, display_name, password, email) VALUES ('kushal', 'kushal', '$2b$12$bVGt6HWAxldbT4f2krB02uPQJTv6vWlWZjVH33.JdbP6ToA4THt2W', 'khada@qc.cuny.edu')
 
-    public function addUser(\PDO $db, $username, $displayName, $password, $email, $active)
+    public static function addUser(\PDO $db, \model\User $user)
     {
-        $req = $db->prepare('INSERT INTO users (username, display_name, password, email, last_login) VALUES (:username, :display_name, :password, :email)');
-        $req->bindParam(':username', $username, \PDO::PARAM_STR, 255);
-        $req->bindParam(':display_name', $displayName, \PDO::PARAM_STR, 255);
-        $req->bindParam(':password', $password, \PDO::PARAM_STR, 255);
-        $req->bindParam(':email', $email, \PDO::PARAM_STR, 255);
+        $req = $db->prepare('INSERT INTO users (username, display_name, password, email) VALUES (:username, :display_name, :password, :email)');
+        $req->bindParam(':username', $user->getUsername(), \PDO::PARAM_STR, 255);
+        $req->bindParam(':display_name', $user->getDisplayName(), \PDO::PARAM_STR, 255);
+        $req->bindParam(':password', $user->getPassword(), \PDO::PARAM_STR, 255);
+        $req->bindParam(':email', $user->getEmail(), \PDO::PARAM_STR, 255);
         $req->execute();
     }
 
@@ -185,26 +190,23 @@ class User
         }
     }
 
-    public function addUserLdap($username)
+    public function addUserLdap($username, $ldap_baseDN, $service_username, $service_password)
     {
-        $this->set_username($username);
-        $this->set_email($this->ReturnEmailAddress($username, \model\Setting::fetch_all()));
-        $this->set_displayname($this->ReturnDisplayName($username, \model\Setting::fetch_all()));
+        $this->setUsername($username);
+        $this->setEmail($this->ReturnEmailAddress($username, $ldap_baseDN, $service_username, $service_password));
+        $this->setDisplayname($this->ReturnDisplayName($username, $ldap_baseDN, $service_username, $service_password));
         return $this;
     }
 
-    function ReturnEmailAddress($inputUsername, $settings)
+    function ReturnEmailAddress($inputUsername, $ldap_baseDN, $service_username, $service_password)
     {
-        return $this->ReturnParameter($inputUsername, "mail", $settings);
+        return $this->ReturnParameter($inputUsername, "mail", $ldap_baseDN, $service_username, $service_password);
     }
 
-    function ReturnParameter($inputUsername, $inputParameter, $settings)
+    function ReturnParameter($inputUsername, $inputParameter, $ldapServer, $service_username, $service_password)
     {
-        $ldapServer = $settings["ldap_baseDN"];
-        $qcUsername = $settings["service_username"];
-        $password = $settings["service_password"];
         $ldap = ldap_connect($ldapServer);
-        if ($bind = ldap_bind($ldap, $qcUsername, $password)) {
+        if ($bind = ldap_bind($ldap, $service_username, $service_password)) {
             $result = ldap_search($ldap, "", "(CN=$inputUsername)") or die ("Error in search query: " . ldap_error($ldap));
             $data = ldap_get_entries($ldap, $result);
             if (isset($data[0][$inputParameter][0])) {
@@ -216,9 +218,9 @@ class User
         return "fail";
     }
 
-    function ReturnDisplayName($inputUsername, $settings)
+    function ReturnDisplayName($inputUsername, $ldap_baseDN, $service_username, $service_password)
     {
-        return $this->ReturnParameter($inputUsername, "displayname", $settings);
+        return $this->ReturnParameter($inputUsername, "displayname", $ldap_baseDN, $service_username, $service_password);
     }
 
     function IsNotNullOrEmptyString($question)

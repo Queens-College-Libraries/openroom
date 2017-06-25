@@ -8,6 +8,17 @@ Should you wish to extend the use of the room you are required to return to the 
 model\Setting::update(\model\Db::getInstance(), 'policies', $newPolicy);
 echo preg_replace('/\v+|\\\r\\\n/','<br/>',model\Setting::fetchValue(\model\Db::getInstance(), 'policies'));
 
-model\User::addUser(\model\Db::getInstance(), 'library2sa', 'Library 2 Service Account', '$2b$12$bVGt6HWAxldbT4f2krB02uPQJTv6vWlWZjVH33.JdbP6ToA4THt2W', 'hikingfan@gmail.com');
-$users = model\User::fetchAll();
+$kus = \model\User::create()->setUsername(generateRandomString(16))->setDisplayName(generateRandomString(12))->setPassword(generateRandomString(60))->setEmail(generateRandomString(12).'@' . generateRandomString(6) . '.' . generateRandomString(3));
+model\User::addUser(\model\Db::getInstance(), $kus);
+$users = model\User::fetchAll(\model\Db::getInstance());
 var_dump($users);
+
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
