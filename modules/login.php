@@ -82,7 +82,7 @@
                 <input id="loginsubmitbutton" class="button" type="submit" value="Log In"
                        onclick="ajaxAuthenticate()"/><br/>
                 <?php
-                if ($settings["login_method"] == "normal") {
+                if (model\Setting::fetchValue(\model\Db::getInstance(), 'login_method') == "normal") {
                     echo "<span class=\"registrationlink\"><a href=\"createaccount.php\">Create Account</a></span><br/><br/>";
                 }
                 ?>
