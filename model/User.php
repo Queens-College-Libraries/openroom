@@ -173,7 +173,7 @@ class User
 
     public static function addUser(\PDO $db, \model\User $user)
     {
-        $username = user->getUsername();
+        $username = $user->getUsername();
         $displayname = $user->getDisplayName();
         $password = $user->getPassword();
         $email = $user->getEmail();
