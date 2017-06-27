@@ -35,6 +35,8 @@ class User
                 ->setIsReporter($user['is_reporter'])
                 ->setIsBanned($user['is_banned']));
         }
+        $req = null;
+        $db = null;
         return $users;
     }
 
@@ -183,6 +185,7 @@ class User
         $req->bindParam(':password', $password, \PDO::PARAM_STR, 255);
         $req->bindParam(':email', $email, \PDO::PARAM_STR, 255);
         $req->execute();
+        $req = null;
     }
 
     public function verifyPassword($input)
