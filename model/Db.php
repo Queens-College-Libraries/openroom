@@ -12,9 +12,12 @@ class Db
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            $pdo_options[\PDO::ATTR_ERRMODE] = \PDO::ERRMODE_EXCEPTION;
+            $options = [
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, // highly recommended
+                \PDO::ATTR_EMULATE_PREPARES => false // ALWAYS! ALWAYS! ALWAYS!
+            ];
             $dbname = 'pgsql:' . 'host=' . Config::read('db.host') . ';' . 'port=' . Config::read('db.port') . ';' . 'dbname=' . Config::read('db.basename');
-            self::$instance = new \PDO($dbname, Config::read('db.user'), Config::read('db.password'), $pdo_options);
+            self::$instance = new \PDO($dbname, Config::read('db.user'), Config::read('db.password'), $options);
         }
         return self::$instance;
     }
