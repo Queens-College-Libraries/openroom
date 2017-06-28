@@ -40,6 +40,12 @@ class User
         return $users;
     }
 
+    public static function fetchCount(\PDO $db): int
+    {
+        return $db->query('select count(*) from Users')->fetchColumn();
+    }
+
+
     public function setIsBanned($input)
     {
         $this->isBanned = $input;

@@ -10,10 +10,14 @@ $my_connection = \model\Db::getInstance();
 model\Setting::update($my_connection, 'policies', $newPolicy);
 echo preg_replace('/\v+|\\\r\\\n/','<br/>',model\Setting::fetchValue(\model\Db::getInstance(), 'policies'));
 
-$kus = \model\User::create()->setUsername(generateRandomString(16))->setDisplayName(generateRandomString(12))->setPassword(generateRandomString(60))->setEmail(generateRandomString(12).'@' . generateRandomString(6) . '.' . generateRandomString(3));
+echo '<br /><p>Now we shall create a new random user.</p>';
+
+$kus = \model\User::create()->setUsername(generateRandomString(96))->setDisplayName(generateRandomString(24))->setPassword(generateRandomString(600))->setEmail(generateRandomString(16).'@' . generateRandomString(8) . '.' . generateRandomString(3));
 model\User::addUser($my_connection, $kus);
-$users = model\User::fetchAll($my_connection);
-var_dump($users);
+$users = model\User::fetchCount($my_connection);
+highlight_string("<?php\n\$data =\n" . var_export($kus, true) . ";\n?>");
+
+echo '<br /> The number of users is ' . $users;
 
 $my_connection = null;
 
