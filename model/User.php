@@ -35,8 +35,7 @@ class User
                 ->setIsReporter($user['is_reporter'])
                 ->setIsBanned($user['is_banned']));
         }
-        $req = null;
-        $db = null;
+        $req->closeCursor();
         return $users;
     }
 
