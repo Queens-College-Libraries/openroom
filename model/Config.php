@@ -16,8 +16,10 @@ class Config
 
 }
 
-Config::write('db.host', '');
-Config::write('db.port', '5432');
-Config::write('db.basename', '');
-Config::write('db.user', '');
-Config::write('db.password', '');
+$dbopts = parse_url(getenv('DATABASE_URL'));
+//
+Config::write('db.host', $dbopts["host"]);
+Config::write('db.port', $dbopts["port"]);
+Config::write('db.basename', $dbopts["path"]);
+Config::write('db.user', $dbopts["user"]);
+Config::write('db.password', $dbopts["pass"]);
