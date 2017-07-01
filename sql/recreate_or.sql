@@ -1,6 +1,6 @@
 DROP DATABASE IF EXISTS openroom;
-GRANT USAGE ON *.* TO 'openroom'@'localhost';
-DROP USER if EXISTS openroom;
+GRANT USAGE ON *.* TO 'openroom' @'localhost';
+DROP USER IF EXISTS openroom;
 CREATE DATABASE IF NOT EXISTS openroom;
 GRANT ALL PRIVILEGES ON openroom.* TO openroom@localhost
 IDENTIFIED BY 'xnNtKs804RoaohzSyUfV6xo7bPtvSJnbL9J7M9SrcWIkv3yaWfw8UhjDqMnfEqG';
@@ -28,25 +28,25 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `administrators`
 --
 
-DROP TABLE IF EXISTS `administrators`;
+DROP TABLE IF EXISTS ` administrators `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `administrators` (
-  `username` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`username`)
+`username` VARCHAR (255) NOT NULL,
+PRIMARY KEY (`username`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `administrators`
 --
 
-LOCK TABLES `administrators` WRITE;
+LOCK TABLES `administrators ` WRITE;
 /*!40000 ALTER TABLE `administrators`
   DISABLE KEYS */;
-INSERT INTO `administrators` VALUES ('adfaf'), ('dwilliams1'), ('khada'), ('khada100'), ('library2sa'), ('shibboleth');
+INSERT INTO ` administrators` VALUES ('adfaf'), ('dwilliams1'), ('khada'), ('khada100'), ('library2sa'), ('shibboleth');
 /*!40000 ALTER TABLE `administrators`
   ENABLE KEYS */;
 UNLOCK TABLES;
@@ -55,25 +55,25 @@ UNLOCK TABLES;
 -- Table structure for table `bannedusers`
 --
 
-DROP TABLE IF EXISTS `bannedusers`;
+DROP TABLE IF EXISTS ` bannedusers `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bannedusers` (
-  `username` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`username`)
+`username` VARCHAR (255) NOT NULL,
+PRIMARY KEY (`username`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `bannedusers`
 --
 
-LOCK TABLES `bannedusers` WRITE;
+LOCK TABLES `bannedusers ` WRITE;
 /*!40000 ALTER TABLE `bannedusers`
   DISABLE KEYS */;
-INSERT INTO `bannedusers` VALUES ('egg');
+INSERT INTO ` bannedusers` VALUES ('egg');
 /*!40000 ALTER TABLE `bannedusers`
   ENABLE KEYS */;
 UNLOCK TABLES;
@@ -82,31 +82,31 @@ UNLOCK TABLES;
 -- Table structure for table `cancelled`
 --
 
-DROP TABLE IF EXISTS `cancelled`;
+DROP TABLE IF EXISTS ` cancelled `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cancelled` (
-  `reservationid` BIGINT(20)   NOT NULL,
-  `start`         TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `end`           TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `roomid`        INT(11)      NOT NULL,
-  `username`      VARCHAR(255) NOT NULL,
-  `timeofrequest` TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `timeofcancel`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`reservationid`)
+`reservationid` BIGINT (20) NOT NULL,
+` START ` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+` END ` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+`roomid` INT (11) NOT NULL,
+`username` VARCHAR (255) NOT NULL,
+`timeofrequest` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+`timeofcancel` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (`reservationid`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `cancelled`
 --
 
-LOCK TABLES `cancelled` WRITE;
+LOCK TABLES `cancelled ` WRITE;
 /*!40000 ALTER TABLE `cancelled`
   DISABLE KEYS */;
-INSERT INTO `cancelled`
+INSERT INTO ` cancelled `
 VALUES (11, '2016-10-08 15:00:00', '2016-10-08 18:59:59', 1, 'khada100', '2016-10-08 03:25:46', '2016-10-08 03:26:08'),
   (21, '2016-11-03 21:30:00', '2016-11-03 22:59:59', 1, 'khada', '2016-11-03 18:10:28', '2016-11-03 18:10:35'),
   (22, '2016-11-03 22:00:00', '2016-11-03 23:29:59', 1, 'khada100', '2016-11-03 18:37:41', '2016-11-03 18:41:33'),
@@ -145,26 +145,26 @@ UNLOCK TABLES;
 -- Table structure for table `deletedrooms`
 --
 
-DROP TABLE IF EXISTS `deletedrooms`;
+DROP TABLE IF EXISTS ` deletedrooms `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `deletedrooms` (
-  `roomid`          INT(11)      NOT NULL,
-  `roomname`        VARCHAR(255) NOT NULL,
-  `roomcapacity`    INT(11)      NOT NULL,
-  `roomgroupid`     BIGINT(20)   NOT NULL,
-  `roomdescription` LONGTEXT     NOT NULL,
-  PRIMARY KEY (`roomid`)
+`roomid` INT (11) NOT NULL,
+`roomname` VARCHAR (255) NOT NULL,
+`roomcapacity` INT (11) NOT NULL,
+`roomgroupid` BIGINT (20) NOT NULL,
+`roomdescription` LONGTEXT NOT NULL,
+PRIMARY KEY (`roomid`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `deletedrooms`
 --
 
-LOCK TABLES `deletedrooms` WRITE;
+LOCK TABLES `deletedrooms ` WRITE;
 /*!40000 ALTER TABLE `deletedrooms`
   DISABLE KEYS */;
 /*!40000 ALTER TABLE `deletedrooms`
@@ -175,38 +175,38 @@ UNLOCK TABLES;
 -- Table structure for table `optionalfields`
 --
 
-DROP TABLE IF EXISTS `optionalfields`;
+DROP TABLE IF EXISTS ` optionalfields `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `optionalfields` (
-  `optionname`     VARCHAR(255) NOT NULL,
-  `optionformname` VARCHAR(255) NOT NULL
-  COMMENT 'no spaces, a-z only',
-  `optiontype`     INT(11)      NOT NULL
-  COMMENT '0 = text, 1 = select',
-  `optionchoices`  VARCHAR(700) NOT NULL
-  COMMENT '";" delimited',
-  `optionorder`    INT(11)      NOT NULL,
-  `optionquestion` VARCHAR(255) NOT NULL,
-  `optionprivate`  TINYINT(1)   NOT NULL DEFAULT '0',
-  `optionrequired` TINYINT(1)   NOT NULL DEFAULT '0',
-  PRIMARY KEY (`optionname`),
-  UNIQUE KEY `optionformname` (`optionformname`)
+`optionname` VARCHAR (255) NOT NULL,
+`optionformname` VARCHAR (255) NOT NULL
+COMMENT 'no spaces, a-z only',
+`optiontype` INT (11) NOT NULL
+COMMENT '0 = text, 1 = select',
+`optionchoices` VARCHAR (700) NOT NULL
+COMMENT '";" delimited',
+`optionorder` INT (11) NOT NULL,
+`optionquestion` VARCHAR (255) NOT NULL,
+`optionprivate`  TINYINT(1) NOT NULL DEFAULT '0',
+`optionrequired` TINYINT(1) NOT NULL DEFAULT '0',
+PRIMARY KEY (`optionname`),
+UNIQUE KEY `optionformname` (`optionformname`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `optionalfields`
 --
 
-LOCK TABLES `optionalfields` WRITE;
+LOCK TABLES `optionalfields ` WRITE;
 /*!40000 ALTER TABLE `optionalfields`
   DISABLE KEYS */;
-INSERT INTO `optionalfields` VALUES
-  ('Student classification', 'classification', 1, 'Freshman;Sophomore;Junior;Senior;Graduate;Staff;Other', 1,
-   'What is your classification?', 0, 1);
+INSERT INTO ` optionalfields` VALUES
+('Student classification', 'classification', 1, 'Freshman;Sophomore;Junior;Senior;Graduate;Staff;Other', 1,
+'What is your classification?', 0, 1);
 /*!40000 ALTER TABLE `optionalfields`
   ENABLE KEYS */;
 UNLOCK TABLES;
@@ -215,27 +215,27 @@ UNLOCK TABLES;
 -- Table structure for table `posts`
 --
 
-DROP TABLE IF EXISTS `posts`;
+DROP TABLE IF EXISTS ` posts `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `posts` (
-  `id`      INT(11)     NOT NULL,
-  `author`  VARCHAR(45) NOT NULL,
-  `content` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`)
+`id` INT (11) NOT NULL,
+`author` VARCHAR (45) NOT NULL,
+` CONTENT ` VARCHAR (45) NOT NULL,
+PRIMARY KEY (`id`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `posts`
 --
 
-LOCK TABLES `posts` WRITE;
+LOCK TABLES `posts ` WRITE;
 /*!40000 ALTER TABLE `posts`
   DISABLE KEYS */;
-INSERT INTO `posts`
+INSERT INTO ` posts `
 VALUES (1, 'kus', 'hello'), (2, 'kus', 'world'), (3, 'kus', 'latest news on apple computers '), (4, 'kus', 'haha oops');
 /*!40000 ALTER TABLE `posts`
   ENABLE KEYS */;
@@ -245,25 +245,25 @@ UNLOCK TABLES;
 -- Table structure for table `reporters`
 --
 
-DROP TABLE IF EXISTS `reporters`;
+DROP TABLE IF EXISTS ` reporters `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reporters` (
-  `username` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`username`)
+`username` VARCHAR (255) NOT NULL,
+PRIMARY KEY (`username`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `reporters`
 --
 
-LOCK TABLES `reporters` WRITE;
+LOCK TABLES `reporters ` WRITE;
 /*!40000 ALTER TABLE `reporters`
   DISABLE KEYS */;
-INSERT INTO `reporters`
+INSERT INTO ` reporters `
 VALUES ('-1; DROP ALL TABLES; --'), ('-1; DROP ALL TABLES; -- asfsadf'), ('-1; DROP ALL TABLES; -- sdfsdf'), ('1'),
   ('; delete table administrators;'), ('afdsdf xc-1; DROP ALL TABLES; --'), ('apple'), ('asfd'),
   ('asfdsaf -1; DROP ALL TABLES; --'), ('ball'), ('cat'), ('dog'), ('egg'),
@@ -276,28 +276,28 @@ UNLOCK TABLES;
 -- Table structure for table `reservationoptions`
 --
 
-DROP TABLE IF EXISTS `reservationoptions`;
+DROP TABLE IF EXISTS ` reservationoptions `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reservationoptions` (
-  `optionname`    VARCHAR(255) NOT NULL,
-  `reservationid` BIGINT(20)   NOT NULL,
-  `optionvalue`   VARCHAR(700) NOT NULL,
-  PRIMARY KEY (`optionname`, `reservationid`),
-  KEY `reservationid` (`reservationid`)
+`optionname` VARCHAR (255) NOT NULL,
+`reservationid` BIGINT (20) NOT NULL,
+`optionvalue` VARCHAR (700) NOT NULL,
+PRIMARY KEY (`optionname`, `reservationid`),
+KEY `reservationid` (`reservationid`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `reservationoptions`
 --
 
-LOCK TABLES `reservationoptions` WRITE;
+LOCK TABLES `reservationoptions ` WRITE;
 /*!40000 ALTER TABLE `reservationoptions`
   DISABLE KEYS */;
-INSERT INTO `reservationoptions`
+INSERT INTO ` reservationoptions `
 VALUES ('Student classification', 51, 'Graduate'), ('Student classification', 52, 'Staff'),
   ('Student classification', 53, 'Graduate');
 /*!40000 ALTER TABLE `reservationoptions`
@@ -308,32 +308,32 @@ UNLOCK TABLES;
 -- Table structure for table `reservations`
 --
 
-DROP TABLE IF EXISTS `reservations`;
+DROP TABLE IF EXISTS ` reservations `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reservations` (
-  `reservationid` BIGINT(20)   NOT NULL AUTO_INCREMENT,
-  `start`         TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `end`           TIMESTAMP    NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `roomid`        INT(11)      NOT NULL,
-  `username`      VARCHAR(255) NOT NULL,
-  `numberingroup` INT(11)      NOT NULL,
-  `timeofrequest` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`reservationid`)
+`reservationid` BIGINT (20) NOT NULL AUTO_INCREMENT,
+` START ` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+` END ` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+`roomid` INT (11) NOT NULL,
+`username` VARCHAR (255) NOT NULL,
+`numberingroup` INT (11) NOT NULL,
+`timeofrequest` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (`reservationid`)
 )
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 54
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+AUTO_INCREMENT = 54
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `reservations`
 --
 
-LOCK TABLES `reservations` WRITE;
+LOCK TABLES `reservations ` WRITE;
 /*!40000 ALTER TABLE `reservations`
   DISABLE KEYS */;
-INSERT INTO `reservations`
+INSERT INTO ` reservations `
 VALUES (1, '2016-09-09 19:30:00', '2016-09-09 19:59:59', 1, 'dwilliams1', 4, '2016-09-09 18:58:21'),
   (2, '2016-09-18 18:30:00', '2016-09-18 18:59:59', 1, 'khada100', 8, '2016-09-18 15:45:17'),
   (3, '2016-10-03 17:00:00', '2016-10-03 17:29:59', 1, 'khada100', 4, '2016-10-03 16:58:03'),
@@ -365,27 +365,27 @@ UNLOCK TABLES;
 -- Table structure for table `roomgroups`
 --
 
-DROP TABLE IF EXISTS `roomgroups`;
+DROP TABLE IF EXISTS ` roomgroups `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roomgroups` (
-  `roomgroupid`   BIGINT(20)   NOT NULL AUTO_INCREMENT,
-  `roomgroupname` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`roomgroupid`)
+`roomgroupid` BIGINT (20) NOT NULL AUTO_INCREMENT,
+`roomgroupname` VARCHAR (255) NOT NULL,
+PRIMARY KEY (`roomgroupid`)
 )
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 3
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `roomgroups`
 --
 
-LOCK TABLES `roomgroups` WRITE;
+LOCK TABLES `roomgroups ` WRITE;
 /*!40000 ALTER TABLE `roomgroups`
   DISABLE KEYS */;
-INSERT INTO `roomgroups` VALUES (1, 'Library'), (2, 'MediaScape');
+INSERT INTO ` roomgroups` VALUES (1, 'Library'), (2, 'MediaScape');
 /*!40000 ALTER TABLE `roomgroups`
   ENABLE KEYS */;
 UNLOCK TABLES;
@@ -394,30 +394,30 @@ UNLOCK TABLES;
 -- Table structure for table `roomhours`
 --
 
-DROP TABLE IF EXISTS `roomhours`;
+DROP TABLE IF EXISTS ` roomhours `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roomhours` (
-  `roomhoursid` BIGINT(20)  NOT NULL AUTO_INCREMENT,
-  `roomid`      INT(11)     NOT NULL,
-  `dayofweek`   SMALLINT(6) NOT NULL,
-  `start`       TIME        NOT NULL,
-  `end`         TIME        NOT NULL,
-  PRIMARY KEY (`roomhoursid`)
+`roomhoursid` BIGINT (20) NOT NULL AUTO_INCREMENT,
+`roomid` INT (11) NOT NULL,
+`dayofweek` SMALLINT (6) NOT NULL,
+` START ` TIME NOT NULL,
+` END ` TIME NOT NULL,
+PRIMARY KEY (`roomhoursid`)
 )
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 53
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+AUTO_INCREMENT = 53
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `roomhours`
 --
 
-LOCK TABLES `roomhours` WRITE;
+LOCK TABLES `roomhours ` WRITE;
 /*!40000 ALTER TABLE `roomhours`
   DISABLE KEYS */;
-INSERT INTO `roomhours`
+INSERT INTO ` roomhours `
 VALUES (1, 1, 0, '11:00:00', '16:00:00'), (2, 1, 1, '09:00:00', '21:00:00'), (3, 1, 2, '09:00:00', '21:00:00'),
   (4, 1, 3, '09:00:00', '21:00:00'), (5, 1, 4, '09:00:00', '21:00:00'), (7, 1, 6, '11:00:00', '16:00:00'),
   (8, 2, 0, '11:00:00', '16:00:00'), (9, 2, 1, '09:00:00', '21:00:00'), (10, 2, 2, '09:00:00', '21:00:00'),
@@ -443,31 +443,31 @@ UNLOCK TABLES;
 -- Table structure for table `rooms`
 --
 
-DROP TABLE IF EXISTS `rooms`;
+DROP TABLE IF EXISTS ` rooms `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `rooms` (
-  `roomid`          INT(11)      NOT NULL AUTO_INCREMENT,
-  `roomname`        VARCHAR(255) NOT NULL,
-  `roomposition`    INT(11)      NOT NULL,
-  `roomcapacity`    INT(11)      NOT NULL,
-  `roomgroupid`     BIGINT(20)   NOT NULL,
-  `roomdescription` LONGTEXT     NOT NULL,
-  PRIMARY KEY (`roomid`)
+`roomid` INT (11) NOT NULL AUTO_INCREMENT,
+`roomname` VARCHAR (255) NOT NULL,
+`roomposition` INT (11) NOT NULL,
+`roomcapacity` INT (11) NOT NULL,
+`roomgroupid` BIGINT (20) NOT NULL,
+`roomdescription` LONGTEXT NOT NULL,
+PRIMARY KEY (`roomid`)
 )
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 8
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `rooms`
 --
 
-LOCK TABLES `rooms` WRITE;
+LOCK TABLES `rooms ` WRITE;
 /*!40000 ALTER TABLE `rooms`
   DISABLE KEYS */;
-INSERT INTO `rooms`
+INSERT INTO ` rooms `
 VALUES (1, '445', 0, 8, 1, 'Room 445'), (2, '446', 1, 8, 1, 'Room 446'), (3, '503', 2, 8, 1, 'Room 503'),
   (4, '541', 3, 8, 1, 'Room 541'), (5, '1', 0, 8, 2, 'MediaScape Room 1'), (6, '2', 1, 8, 2, 'MediaScape Room 2'),
   (7, '3', 2, 8, 2, 'MediaScape Room 3');
@@ -479,51 +479,51 @@ UNLOCK TABLES;
 -- Table structure for table `roomspecialhours`
 --
 
-DROP TABLE IF EXISTS `roomspecialhours`;
+DROP TABLE IF EXISTS ` roomspecialhours `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roomspecialhours` (
-  `roomspecialhoursid` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `roomid`             INT(11)    NOT NULL,
-  `fromrange`          TIMESTAMP  NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `torange`            TIMESTAMP  NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `start`              TIME       NOT NULL,
-  `end`                TIME       NOT NULL,
-  PRIMARY KEY (`roomspecialhoursid`)
+`roomspecialhoursid` BIGINT (20) NOT NULL AUTO_INCREMENT,
+`roomid` INT (11) NOT NULL,
+`fromrange` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+`torange` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+` START ` TIME NOT NULL,
+` END ` TIME NOT NULL,
+PRIMARY KEY (`roomspecialhoursid`)
 )
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 22
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+AUTO_INCREMENT = 22
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `roomspecialhours`
 --
 
-LOCK TABLES `roomspecialhours` WRITE;
+LOCK TABLES `roomspecialhours ` WRITE;
 /*!40000 ALTER TABLE `roomspecialhours`
   DISABLE KEYS */;
-INSERT INTO `roomspecialhours` VALUES (1, 1, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
-  (2, 2, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
-  (3, 3, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
-  (4, 4, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
-  (5, 5, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
-  (6, 6, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
-  (7, 7, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
-  (8, 1, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
-  (9, 2, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
-  (10, 3, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
-  (11, 4, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
-  (12, 5, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
-  (13, 6, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
-  (14, 7, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
-  (15, 1, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
-  (16, 2, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
-  (17, 3, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
-  (18, 4, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
-  (19, 5, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
-  (20, 6, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
-  (21, 7, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00');
+INSERT INTO ` roomspecialhours` VALUES (1, 1, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
+(2, 2, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
+(3, 3, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
+(4, 4, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
+(5, 5, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
+(6, 6, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
+(7, 7, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '00:00:00', '00:00:00'),
+(8, 1, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
+(9, 2, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
+(10, 3, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
+(11, 4, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
+(12, 5, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
+(13, 6, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
+(14, 7, '2016-11-24 05:00:00', '2016-11-27 05:00:00', '00:00:00', '00:00:00'),
+(15, 1, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
+(16, 2, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
+(17, 3, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
+(18, 4, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
+(19, 5, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
+(20, 6, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00'),
+(21, 7, '2016-12-23 05:00:00', '2016-12-26 05:00:00', '00:00:00', '00:00:00');
 /*!40000 ALTER TABLE `roomspecialhours`
   ENABLE KEYS */;
 UNLOCK TABLES;
@@ -532,42 +532,42 @@ UNLOCK TABLES;
 -- Table structure for table `settings`
 --
 
-DROP TABLE IF EXISTS `settings`;
+DROP TABLE IF EXISTS ` settings `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `settings` (
-  `settingname`  VARCHAR(255) NOT NULL,
-  `settingvalue` LONGTEXT     NOT NULL,
-  PRIMARY KEY (`settingname`)
+`settingname` VARCHAR (255) NOT NULL,
+`settingvalue` LONGTEXT NOT NULL,
+PRIMARY KEY (`settingname`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `settings`
 --
 
-LOCK TABLES `settings` WRITE;
+LOCK TABLES `settings ` WRITE;
 /*!40000 ALTER TABLE `settings`
   DISABLE KEYS */;
-INSERT INTO `settings` VALUES ('allow_past_reservations', 'false'), ('allow_simultaneous_reservations', 'false'),
-  ('email_can_gef', 'a:1:{i:0;s:0:\"\";}'), ('email_can_terse', 'a:1:{i:0;s:0:\"\";}'),
-  ('email_can_verbose', 'a:1:{i:0;s:0:\"\";}'), ('email_condition', ''), ('email_condition_value', ''),
-  ('email_cond_gef', 'a:1:{i:0;s:0:\"\";}'), ('email_cond_terse', 'a:1:{i:0;s:0:\"\";}'),
-  ('email_cond_verbose', 'a:1:{i:0;s:0:\"\";}'),
-  ('email_filter', 'a:2:{i:0;s:11:\"qc.cuny.edu\";i:1;s:14:\"qmail.cuny.edu\";}'),
-  ('email_res_gef', 'a:1:{i:0;s:0:\"\";}'), ('email_res_terse', 'a:1:{i:0;s:0:\"\";}'),
-  ('email_res_verbose', 'a:1:{i:0;s:0:\"\";}'), ('email_system', 'khada@qc.cuny.edu'), ('endtime', '21'),
-  ('https', 'false'), ('instance_name', 'Rosenthal Room Reservations'),
-  ('instance_url', 'library-test.qc.cuny.edu/or/'), ('interval', '30'), ('ldap_baseDN', 'ldap://149.4.100.201:3268'),
-  ('ldap_host', 'DC=qc,DC=ads'), ('limit_duration', '240'), ('limit_frequency', 'a:2:{i:0;s:1:\"0\";i:1;s:3:\"day\";}'),
-  ('limit_openingday', ''), ('limit_total', 'a:2:{i:0;s:3:\"240\";i:1;s:3:\"day\";}'),
-  ('limit_window', 'a:2:{i:0;s:3:\"180\";i:1;s:3:\"day\";}'), ('login_method', 'ldap'),
-  ('policies', 'Rosenthal Library usually has several rooms available to students for group study on a first-come, first-serve basis. These rooms are available to currently registered Queens College students only.\r\n\r\nImmediate use of a Group Study Room is made by presenting your valid Queens College ID at the Circulation Desk (located on Level 3 of the Library). If available, a room will be assigned to you for one 2-hour time block. If the room is in use a hold may be placed to secure the next available time slot. Room use, like book use, is assigned to your record in our automated circulation system. When a room is assigned to you, you will be handed a wooden block upon which the room number and policies governing Group Study Rooms is adhered. Upon completing your use of the room, the wooden block is to be returned to the Circulation Desk and the assignment of the room to your record will be released.\r\n\r\nShould you wish to extend the use of the room you are required to return to the Circulation desk with your ID and the wooden block at the end of the 2 hours. The room will then be reassigned to you provided there are no other users awaiting use of the room.'),
-  ('remindermessage', 'The Library will be CLOSED, Monday, January 16. :D'), ('service_password', 'service_password'),
-  ('service_username', 'library2sa'), ('starttime', '3'), ('systemid', '80zhh73n5'), ('theme', 'rosenthal'),
-  ('time_format', 'g:i a');
+INSERT INTO ` settings` VALUES ('allow_past_reservations', 'false'), ('allow_simultaneous_reservations', 'false'),
+('email_can_gef', 'a:1:{i:0;s:0:\"\";}'), ('email_can_terse', 'a:1:{i:0;s:0:\"\";}'),
+('email_can_verbose', 'a:1:{i:0;s:0:\"\";}'), ('email_condition', ''), ('email_condition_value', ''),
+('email_cond_gef', 'a:1:{i:0;s:0:\"\";}'), ('email_cond_terse', 'a:1:{i:0;s:0:\"\";}'),
+('email_cond_verbose', 'a:1:{i:0;s:0:\"\";}'),
+('email_filter', 'a:2:{i:0;s:11:\"qc.cuny.edu\";i:1;s:14:\"qmail.cuny.edu\";}'),
+('email_res_gef', 'a:1:{i:0;s:0:\"\";}'), ('email_res_terse', 'a:1:{i:0;s:0:\"\";}'),
+('email_res_verbose', 'a:1:{i:0;s:0:\"\";}'), ('email_system', 'khada@qc.cuny.edu'), ('endtime', '21'),
+('https', 'false'), ('instance_name', 'Rosenthal Room Reservations'),
+('instance_url', 'library-test.qc.cuny.edu/or/'), ('interval', '30'), ('ldap_baseDN', 'ldap://149.4.100.201:3268'),
+('ldap_host', 'DC=qc,DC=ads'), ('limit_duration', '240'), ('limit_frequency', 'a:2:{i:0;s:1:\"0\";i:1;s:3:\"day\";}'),
+('limit_openingday', ''), ('limit_total', 'a:2:{i:0;s:3:\"240\";i:1;s:3:\"day\";}'),
+('limit_window', 'a:2:{i:0;s:3:\"180\";i:1;s:3:\"day\";}'), ('login_method', 'ldap'),
+('policies', 'Rosenthal Library usually has several rooms available to students for group study on a first-come, first-serve basis. These rooms are available to currently registered Queens College students only.\r\n\r\nImmediate use of a Group Study Room is made by presenting your valid Queens College ID at the Circulation Desk (located on Level 3 of the Library). If available, a room will be assigned to you for one 2-hour time block. If the room is in use a hold may be placed to secure the next available time slot. Room use, like book use, is assigned to your record in our automated circulation system. When a room is assigned to you, you will be handed a wooden block upon which the room number and policies governing Group Study Rooms is adhered. Upon completing your use of the room, the wooden block is to be returned to the Circulation Desk and the assignment of the room to your record will be released.\r\n\r\nShould you wish to extend the use of the room you are required to return to the Circulation desk with your ID and the wooden block at the end of the 2 hours. The room will then be reassigned to you provided there are no other users awaiting use of the room.'),
+('remindermessage', 'The Library will be CLOSED, Monday, January 16. :D'), ('service_password', 'service_password'),
+('service_username', 'library2sa'), ('starttime', '3'), ('systemid', '80zhh73n5'), ('theme', 'rosenthal'),
+('time_format', 'g:i a');
 /*!40000 ALTER TABLE `settings`
   ENABLE KEYS */;
 UNLOCK TABLES;
@@ -576,26 +576,26 @@ UNLOCK TABLES;
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS ` users `;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `username`  VARCHAR(255) NOT NULL,
-  `password`  VARCHAR(255) NOT NULL,
-  `email`     VARCHAR(255) NOT NULL,
-  `lastlogin` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `active`    VARCHAR(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`username`)
+`username` VARCHAR (255) NOT NULL,
+` PASSWORD ` VARCHAR (255) NOT NULL,
+`email` VARCHAR (255) NOT NULL,
+`lastlogin` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+`active` VARCHAR (255) NOT NULL DEFAULT '0',
+PRIMARY KEY (`username`)
 )
-  ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+ENGINE = InnoDB
+DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `users`
 --
 
-LOCK TABLES `users` WRITE;
+LOCK TABLES `users ` WRITE;
 /*!40000 ALTER TABLE `users`
   DISABLE KEYS */;
 /*!40000 ALTER TABLE `users`

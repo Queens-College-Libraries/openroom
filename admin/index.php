@@ -134,7 +134,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                                 $eyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY start ASC;"));
                                 $eyear = date("Y", strtotime($eyear["start"]));
                                 //Get latest year of reservations
-                                $lyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY end DESC;"));
+                                $lyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY END DESC;"));
                                 $lyear = date("Y", strtotime($lyear["end"]));
                                 while ($eyear <= $lyear) {
                                     echo "<option value=\"" . $eyear . "\">" . $eyear . "</option>";
@@ -162,7 +162,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                                 $eyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY start ASC;"));
                                 $eyear = date("Y", strtotime($eyear["start"]));
                                 //Get latest year of reservations
-                                $lyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY end DESC;"));
+                                $lyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY END DESC;"));
                                 $lyear = date("Y", strtotime($lyear["end"]));
                                 while ($eyear <= $lyear) {
                                     echo "<option value=\"" . $eyear . "\">" . $eyear . "</option>";
@@ -224,7 +224,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                                 $eyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY start ASC;"));
                                 $eyear = date("Y", strtotime($eyear["start"]));
                                 //Get latest year of reservations
-                                $lyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY end DESC;"));
+                                $lyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY END DESC;"));
                                 $lyear = date("Y", strtotime($lyear["end"]));
                                 while ($eyear <= $lyear) {
                                     echo "<option value=\"" . $eyear . "\">" . $eyear . "</option>";
@@ -252,7 +252,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                                 $eyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY start ASC;"));
                                 $eyear = date("Y", strtotime($eyear["start"]));
                                 //Get latest year of reservations
-                                $lyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY end DESC;"));
+                                $lyear = mysql_fetch_array(mysql_query("SELECT * FROM reservations ORDER BY END DESC;"));
                                 $lyear = date("Y", strtotime($lyear["end"]));
                                 while ($eyear <= $lyear) {
                                     echo "<option value=\"" . $eyear . "\">" . $eyear . "</option>";

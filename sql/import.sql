@@ -12,8 +12,7 @@ CREATE TABLE Users (
   is_banned        BOOLEAN                     NOT NULL DEFAULT FALSE
 );
 
-INSERT INTO Users (username, password, email, is_active)
-VALUES ('admin', '$2b$12$bVGt6HWAxldbT4f2krB02uPQJTv6vWlWZjVH33.JdbP6ToA4THt2W', 'kushaldeveloper@gmail.com', TRUE);
+INSERT INTO Users (username, password, email, is_active) VALUES ('admin', '$2b$12$bVGt6HWAxldbT4f2krB02uPQJTv6vWlWZjVH33.JdbP6ToA4THt2W', 'kushaldeveloper@gmail.com', TRUE);
 
 UPDATE users
 SET is_administrator = TRUE

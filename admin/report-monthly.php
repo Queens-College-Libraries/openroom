@@ -110,7 +110,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 //For each room find this day's totals
                 $rowtotal = 0;
                 foreach ($roomname_array as $key => $roomid) {
-                    $rescount = mysql_num_rows(mysql_query("SELECT reservationid, UNIX_TIMESTAMP(start), UNIX_TIMESTAMP(end), roomid, username, timeofrequest FROM reservations WHERE (UNIX_TIMESTAMP(start) >= " . $fromstamp . " AND UNIX_TIMESTAMP(start) < " . strtotime("+1 month", $fromstamp) . ") AND roomid=" . $roomid_array[$key] . $orderbystr . ";"));
+                    $rescount = mysql_num_rows(mysql_query("SELECT reservationid, UNIX_TIMESTAMP(start), UNIX_TIMESTAMP(END), roomid, username, timeofrequest FROM reservations WHERE (UNIX_TIMESTAMP(start) >= " . $fromstamp . " AND UNIX_TIMESTAMP(start) < " . strtotime("+1 month", $fromstamp) . ") AND roomid=" . $roomid_array[$key] . $orderbystr . ";"));
                     echo "<td>" . $rescount . "</td>";
                     $totals_array[$key] += $rescount;
                     $rowtotal += $rescount;

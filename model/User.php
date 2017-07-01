@@ -39,12 +39,6 @@ class User
         return $users;
     }
 
-    public static function fetchCount(\PDO $db): int
-    {
-        return $db->query('select count(*) from Users')->fetchColumn();
-    }
-
-
     public function setIsBanned($input)
     {
         $this->isBanned = $input;
@@ -69,49 +63,15 @@ class User
         return $this;
     }
 
-    public function setLastLogin($input)
-    {
-        $this->lastlogin = $input;
-        return $this;
-    }
-
-    public function setEmail($input)
-    {
-        $this->email = $input;
-        return $this;
-    }
-
-    public function setPassword($input)
-    {
-        $this->password = password_hash($input, PASSWORD_DEFAULT);
-        return $this;
-    }
-
-    public function setDisplayName($input)
-    {
-        if ($input != null) {
-            $this->displayName = $input;
-        } else {
-            $this->displayName = $this->getUsername();
-        }
-        return $this;
-    }
-
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    public function setUsername($input)
-    {
-        $this->username = $input;
-        return $this;
-    }
-
     public static function create()
     {
         $instance = new self();
         return $instance;
+    }
+
+    public static function fetchCount(\PDO $db): int
+    {
+        return $db->query('SELECT count(*) FROM Users')->fetchColumn();
     }
 
     public static function fetchByUsername(\PDO $db, $username)
@@ -139,9 +99,30 @@ class User
         $req->execute();
     }
 
-    public function getEmail()
+    public static function addUser(\PDO $db, \model\User $user)
     {
-        return $this->email;
+        $username = $user->getUsername();
+        $displayname = $user->getDisplayName();
+        $password = $user->getPassword();
+        $email = $user->getEmail();
+        $req = $db->prepare('INSERT INTO users (username, display_name, password, email) VALUES (:username, :display_name, :password, :email)');
+        $req->bindParam(':username', $username, \PDO::PARAM_STR, 255);
+        $req->bindParam(':display_name', $displayname, \PDO::PARAM_STR, 255);
+        $req->bindParam(':password', $password, \PDO::PARAM_STR, 255);
+        $req->bindParam(':email', $email, \PDO::PARAM_STR, 255);
+        $req->execute();
+        $req = null;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function setUsername($input)
+    {
+        $this->username = $input;
+        return $this;
     }
 
     public function getDisplayName()
@@ -149,15 +130,50 @@ class User
         return $this->displayName;
     }
 
+    public function setDisplayName($input)
+    {
+        if ($input != null) {
+            $this->displayName = $input;
+        } else {
+            $this->displayName = $this->getUsername();
+        }
+        return $this;
+    }
+
     public function getPassword()
     {
         return $this->password;
+    }
+
+    public function setPassword($input)
+    {
+        $this->password = password_hash($input, PASSWORD_DEFAULT);
+        return $this;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setEmail($input)
+    {
+        $this->email = $input;
+        return $this;
     }
 
     public function getLastLogin()
     {
         return $this->lastLogin;
     }
+
+    public function setLastLogin($input)
+    {
+        $this->lastlogin = $input;
+        return $this;
+    }
+
+    // INSERT INTO users (username, display_name, password, email) VALUES ('kushal', 'kushal', '$2b$12$bVGt6HWAxldbT4f2krB02uPQJTv6vWlWZjVH33.JdbP6ToA4THt2W', 'khada@qc.cuny.edu')
 
     function fetchByEmail(\PDO $db, $email)
     {
@@ -174,23 +190,6 @@ class User
             ->setIsAdministrator($user['is_administrator'])
             ->setIsReporter($user['is_reporter'])
             ->setIsBanned($user['is_banned']);
-    }
-
-    // INSERT INTO users (username, display_name, password, email) VALUES ('kushal', 'kushal', '$2b$12$bVGt6HWAxldbT4f2krB02uPQJTv6vWlWZjVH33.JdbP6ToA4THt2W', 'khada@qc.cuny.edu')
-
-    public static function addUser(\PDO $db, \model\User $user)
-    {
-        $username = $user->getUsername();
-        $displayname = $user->getDisplayName();
-        $password = $user->getPassword();
-        $email = $user->getEmail();
-        $req = $db->prepare('INSERT INTO users (username, display_name, password, email) VALUES (:username, :display_name, :password, :email)');
-        $req->bindParam(':username', $username, \PDO::PARAM_STR, 255);
-        $req->bindParam(':display_name', $displayname, \PDO::PARAM_STR, 255);
-        $req->bindParam(':password', $password, \PDO::PARAM_STR, 255);
-        $req->bindParam(':email', $email, \PDO::PARAM_STR, 255);
-        $req->execute();
-        $req = null;
     }
 
     public function verifyPassword($input)

@@ -8,11 +8,11 @@ Immediate use of a Group Study Room is made by presenting your valid Queens Coll
 Should you wish to extend the use of the room you are required to return to the Circulation desk with your ID and the wooden block at the end of the 2 hours. The room will then be reassigned to you provided there are no other users awaiting use of the room.';
 $my_connection = \model\Db::getInstance();
 model\Setting::update($my_connection, 'policies', $newPolicy);
-echo preg_replace('/\v+|\\\r\\\n/','<br/>',model\Setting::fetchValue(\model\Db::getInstance(), 'policies'));
+echo preg_replace('/\v+|\\\r\\\n/', '<br/>', model\Setting::fetchValue(\model\Db::getInstance(), 'policies'));
 
 echo '<br /><p>Now we shall create a new random user.</p>';
 $username = generateRandomString(96);
-$kus = \model\User::create()->setUsername($username)->setDisplayName(generateRandomString(24))->setPassword('hunter2')->setEmail(generateRandomString(16).'@' . generateRandomString(8) . '.' . generateRandomString(3));
+$kus = \model\User::create()->setUsername($username)->setDisplayName(generateRandomString(24))->setPassword('hunter2')->setEmail(generateRandomString(16) . '@' . generateRandomString(8) . '.' . generateRandomString(3));
 model\User::addUser($my_connection, $kus);
 $users = model\User::fetchCount($my_connection);
 $this_user = model\User::fetchByUsername($my_connection, $username);
@@ -27,7 +27,8 @@ highlight_string("<?php\n\$thisUser =\n" . var_export($this_user, true) . ";\n?>
 
 $my_connection = null;
 
-function generateRandomString($length = 10) {
+function generateRandomString($length = 10)
+{
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
