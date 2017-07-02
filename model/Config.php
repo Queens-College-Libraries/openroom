@@ -23,4 +23,4 @@ Config::write('db.host', $db["host"]);
 Config::write('db.port', $db["port"]);
 Config::write('db.basename', $db["path"]);
 Config::write('db.user', $db["user"]);
-Config::write('db.password', $db["pass"]);
+echo('pgsql:' . 'host=' . Config::read('db.host') . ';' . 'port=' . Config::read('db.port') . ';' . 'dbname=' . Config::read('db.basename'));
