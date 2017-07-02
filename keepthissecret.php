@@ -7,7 +7,7 @@
  */
 
 $db = getenv('DATABASE_URL');
-highlight_string("<?php\n\$data =\n" . var_export($kus, true) . ";\n?>");
+highlight_string("<?php\n\$data =\n" . var_export($db, true) . ";\n?>");
 
 //$db = \model\Db::getInstance();
 //$tableName = 'duck';
