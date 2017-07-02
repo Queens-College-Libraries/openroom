@@ -47,10 +47,12 @@ class Db
             ];
             if (getenv('DATABASE_URL') != ""){
                 $dsn = Db::getHerokuUrl();
+                self::$instance = new \PDO($dsn);
             } else {
                 $dsn = Db::getConfigUrl();
+                self::$instance = new \PDO($dsn, $options);
             }
-            self::$instance = new \PDO($dsn, $options);
+
         }
         return self::$instance;
     }
