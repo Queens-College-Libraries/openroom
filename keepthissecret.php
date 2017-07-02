@@ -7,13 +7,41 @@
  */
 
 require_once 'vendor/autoload.php';
+echo '<br />';
+echo 'host';
+echo '<br />';
+echo \model\Config::read('db.host');
 
-echo \model\Config::read('db.host');
+echo '<hr>';
+
+echo '<br />';
+echo 'port';
+echo '<br />';
 echo \model\Config::read('db.port');
+
+
+echo '<hr>';
+
+echo '<br />';
+echo 'path';
+echo '<br />';
 echo \model\Config::read('db.path');
+
+echo '<hr>';
+
+echo 'user';
+echo '<br />';
 echo \model\Config::read('db.user');
+
+echo '<hr>';
+
+echo '<br />';
+echo '<br />';
 echo \model\Config::read('db.pass');
-echo \model\Config::read('db.host');
+
+echo '<hr>';
+
+echo '<br />';
 
 //$db = \model\Db::getInstance();
 //$tableName = 'duck';
