@@ -6,42 +6,8 @@
  * Time: 1:58 PM
  */
 
-require_once 'vendor/autoload.php';
-echo '<br />';
-echo 'host';
-echo '<br />';
-echo \model\Config::read('db.host');
-
-echo '<hr>';
-
-echo '<br />';
-echo 'port';
-echo '<br />';
-echo \model\Config::read('db.port');
-
-
-echo '<hr>';
-
-echo '<br />';
-echo 'path';
-echo '<br />';
-echo \model\Config::read('db.path');
-
-echo '<hr>';
-
-echo 'user';
-echo '<br />';
-echo \model\Config::read('db.user');
-
-echo '<hr>';
-
-echo '<br />';
-echo '<br />';
-echo \model\Config::read('db.pass');
-
-echo '<hr>';
-
-echo '<br />';
+$db = getenv('DATABASE_URL');
+highlight_string("<?php\n\$data =\n" . var_export($kus, true) . ";\n?>");
 
 //$db = \model\Db::getInstance();
 //$tableName = 'duck';
