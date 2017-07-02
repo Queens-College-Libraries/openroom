@@ -4,4 +4,5 @@ examples
 sql
 Tests
 model/Config.php
+model/Db.php
 excludeme.txt
