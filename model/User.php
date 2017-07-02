@@ -147,8 +147,13 @@ class User
 
     public function setPassword($input)
     {
-        $this->password = password_hash($input, PASSWORD_DEFAULT);
+        $this->password = $input;
         return $this;
+    }
+
+    public static function hashPassword($input)
+    {
+        return password_hash($input, PASSWORD_DEFAULT);
     }
 
     public function getEmail()

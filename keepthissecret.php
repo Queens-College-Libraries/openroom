@@ -15,8 +15,6 @@ $populateTableDuck = "INSERT INTO {$tableName} (username, password, email, is_ac
 dropTable($db, $tableName);
 executeStatement($db, $createTableDuck);
 executeStatement($db, $populateTableDuck);
-$ducks = fetchAllUsers($db);
-highlight_string("<?php\n\$data =\n" . var_export($ducks, true) . ";\n?>");
 
 function dropTable(\PDO $db, string $tableName)
 {
@@ -35,25 +33,4 @@ function executeStatement(\PDO $db, string $statement)
         echo $e->getMessage();
         die();
     }
-}
-
-function fetchAllUsers(\PDO $db): array
-{
-    $req = $db->prepare('SELECT username, display_name, password, email, last_login, is_active, is_administrator, is_reporter, is_banned FROM duck');
-    $req->execute();
-    $users = array();
-    foreach ($req->fetchAll() as $user) {
-        array_push($users, \model\User::create()
-            ->setUsername($user['username'])
-            ->setDisplayName($user['display_name'])
-            ->setPassword($user['password'])
-            ->setEmail($user['email'])
-            ->setLastLogin($user['last_login'])
-            ->setIsActive($user['is_active'])
-            ->setIsAdministrator($user['is_administrator'])
-            ->setIsReporter($user['is_reporter'])
-            ->setIsBanned($user['is_banned']));
-    }
-    $req->closeCursor();
-    return $users;
 }

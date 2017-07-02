@@ -12,13 +12,23 @@ echo preg_replace('/\v+|\\\r\\\n/', '<br/>', model\Setting::fetchValue(\model\Db
 
 echo '<br /><p>Now we shall create a new random user.</p>';
 $username = generateRandomString(96);
-$kus = \model\User::create()->setUsername($username)->setDisplayName(generateRandomString(24))->setPassword('hunter2')->setEmail(generateRandomString(16) . '@' . generateRandomString(8) . '.' . generateRandomString(3));
+echo '<br />';
+$kus = \model\User::create()
+    ->setUsername($username)
+    ->setDisplayName(generateRandomString(24))
+    ->setPassword(\model\User::hashPassword('hunter2'))
+    ->setEmail(generateRandomString(16) . '@' . generateRandomString(8) . '.' . generateRandomString(3));
 model\User::addUser($my_connection, $kus);
 $users = model\User::fetchCount($my_connection);
-$this_user = model\User::fetchByUsername($my_connection, $username);
 highlight_string("<?php\n\$data =\n" . var_export($kus, true) . ";\n?>");
 
-echo '<br /> The number of users is ' . $users;
+echo '<br />';
+
+echo 'The number of users is ' . $users;
+
+echo '<br />';
+
+$this_user = model\User::fetchByUsername($my_connection, $username);
 
 echo '<br />';
 
