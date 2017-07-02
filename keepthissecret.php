@@ -8,12 +8,23 @@
 require_once 'vendor/autoload.php';
 
 $db = \model\Db::getInstance();
-$tableName = 'duck';
-$createTableDuck = "create table {$tableName} (id SERIAL PRIMARY KEY,username TEXT NOT NULL UNIQUE, display_name TEXT, password TEXT NOT NULL,email TEXT NOT NULL, last_login TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now()), is_active BOOLEAN NOT NULL DEFAULT FALSE, is_administrator BOOLEAN NOT NULL DEFAULT FALSE, is_reporter BOOLEAN NOT NULL DEFAULT FALSE, is_banned BOOLEAN NOT NULL DEFAULT FALSE)";
-$populateTableDuck = "INSERT INTO {$tableName} (username, password, email, is_active) VALUES ('admin', 'hunter2', 'kushaldeveloper@gmail.com', TRUE)";
-dropTable($db, $tableName);
-executeStatement($db, $createTableDuck);
-executeStatement($db, $populateTableDuck);
+
+doIt($db);
+
+function doIt(\PDO $db)
+{
+    dropAndCreateDuck($db);
+}
+
+function dropAndCreateDuck(\PDO $db)
+{
+    $tableName = 'duck';
+    $createTableDuck = "create table {$tableName} (id SERIAL PRIMARY KEY,username TEXT NOT NULL UNIQUE)";
+    $populateTableDuck = "INSERT INTO {$tableName} (username) VALUES ('admin')";
+    dropTable($db, $tableName);
+    executeStatement($db, $createTableDuck);
+    executeStatement($db, $populateTableDuck);
+}
 
 function dropTable(\PDO $db, string $tableName)
 {
