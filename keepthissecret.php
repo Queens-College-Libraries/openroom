@@ -15,6 +15,7 @@ function doIt(\PDO $db)
 {
     dropAndCreateDuck($db);
     dropAndCreateUsers($db);
+    dropAndCreateSettings($db);
 }
 
 function dropAndCreateDuck(\PDO $db)
@@ -43,6 +44,37 @@ function dropAndCreateUsers(\PDO $db)
   is_banned        BOOLEAN                     NOT NULL DEFAULT FALSE
 );";
     $populateTable = "INSERT INTO Users (username, password, email, is_active) VALUES ('admin', 'hunter2', 'hikingfan@gmail.com', TRUE);";
+    dropTable($db, $tableName);
+    executeStatement($db, $createTable);
+    executeStatement($db, $populateTable);
+}
+
+function dropAndCreateSettings(\PDO $db)
+{
+    $tableName = 'settings';
+    $createTable = "CREATE TABLE Settings (
+  id    SERIAL PRIMARY KEY,
+  name  TEXT UNIQUE,
+  value TEXT
+);";
+    $populateTable = "INSERT INTO Settings (name, value) VALUES 
+('login_method', 'normal'),
+('systemid', '80zhh73n5'),
+('theme', 'default'),
+('policies', 'Rosenthal Library usually has several rooms available to students for group study on a ' ||
+               'first-come, first-serve basis. These rooms are available to currently registered Queens College ' ||
+               'students only.\r\n\r\nImmediate use of a Group Study Room is made by presenting your valid Queens ' ||
+               'College ID at the Circulation Desk (located on Level 3 of the Library). If available, a room will ' ||
+               'be assigned to you for one 2-hour time block. If the room is in use a hold may be placed to secure ' ||
+               'the next available time slot. Room use, like book use, is assigned to your record in our automated ' ||
+               'circulation system. When a room is assigned to you, you will be handed a wooden block upon which ' ||
+               'the room number and policies governing Group Study Rooms is adhered. Upon completing your use of ' ||
+               'the room, the wooden block is to be returned to the Circulation Desk and the assignment of the room ' ||
+               'to your record will be released.\r\n\r\nShould you wish to extend the use of the room you are ' ||
+               'required to return to the Circulation desk with your ID and the wooden block at the end of the 2 ' ||
+               'hours. The room will then be reassigned to you provided there are no other users awaiting use of ' ||
+               'the room.'),
+('time_format', 'g:i a');";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
     executeStatement($db, $populateTable);
