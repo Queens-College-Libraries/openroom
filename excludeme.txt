@@ -4,6 +4,5 @@ examples
 sql
 Tests
 model/Config.php
-model/Db.php
-keepthissecret.php
 excludeme.txt
+ktest.php

@@ -20,11 +20,12 @@ class User
 
     public static function fetchAll(\PDO $db): array
     {
-        $req = $db->prepare('SELECT username, display_name, password, email, last_login, is_active, is_administrator, is_reporter, is_banned FROM users');
+        $req = $db->prepare('SELECT id, username, display_name, password, email, last_login, is_active, is_administrator, is_reporter, is_banned FROM users');
         $req->execute();
         $users = array();
         foreach ($req->fetchAll() as $user) {
             array_push($users, User::create()
+                ->setId($user['id'])
                 ->setUsername($user['username'])
                 ->setDisplayName($user['display_name'])
                 ->setPassword($user['password'])
@@ -37,6 +38,12 @@ class User
         }
         $req->closeCursor();
         return $users;
+    }
+
+    public function setId($input)
+    {
+        $this->id = $input;
+        return $this;
     }
 
     public function setIsBanned($input)
@@ -77,10 +84,11 @@ class User
     public static function fetchByUsername(\PDO $db, $username)
     {
         echo $username;
-        $req = $db->prepare('SELECT username, display_name, password, email, last_login, is_active, is_administrator, is_reporter, is_banned FROM users WHERE username = :username');
+        $req = $db->prepare('SELECT id, username, display_name, password, email, last_login, is_active, is_administrator, is_reporter, is_banned FROM users WHERE username = :username');
         $req->execute(array('username' => $username));
         $user = $req->fetch();
         return User::create()
+            ->setId($user['id'])
             ->setUsername($user['username'])
             ->setDisplayName($user['display_name'])
             ->setPassword($user['password'])

@@ -34,6 +34,14 @@ echo '<br />';
 
 highlight_string("<?php\n\$thisUser =\n" . var_export($this_user, true) . ";\n?>");
 
+echo '<br />';
+
+$all_users = model\User::fetchAll($my_connection);
+
+echo '<br />';
+
+highlight_string("<?php\n\$thisUser =\n" . var_export($all_users, true) . ";\n?>");
+
 
 $my_connection = null;
 

@@ -14,21 +14,43 @@ doIt($db);
 function doIt(\PDO $db)
 {
     dropAndCreateDuck($db);
+    dropAndCreateUsers($db);
 }
 
 function dropAndCreateDuck(\PDO $db)
 {
     $tableName = 'duck';
-    $createTableDuck = "create table {$tableName} (id SERIAL PRIMARY KEY,username TEXT NOT NULL UNIQUE)";
-    $populateTableDuck = "INSERT INTO {$tableName} (username) VALUES ('admin')";
+    $createTable = "create table {$tableName} (id SERIAL PRIMARY KEY,username TEXT NOT NULL UNIQUE)";
+    $populateTable = "INSERT INTO {$tableName} (username) VALUES ('admin')";
     dropTable($db, $tableName);
-    executeStatement($db, $createTableDuck);
-    executeStatement($db, $populateTableDuck);
+    executeStatement($db, $createTable);
+    executeStatement($db, $populateTable);
+}
+
+function dropAndCreateUsers(\PDO $db)
+{
+    $tableName = 'users';
+    $createTable = "CREATE TABLE Users (
+  id               SERIAL PRIMARY KEY,
+  username         TEXT                        NOT NULL UNIQUE,
+  display_name     TEXT,
+  password         TEXT                        NOT NULL,
+  email            TEXT                        NOT NULL,
+  last_login       TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now()),
+  is_active        BOOLEAN                     NOT NULL DEFAULT FALSE,
+  is_administrator BOOLEAN                     NOT NULL DEFAULT FALSE,
+  is_reporter      BOOLEAN                     NOT NULL DEFAULT FALSE,
+  is_banned        BOOLEAN                     NOT NULL DEFAULT FALSE
+);";
+    $populateTable = "INSERT INTO Users (username, password, email, is_active) VALUES ('admin', 'hunter2', 'hikingfan@gmail.com', TRUE);";
+    dropTable($db, $tableName);
+    executeStatement($db, $createTable);
+    executeStatement($db, $populateTable);
 }
 
 function dropTable(\PDO $db, string $tableName)
 {
-    $statement = "DROP TABLE IF EXISTS {$tableName}";
+    $statement = "DROP TABLE IF EXISTS {$tableName} CASCADE";
     executeStatement($db, $statement);
 }
 

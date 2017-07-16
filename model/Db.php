@@ -50,7 +50,7 @@ class Db
                 self::$instance = new \PDO($dsn);
             } else {
                 $dsn = Db::getConfigUrl();
-                self::$instance = new \PDO($dsn, $options);
+                self::$instance = new \PDO($dsn);
             }
 
         }
