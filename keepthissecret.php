@@ -16,6 +16,8 @@ function doIt(\PDO $db)
     dropAndCreateDuck($db);
     dropAndCreateUsers($db);
     dropAndCreateSettings($db);
+    dropAndCreateGroups($db);
+    dropAndCreateRooms($db);
 }
 
 function dropAndCreateDuck(\PDO $db)
@@ -75,6 +77,34 @@ function dropAndCreateSettings(\PDO $db)
                'hours. The room will then be reassigned to you provided there are no other users awaiting use of ' ||
                'the room.'),
 ('time_format', 'g:i a');";
+    dropTable($db, $tableName);
+    executeStatement($db, $createTable);
+    executeStatement($db, $populateTable);
+}
+
+function dropAndCreateGroups(\PDO $db)
+{
+    $tableName = 'groups';
+    $createTable = "create table {$tableName}   id   SERIAL PRIMARY KEY, name TEXT NOT NULL)";
+    $populateTable = "INSERT INTO {$tableName} (name) VALUES ('apple')";
+    dropTable($db, $tableName);
+    executeStatement($db, $createTable);
+    executeStatement($db, $populateTable);
+}
+
+function dropAndCreateRooms(\PDO $db)
+{
+    $tableName = 'rooms';
+    $createTable = "create table {$tableName} (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT,
+  position    INTEGER,
+  capacity    INTEGER,
+  groupid     INTEGER REFERENCES Groups (id),
+  description TEXT
+);";
+    $populateTable = "INSERT INTO {$tableName} (name, position, capacity, groupid, description)
+VALUES ('방 101', 1, 8, 9, '이것은 시험이다.')";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
     executeStatement($db, $populateTable);
