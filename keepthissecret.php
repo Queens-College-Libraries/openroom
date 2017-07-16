@@ -200,9 +200,21 @@ function dropAndCreateOptionalFields(\PDO $db)
     \"2\": \"Faculty / Staff\"
   }', 1,\"What is your Campus Affiliation?\", FALSE, TRUE
   );";
+    $populateTable2 = "INSERT INTO {$tableName}
+    (name, form_name, type, choices, position, question, is_private, is_required) VALUES
+    ('random question name', 'random question form name', 1, '{
+    \"0\": \"蘇步青\",
+    \"1\": \"復旦大學\",
+    \"2\": \"上海浦\",
+    \"3\": \"也係世界跟到新加坡同香港後面嗰世界第三大貨櫃港\",
+    \"4\": \"Cómo estás hoy?\"
+  }', 1,
+   '\"¿Cuál es su afiliación en el campus ?\"', FALSE, TRUE
+  );";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
     executeStatement($db, $populateTable);
+    executeStatement($db, $populateTable2);
 }
 
 function dropTable(\PDO $db, string $tableName)
