@@ -33,7 +33,7 @@ function dropAndCreateDuck(\PDO $db)
 function dropAndCreateUsers(\PDO $db)
 {
     $tableName = 'users';
-    $createTable = "CREATE TABLE Users (
+    $createTable = "CREATE TABLE {$tableName}  (
   id               SERIAL PRIMARY KEY,
   username         TEXT                        NOT NULL UNIQUE,
   display_name     TEXT,
@@ -45,7 +45,7 @@ function dropAndCreateUsers(\PDO $db)
   is_reporter      BOOLEAN                     NOT NULL DEFAULT FALSE,
   is_banned        BOOLEAN                     NOT NULL DEFAULT FALSE
 );";
-    $populateTable = "INSERT INTO Users (username, password, email, is_active) VALUES ('admin', 'hunter2', 'hikingfan@gmail.com', TRUE);";
+    $populateTable = "INSERT INTO {$tableName}  (username, password, email, is_active) VALUES ('admin', 'hunter2', 'hikingfan@gmail.com', TRUE);";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
     executeStatement($db, $populateTable);
@@ -54,12 +54,12 @@ function dropAndCreateUsers(\PDO $db)
 function dropAndCreateSettings(\PDO $db)
 {
     $tableName = 'settings';
-    $createTable = "CREATE TABLE Settings (
+    $createTable = "CREATE TABLE {$tableName}  (
   id    SERIAL PRIMARY KEY,
   name  TEXT UNIQUE,
   value TEXT
 );";
-    $populateTable = "INSERT INTO Settings (name, value) VALUES 
+    $populateTable = "INSERT INTO {$tableName}  (name, value) VALUES 
 ('login_method', 'normal'),
 ('systemid', '80zhh73n5'),
 ('theme', 'default'),
@@ -105,6 +105,16 @@ function dropAndCreateRooms(\PDO $db)
 );";
     $populateTable = "INSERT INTO {$tableName} (name, position, capacity, groupid, description)
 VALUES ('방 101', 1, 8, 9, '이것은 시험이다.')";
+    dropTable($db, $tableName);
+    executeStatement($db, $createTable);
+    executeStatement($db, $populateTable);
+}
+
+function dropAndCreateReservations(\PDO $db)
+{
+    $tableName = 'reservations';
+    $createTable = "create table {$tableName} (id SERIAL PRIMARY KEY,username TEXT NOT NULL UNIQUE)";
+    $populateTable = "INSERT INTO {$tableName} (username) VALUES ('admin')";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
     executeStatement($db, $populateTable);
