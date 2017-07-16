@@ -46,16 +46,6 @@ CREATE TABLE Groups (
 );
 
 INSERT INTO Groups (name) VALUES ('apple');
-INSERT INTO Groups (name) VALUES ('ball');
-INSERT INTO Groups (name) VALUES ('cat');
-INSERT INTO Groups (name) VALUES ('dog');
-INSERT INTO Groups (name) VALUES ('egg');
-INSERT INTO Groups (name) VALUES ('fish');
-INSERT INTO Groups (name) VALUES ('gun');
-INSERT INTO Groups (name) VALUES ('hen');
-INSERT INTO Groups (name) VALUES ('ice');
-INSERT INTO Groups (name) VALUES ('jug');
-INSERT INTO Groups (name) VALUES ('kite');
 
 SELECT *
 FROM Groups;

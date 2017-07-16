@@ -18,6 +18,10 @@ function doIt(\PDO $db)
     dropAndCreateSettings($db);
     dropAndCreateGroups($db);
     dropAndCreateRooms($db);
+    dropAndCreateReservations($db);
+    dropAndCreateHours($db);
+    dropAndCreateSpecialHours($db);
+    dropAndCreateOptionalFields($db);
 }
 
 function dropAndCreateDuck(\PDO $db)
@@ -113,8 +117,89 @@ VALUES ('방 101', 1, 8, 9, '이것은 시험이다.')";
 function dropAndCreateReservations(\PDO $db)
 {
     $tableName = 'reservations';
-    $createTable = "create table {$tableName} (id SERIAL PRIMARY KEY,username TEXT NOT NULL UNIQUE)";
-    $populateTable = "INSERT INTO {$tableName} (username) VALUES ('admin')";
+    $createTable = "create table {$tableName} (
+  id                   SERIAL PRIMARY KEY,
+  start_time           TIMESTAMP NOT NULL,
+  end_time             TIMESTAMP NOT NULL,
+  room_id              INTEGER   NOT NULL REFERENCES Rooms (id),
+  user_id              INTEGER   NOT NULL REFERENCES Users (id),
+  number_in_group      INTEGER   NOT NULL DEFAULT 1,
+  time_of_request      TIMESTAMP NOT NULL DEFAULT (now()),
+  time_of_cancellation TIMESTAMP          DEFAULT NULL
+);";
+    $populateTable = "INSERT INTO {$tableName} (start_time, end_time, room_id, user_id) 
+VALUES ('2017-03-26 11:30:00.000000', '2017-03-26 11:55:00.000000', 1, 1);";
+    dropTable($db, $tableName);
+    executeStatement($db, $createTable);
+    executeStatement($db, $populateTable);
+}
+
+function dropAndCreateHours(\PDO $db)
+{
+    $tableName = 'hours';
+    $createTable = "create table {$tableName} (
+  id          SERIAL PRIMARY KEY,
+  room_id     INTEGER   NOT NULL REFERENCES Rooms (id),
+  day_of_week SMALLINT  NOT NULL,
+  start_time  TIMESTAMP NOT NULL,
+  end_time    TIMESTAMP NOT NULL
+);";
+    $populateTable = "INSERT INTO {$tableName} (name, position, capacity, groupid, description)
+VALUES ('445', 0, 8, 1, 'Room 445'), ('446', 1, 8, 1, 'Room 446'), ('503', 2, 8, 1, 'Room 503'),
+  ('541', 3, 8, 1, 'Room 541'), ('1', 0, 8, 2, 'MediaScape Room 1'), ('2', 1, 8, 2, 'MediaScape Room 2'),
+  ('3', 2, 8, 2, 'MediaScape Room 3');";
+    dropTable($db, $tableName);
+    executeStatement($db, $createTable);
+    executeStatement($db, $populateTable);
+}
+
+function dropAndCreateSpecialHours(\PDO $db)
+{
+    $tableName = 'specialhours';
+    $createTable = "create table {$tableName} (
+  id         SERIAL PRIMARY KEY,
+  room_id    INTEGER   NOT NULL REFERENCES Rooms (id),
+  from_range TIMESTAMP NOT NULL,
+  to_range   TIMESTAMP NOT NULL,
+  start_time TIMESTAMP NOT NULL,
+  end_time   TIMESTAMP NOT NULL
+);";
+    $populateTable = "INSERT INTO {$tableName} VALUES 
+  (1, 1, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '2017-03-26 11:30:00.000000', '2017-03-26 13:30:00.000000'),
+  (2, 2, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '2017-03-26 11:30:00.000000', '2017-03-26 13:30:00.000000'),
+  (3, 3, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '2017-03-26 11:30:00.000000', '2017-03-26 13:30:00.000000'),
+  (4, 4, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '2017-03-26 11:30:00.000000', '2017-03-26 13:30:00.000000'),
+  (5, 5, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '2017-03-26 11:30:00.000000', '2017-03-26 13:30:00.000000'),
+  (6, 6, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '2017-03-26 11:30:00.000000', '2017-03-26 13:30:00.000000'),
+  (7, 7, '2016-10-10 04:00:00', '2016-10-10 04:00:00', '2017-03-26 11:30:00.000000', '2017-03-26 13:30:00.000000');";
+    dropTable($db, $tableName);
+    executeStatement($db, $createTable);
+    executeStatement($db, $populateTable);
+}
+
+function dropAndCreateOptionalFields(\PDO $db)
+{
+    $tableName = 'optionalfields';
+    $createTable = "create table {$tableName} (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT    NOT NULL,
+  form_name   TEXT    NOT NULL,
+  type        TEXT    NOT NULL,
+  choices     JSON    NOT NULL,
+  position    INTEGER NOT NULL,
+  question    TEXT    NOT NULL,
+  is_private  BOOLEAN NOT NULL DEFAULT FALSE,
+  is_required BOOLEAN NOT NULL DEFAULT FALSE
+);";
+    $populateTable = "INSERT INTO {$tableName} 
+  (name, form_name, type, choices, position, question, is_private, is_required) 
+  VALUES
+  ('campus affiliation', 'campus affiliation form', 1, '{
+    \"0\": \"Undergraduate\",
+    \"1\": \"Graduate\",
+    \"2\": \"Faculty / Staff\"
+  }', 1,\"What is your Campus Affiliation?\", FALSE, TRUE
+  );";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
     executeStatement($db, $populateTable);
