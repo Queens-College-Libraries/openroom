@@ -18,7 +18,6 @@ class Administrator
         foreach ($req->fetchAll() as $administrator) {
             $list[] = new Administrator($administrator['username']);
         }
-
         return $list;
     }
 
@@ -28,7 +27,6 @@ class Administrator
         $req = $db->prepare('SELECT * FROM `administrators` WHERE username = :username');
         $req->execute(array('username' => $username));
         $administrator = $req->fetch();
-
         return new Administrator($administrator['username']);
     }
 

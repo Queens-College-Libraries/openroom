@@ -3,16 +3,16 @@
 namespace model;
 class User
 {
-    public $id;
-    public $username;
-    public $displayName;
-    public $password;
-    public $email;
-    public $lastLogin;
-    public $isActive;
-    public $isAdministrator;
-    public $isReporter;
-    public $isBanned;
+    private $id;
+    private $username;
+    private $displayName;
+    private $password;
+    private $email;
+    private $lastLogin;
+    private $isActive;
+    private $isAdministrator;
+    private $isReporter;
+    private $isBanned;
 
     function __construct()
     {
