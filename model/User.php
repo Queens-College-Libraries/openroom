@@ -214,6 +214,28 @@ class User
         }
     }
 
+    public static function ConnectLdap($name, $password, $ldapserver)
+    {
+        $qc_username = "qc\\";
+        $instr_username = "instr\\";
+        $name = trim(htmlspecialchars($name));
+        $qc_username .= $name;
+        $instr_username .= $name;
+        $password = trim(htmlspecialchars($password));
+        $ldap = ldap_connect($ldapserver);
+        sleep(1);
+        if ($bind = ldap_bind($ldap, $qc_username, $password)) {
+            ldap_close($ldap);
+            return true;
+        } else if ($bind = ldap_bind($ldap, $instr_username, $password)) {
+            ldap_close($ldap);
+            return true;
+        } else {
+            ldap_close($ldap);
+            return false;
+        }
+    }
+
     public function addUserLdap($username, $ldap_baseDN, $service_username, $service_password)
     {
         $this->setUsername($username);
