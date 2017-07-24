@@ -37,6 +37,7 @@ function dropAndCreateDuck(\PDO $db)
 function dropAndCreateUsers(\PDO $db)
 {
     $tableName = 'users';
+    $hashedPassword = \model\User::hashPassword('hunter2');
     $createTable = "CREATE TABLE {$tableName}  (
   id               SERIAL PRIMARY KEY,
   username         TEXT                        NOT NULL UNIQUE,
@@ -49,7 +50,7 @@ function dropAndCreateUsers(\PDO $db)
   is_reporter      BOOLEAN                     NOT NULL DEFAULT FALSE,
   is_banned        BOOLEAN                     NOT NULL DEFAULT FALSE
 );";
-    $populateTable = "INSERT INTO {$tableName}  (username, password, email, is_active) VALUES ('admin', 'hunter2', 'hikingfan@gmail.com', TRUE);";
+    $populateTable = "INSERT INTO {$tableName}  (username, password, email, is_active) VALUES ('admin', {$hashedPassword}, 'hikingfan@gmail.com', TRUE);";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
     executeStatement($db, $populateTable);

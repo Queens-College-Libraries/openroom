@@ -81,16 +81,15 @@ if ($username != "" && $password != "" && $ajax_indicator != "") {
         if (!$isAuthenticated) {
             $output .= "\t<authenticated>false</authenticated>\n";
         } else {
-            if (mysql_num_rows(mysql_query("SELECT * FROM bannedusers WHERE username='" . $username . "';")) <= 0) {
-                $_SESSION["systemid"] = $settings["systemid"];
+            if (\model\User::fetchByUsername($db, $username)->getIsBanned() != true) {
+                $_SESSION["systemid"] = model\Setting::fetchValue(\model\Db::getInstance(), 'systemid');
                 $_SESSION["username"] = $username;
-                $_SESSION["displayname"] = ReturnDisplayName($username, $settings);
-                $_SESSION["emailaddress"] = ReturnEmailAddress($username, $settings);
+                $_SESSION["displayname"] = \model\User::ReturnDisplayName($db, $username, $ldap_baseDN, $service_username, $service_password);
+                $_SESSION["emailaddress"] = \model\User::ReturnEmailAddress($db, $username, $ldap_baseDN, $service_username, $service_password);
                 $output .= "\t<errormessage></errormessage>\n";
                 $output .= "\t<authenticated>true</authenticated>\n";
                 //Check if logged in user is an administrator
-                $aresult = mysql_query("SELECT `username` FROM administrators WHERE username='" . $username . "';");
-                if (mysql_num_rows($aresult) == 1) {
+                if (\model\User::fetchByUsername($db, $username)->getIsAdministrator() == true) {
                     $_SESSION["isadministrator"] = "TRUE";
                     $output .= "\t<isadministrator>true</isadministrator>\n";
                 } else {

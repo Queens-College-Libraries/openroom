@@ -46,16 +46,31 @@ class User
         return $this;
     }
 
+    public function getIsBanned(): bool
+    {
+        return $this->isBanned;
+    }
+
     public function setIsBanned($input)
     {
         $this->isBanned = $input;
         return $this;
     }
 
+    public function getIsReporter(): bool
+    {
+        return $this->isReporter;
+    }
+
     public function setIsReporter($input)
     {
         $this->isReporter = $input;
         return $this;
+    }
+
+    public function getIsAdministrator(): bool
+    {
+        return $this->isAdministrator;
     }
 
     public function setIsAdministrator($input)
@@ -236,17 +251,17 @@ class User
         }
     }
 
-    public function addUserLdap($username, $ldap_baseDN, $service_username, $service_password)
+    public function addUserLdap($db, $username, $ldap_baseDN, $service_username, $service_password)
     {
         $this->setUsername($username);
-        $this->setEmail($this->ReturnEmailAddress($username, $ldap_baseDN, $service_username, $service_password));
-        $this->setDisplayname($this->ReturnDisplayName($username, $ldap_baseDN, $service_username, $service_password));
+        $this->setEmail($this->ReturnEmailAddress($db, $username, $ldap_baseDN, $service_username, $service_password));
+        $this->setDisplayname($this->ReturnDisplayName($db, $username, $ldap_baseDN, $service_username, $service_password));
         return $this;
     }
 
-    function ReturnEmailAddress($inputUsername, $ldap_baseDN, $service_username, $service_password)
+    static function ReturnEmailAddress($db, $inputUsername, $ldap_baseDN, $service_username, $service_password)
     {
-        return $this->ReturnParameter($inputUsername, "mail", $ldap_baseDN, $service_username, $service_password);
+        return self::fetchByUsername($db, $inputUsername)->ReturnParameter($inputUsername, "mail", $ldap_baseDN, $service_username, $service_password);
     }
 
     function ReturnParameter($inputUsername, $inputParameter, $ldapServer, $service_username, $service_password)
@@ -264,9 +279,9 @@ class User
         return "fail";
     }
 
-    function ReturnDisplayName($inputUsername, $ldap_baseDN, $service_username, $service_password)
+    public static function ReturnDisplayName($db, $inputUsername, $ldap_baseDN, $service_username, $service_password)
     {
-        return $this->ReturnParameter($inputUsername, "displayname", $ldap_baseDN, $service_username, $service_password);
+        return self::fetchByUsername($db, $inputUsername)->ReturnParameter($inputUsername, "displayname", $ldap_baseDN, $service_username, $service_password);
     }
 
     function IsNotNullOrEmptyString($question)
