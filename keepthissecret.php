@@ -50,7 +50,7 @@ function dropAndCreateUsers(\PDO $db)
   is_reporter      BOOLEAN                     NOT NULL DEFAULT FALSE,
   is_banned        BOOLEAN                     NOT NULL DEFAULT FALSE
 );";
-    $populateTable = "INSERT INTO {$tableName}  (username, password, email, is_active) VALUES ('admin', {$hashedPassword}, 'hikingfan@gmail.com', TRUE);";
+    $populateTable = "INSERT INTO {$tableName}  (username, password, email, is_active) VALUES ('admin', '{$hashedPassword}', 'hikingfan@gmail.com', TRUE);";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
     executeStatement($db, $populateTable);
@@ -199,7 +199,7 @@ function dropAndCreateOptionalFields(\PDO $db)
     \"0\": \"Undergraduate\",
     \"1\": \"Graduate\",
     \"2\": \"Faculty / Staff\"
-  }', 1,\"What is your Campus Affiliation?\", FALSE, TRUE
+  }', 1,'What is your Campus Affiliation?', FALSE, TRUE
   );";
     $populateTable2 = "INSERT INTO {$tableName}
     (name, form_name, type, choices, position, question, is_private, is_required) VALUES
