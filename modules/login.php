@@ -63,7 +63,8 @@
                         <span id="loginusernamelabel">Username:</span>
                     </li>
                     <li>
-                        <input alt="Enter Username" type="text" name="username" id="usernamefield" class="textfield"/>
+                        <input alt="Enter Username" type="text" name="username" id="usernamefield" class="textfield"
+                               autofocus="autofocus"/>
                     </li>
                 </ul>
             </li>
