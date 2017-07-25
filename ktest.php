@@ -42,6 +42,19 @@ echo '<br />';
 
 highlight_string("<?php\n\$thisUser =\n" . var_export($all_users, true) . ";\n?>");
 
+echo '<br />';
+echo '<br />';
+echo '<br />';
+echo '<br />';
+echo '<br />';
+echo '<br />';
+echo '<br />';
+echo '<br />';
+
+echo '<hr />';
+
+$claimed_user = \model\User::fetchByUsername($my_connection,'admin');
+$password = $claimed_user->getPassword();
 
 $my_connection = null;
 

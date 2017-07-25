@@ -12,10 +12,10 @@ class Db
         $dbname = Config::read('db.basename');
         $dbuser = Config::read('db.user');
         $dbpassword = Config::read('db.password');
-        return "pgsql:host=" . $dbhost . ";dbname=" . $dbname . ";user=" . $dbuser . ";port=" . $dbport . ";sslmode=require;password=" . $dbpassword . ";";
+        return "pgsql:host=" . $dbhost . ";dbname=" . $dbname . ";user=" . $dbuser . ";port=" . $dbport . ";password=" . $dbpassword . ";";
     }
 
-    private static function getHerokuUrl() : string
+    private static function getHerokuUrl(): string
     {
         $dbstr = getenv('DATABASE_URL');
         $dbstr = substr("$dbstr", 11);
@@ -45,7 +45,7 @@ class Db
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, // highly recommended
                 \PDO::ATTR_EMULATE_PREPARES => false // ALWAYS! ALWAYS! ALWAYS!
             ];
-            if (getenv('DATABASE_URL') != ""){
+            if (getenv('DATABASE_URL') != "") {
                 $dsn = Db::getHerokuUrl();
                 self::$instance = new \PDO($dsn);
             } else {
@@ -60,8 +60,6 @@ class Db
     private function __clone()
     {
     }
-
-
 
 
 }

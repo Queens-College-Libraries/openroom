@@ -116,40 +116,27 @@ if ($username != "" && $password != "" && $ajax_indicator != "") {
         }
     } //Normal
     elseif (model\Setting::fetchValue(\model\Db::getInstance(), 'login_method') == "normal") {
-        $encpass = sha1($password);
-        $lresult = mysql_query("SELECT * FROM users WHERE username='" . $username . "' AND password='" . $encpass . "';");
-        if (mysql_num_rows($lresult) == 1) {
-            $isactivea = mysql_fetch_array($lresult);
-            $isactive = $isactivea["active"];
-            if (mysql_num_rows(mysql_query("SELECT * FROM bannedusers WHERE username='" . $username . "';")) <= 0 && $isactive == "0") {
-                //Set lastlogin time
-                $llresult = mysql_query("UPDATE users SET lastlogin=NOW() WHERE username='" . $username . "';");
-                if ($llresult) {
-                    //Set session for user
-                    $_SESSION["systemid"] = $settings["systemid"];
-                    $_SESSION["username"] = $username;
-                    $output .= "\t<errormessage></errormessage>\n";
-                    $output .= "\t<authenticated>true</authenticated>\n";
-                    //Check if logged in user is an administrator
-                    $aresult = mysql_query("SELECT * FROM administrators WHERE username='" . $username . "';");
-                    if (mysql_num_rows($aresult) == 1) {
-                        $_SESSION["isadministrator"] = "TRUE";
-                        $output .= "\t<isadministrator>true</isadministrator>\n";
-                    } else {
-                        $_SESSION["isadministrator"] = "FALSE";
-                        $output .= "\t<isadministrator>false</isadministrator>\n";
-                    }
-                    //Check if logged in user is a reporter
-                    $rresult = mysql_query("SELECT * FROM reporters WHERE username='" . $username . "';");
-                    if (mysql_num_rows($rresult) == 1) {
-                        $_SESSION["isreporter"] = "TRUE";
-                        $output .= "\t<isreporter>true</isreporter>\n";
-                    } else {
-                        $_SESSION["isreporter"] = "FALSE";
-                        $output .= "\t<isreporter>false</isreporter>\n";
-                    }
+//        $encpass = sha1($password);
+        $claimed_user = \model\User::fetchByUsername(\model\Db::getInstance(), $username);
+        if ($claimed_user->verifyPassword($password)) {
+            $claimed_user->setIsActive(true);
+            if (!$claimed_user->getIsBanned()) {
+                $claimed_user->setLastLogin(date("Y-m-d H:i:s"));
+                $_SESSION["systemid"] = model\Setting::fetchValue(\model\Db::getInstance(), "systemid");
+                $_SESSION["username"] = $username;
+                if ($claimed_user->getIsAdministrator()) {
+                    $_SESSION["isadministrator"] = "TRUE";
+                    $output .= "\t<isadministrator>true</isadministrator>\n";
                 } else {
-                    $output .= "\t<authenticated>false</authenticated>\n\t<errormessage>Could not set last login time.</errormessage>\n";
+                    $_SESSION["isadministrator"] = "FALSE";
+                    $output .= "\t<isadministrator>false</isadministrator>\n";
+                }
+                if ($claimed_user->getIsReporter()) {
+                    $_SESSION["isreporter"] = "TRUE";
+                    $output .= "\t<isreporter>true</isreporter>\n";
+                } else {
+                    $_SESSION["isreporter"] = "FALSE";
+                    $output .= "\t<isreporter>false</isreporter>\n";
                 }
             } else {
                 $output .= "\t<errormessage>This user has been banned or has not activated their account. Please contact an administrator to fix this problem.</errormessage>\n";
