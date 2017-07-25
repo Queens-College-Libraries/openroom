@@ -50,10 +50,14 @@ function dropAndCreateUsers(\PDO $db)
   is_reporter      BOOLEAN                     NOT NULL DEFAULT FALSE,
   is_banned        BOOLEAN                     NOT NULL DEFAULT FALSE
 );";
-    $populateTable = "INSERT INTO {$tableName}  (username, password, email, is_active) VALUES ('admin', '{$hashedPassword}', 'hikingfan@gmail.com', TRUE);";
+    $populateTableAdmin = "INSERT INTO {$tableName}  (username, password, email, is_active, is_administrator) 
+VALUES ('admin', '{$hashedPassword}', 'hikingfan@gmail.com', TRUE, TRUE);";
+    $populateTableReporter = "INSERT INTO {$tableName}  (username, password, email, is_active, is_reporter) 
+VALUES ('reporter', '{$hashedPassword}', 'hikingfan+reporter@gmail.com', TRUE, TRUE);";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
-    executeStatement($db, $populateTable);
+    executeStatement($db, $populateTableAdmin);
+    executeStatement($db, $populateTableReporter);
 }
 
 function dropAndCreateSettings(\PDO $db)
