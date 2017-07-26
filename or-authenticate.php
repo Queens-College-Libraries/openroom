@@ -124,6 +124,8 @@ if ($username != "" && $password != "" && $ajax_indicator != "") {
                 $claimed_user->setLastLogin(date("Y-m-d H:i:s"));
                 $_SESSION["systemid"] = model\Setting::fetchValue(\model\Db::getInstance(), "systemid");
                 $_SESSION["username"] = $username;
+                $_SESSION["displayname"] = $claimed_user->getDisplayName();
+                $_SESSION["emailaddress"] = $claimed_user->getEmail();
                 if ($claimed_user->getIsAdministrator()) {
                     $_SESSION["isadministrator"] = "TRUE";
                     $output .= "\t<isadministrator>true</isadministrator>\n";
