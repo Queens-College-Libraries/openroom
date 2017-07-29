@@ -94,7 +94,7 @@ function dropAndCreateSettings(\PDO $db)
 function dropAndCreateGroups(\PDO $db)
 {
     $tableName = 'groups';
-    $createTable = "create table {$tableName}   id   SERIAL PRIMARY KEY, name TEXT NOT NULL)";
+    $createTable = "create table {$tableName} (id SERIAL PRIMARY KEY, name TEXT NOT NULL)";
     $populateTable = "INSERT INTO {$tableName} (name) VALUES ('apple')";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
