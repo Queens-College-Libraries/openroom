@@ -23,7 +23,9 @@ include($_SESSION["themepath"] . "header.php");
 
 if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
     include("modules/login.php");
-} elseif ($_SESSION["systemid"] == "" || !(isset($_SESSION["systemid"])) || $_SESSION["systemid"] != $settings["systemid"]) {
+} elseif (!(isset($_SESSION["systemid"])) ||
+    $_SESSION["systemid"] == "" ||
+    $_SESSION["systemid"] != model\Setting::fetchValue(\model\Db::getInstance(), "systemid")) {
     include("modules/login.php");
 } else {
     include($_SESSION["themepath"] . "content.php");

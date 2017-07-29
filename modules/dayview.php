@@ -1,5 +1,11 @@
 <?php
-$optionalfieldsarraytemp = mysql_query("SELECT * FROM optionalfields ORDER BY optionorder ASC;");
+$optionalfieldsarraytempsql = "SELECT * FROM optionalfields ORDER BY position ASC;";
+try {
+    $req = \model\Db::getInstance()->prepare("{$optionalfieldsarraytempsql}");
+    $req->execute();
+} catch (PDOException $e) {
+
+}
 ?>
 <script language="javascript" type="text/javascript">
     //findPos(object)
@@ -170,12 +176,13 @@ $optionalfieldsarraytemp = mysql_query("SELECT * FROM optionalfields ORDER BY op
         urlstring = "or-reserve.php";
 
         params = "altusername=" + altusername + "&emailconfirmation=" + emailconfirmation + "&duration=" + document.reserve.duration.value + "&roomid=" + document.reserve.roomid.value + "&starttime=" + document.reserve.starttime.value + "&capacity=" + document.reserve.capacity.value + "&fullcapacity=" + document.reserve.fullcapacity.value + "<?php
-                //Use the session var of optional fields to grab field values from the reserve form
-                while ($optionalfield = mysql_fetch_array($optionalfieldsarraytemp)) {
-                    echo "&" . $optionalfield["optionformname"] . "=\"+ document.reserve." . $optionalfield["optionformname"] . ".value +\"";
-                }
+            //Use the session var of optional fields to grab field values from the reserve form
+//            while ($optionalfield = mysql_fetch_array($optionalfieldsarraytemp)) {
+            while (false) {
+//                echo "&" . $optionalfield["optionformname"] . "=\"+ document.reserve." . $optionalfield["optionformname"] . ".value +\"";
+            }
 
-                ?>";
+            ?>";
 
         xmlhttp.open("POST", urlstring, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

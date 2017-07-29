@@ -19,13 +19,13 @@
     } ?>
     </span>&nbsp;
     <?php
-    if ($_SESSION["isadministrator"] == "TRUE") {
+    if (isset($_SESSION["isadministrator"]) && $_SESSION["isadministrator"] == "TRUE") {
         echo "<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;";
     }
-    if ($_SESSION["isreporter"] == "TRUE") {
+    if (isset($_SESSION["isreporter"]) && $_SESSION["isreporter"] == "TRUE") {
         echo "<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;";
     }
-    if (model\Setting::fetchValue(\model\Db::getInstance(), 'login_method') == "normal" && $_SESSION["username"] != "") {
+    if (model\Setting::fetchValue(\model\Db::getInstance(), 'login_method') == "normal" && isset($_SESSION["username"]) && $_SESSION["username"] != "") {
         echo "|&nbsp;<a href=\"editaccount.php\">Edit Account</a>&nbsp;|";
     }
     if (isset($_SESSION["username"]) && $_SESSION["username"] != "") {
