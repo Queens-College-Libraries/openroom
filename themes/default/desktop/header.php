@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
@@ -12,12 +12,23 @@
 	<span class="username">
 	<?php
     if ($_SESSION["systemid"] == model\Setting::fetchValue(\model\Db::getInstance(), 'systemid')){
-    echo isset($_SESSION["displayname"]) ? "<strong>Logged in as</strong>: " . $_SESSION["displayname"] : "&nbsp;"; ?></span>&nbsp;<?php echo ($_SESSION["isadministrator"] == "TRUE") ? "<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;" : "";
-    echo ($_SESSION["isreporter"] == "TRUE") ? "<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;" : "";
+    if (isset($_SESSION["displayname"])) {
+        echo "<strong>Logged in as</strong>: " . $_SESSION["displayname"];
+    } else {
+        echo "&nbsp;";
+    } ?>
+    </span>&nbsp;
+    <?php
+    if ($_SESSION["isadministrator"] == "TRUE") {
+        echo "<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;";
+    }
+    if ($_SESSION["isreporter"] == "TRUE") {
+        echo "<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;";
+    }
     if (model\Setting::fetchValue(\model\Db::getInstance(), 'login_method') == "normal" && $_SESSION["username"] != "") {
         echo "|&nbsp;<a href=\"editaccount.php\">Edit Account</a>&nbsp;|";
     }
-    if ($_SESSION["username"] != "") {
+    if (isset($_SESSION["username"]) && $_SESSION["username"] != "") {
         echo "&nbsp;<a href=\"modules/logout.php\">Logout</a>";
     }
     }

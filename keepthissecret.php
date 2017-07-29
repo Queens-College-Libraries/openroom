@@ -72,6 +72,7 @@ function dropAndCreateSettings(\PDO $db)
 ('login_method', 'normal'),
 ('systemid', '80zhh73n5'),
 ('theme', 'default'),
+('instance_name', 'Openroom Demo'),
 ('policies', 'Rosenthal Library usually has several rooms available to students for group study on a ' ||
                'first-come, first-serve basis. These rooms are available to currently registered Queens College ' ||
                'students only.\r\n\r\nImmediate use of a Group Study Room is made by presenting your valid Queens ' ||
