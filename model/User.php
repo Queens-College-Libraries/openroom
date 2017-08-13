@@ -124,12 +124,12 @@ class User
     public static function addUser(\PDO $db, \model\User $user)
     {
         $username = $user->getUsername();
-        $displayname = $user->getDisplayName();
+        $displayName = $user->getDisplayName();
         $password = $user->getPassword();
         $email = $user->getEmail();
         $req = $db->prepare('INSERT INTO users (username, display_name, password, email) VALUES (:username, :display_name, :password, :email)');
         $req->bindParam(':username', $username, \PDO::PARAM_STR, 255);
-        $req->bindParam(':display_name', $displayname, \PDO::PARAM_STR, 255);
+        $req->bindParam(':display_name', $displayName, \PDO::PARAM_STR, 255);
         $req->bindParam(':password', $password, \PDO::PARAM_STR, 255);
         $req->bindParam(':email', $email, \PDO::PARAM_STR, 255);
         $req->execute();
