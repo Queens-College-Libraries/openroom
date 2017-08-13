@@ -96,7 +96,7 @@ class User
         return $db->query('SELECT count(*) FROM Users')->fetchColumn();
     }
 
-    public static function fetchByUsername(\PDO $db, $username) : User
+    public static function fetchByUsername(\PDO $db, $username): User
     {
         $req = $db->prepare('SELECT id, username, display_name, password, email, last_login, is_active, is_administrator, is_reporter, is_banned FROM users WHERE username = :username');
         $req->execute(array('username' => $username));
@@ -162,7 +162,7 @@ class User
         return $this;
     }
 
-    public function getPassword() : string
+    public function getPassword(): string
     {
         return $this->password;
     }
