@@ -97,9 +97,13 @@ function dropAndCreateGroups(\PDO $db)
     $tableName = 'groups';
     $createTable = "create table {$tableName} (id SERIAL PRIMARY KEY, name TEXT NOT NULL)";
     $populateTable = "INSERT INTO {$tableName} (name) VALUES ('apple')";
+    $populateTable1 = "INSERT INTO {$tableName} (name) VALUES ('ball')";
+    $populateTable2 = "INSERT INTO {$tableName} (name) VALUES ('cat')";
     dropTable($db, $tableName);
     executeStatement($db, $createTable);
     executeStatement($db, $populateTable);
+    executeStatement($db, $populateTable1);
+    executeStatement($db, $populateTable2);
 }
 
 function dropAndCreateRooms(\PDO $db)
