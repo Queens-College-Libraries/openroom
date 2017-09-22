@@ -40,7 +40,10 @@ $all_users = model\User::fetchAll($my_connection);
 
 echo '<br />';
 
-highlight_string("<?php\n\$thisUser =\n" . var_export($all_users, true) . ";\n?>");
+foreach ($all_users as $user){
+
+    highlight_string("<?php\n\$thisUser =\n" . var_export($user, true) . ";\n?>");
+}
 
 echo '<br />';
 echo '<br />';

@@ -18,16 +18,16 @@ class User
     {
     }
 
-    public static function fetchAll(\PDO $db): array
+    public static function fetchAll(\PDO $db)
     {
         $req = $db->prepare('SELECT id, username, display_name, password, email, last_login, is_active, is_administrator, is_reporter, is_banned FROM users');
         $req->execute();
         $users = array();
-        foreach ($req->fetchAll() as $user) {
+        foreach ($req->fetchAll(\PDO::FETCH_CLASS) as $user) {
             array_push($users, User::create()
                 ->setId($user['id'])
                 ->setUsername($user['username'])
-                ->setDisplayName($user['display_name'])
+                ->nd
                 ->setPassword($user['password'])
                 ->setEmail($user['email'])
                 ->setLastLogin($user['last_login'])

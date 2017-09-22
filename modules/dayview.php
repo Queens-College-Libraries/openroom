@@ -3,6 +3,7 @@ $optionalfieldsarraytempsql = "SELECT * FROM optionalfields ORDER BY position AS
 try {
     $req = \model\Db::getInstance()->prepare("{$optionalfieldsarraytempsql}");
     $req->execute();
+    $optionalfieldsarraytemp = $req->fetchAll();
 } catch (PDOException $e) {
 
 }
@@ -177,10 +178,10 @@ try {
 
         params = "altusername=" + altusername + "&emailconfirmation=" + emailconfirmation + "&duration=" + document.reserve.duration.value + "&roomid=" + document.reserve.roomid.value + "&starttime=" + document.reserve.starttime.value + "&capacity=" + document.reserve.capacity.value + "&fullcapacity=" + document.reserve.fullcapacity.value + "<?php
             //Use the session var of optional fields to grab field values from the reserve form
-//            while ($optionalfield = mysql_fetch_array($optionalfieldsarraytemp)) {
-            while (false) {
-//                echo "&" . $optionalfield["optionformname"] . "=\"+ document.reserve." . $optionalfield["optionformname"] . ".value +\"";
-            }
+                foreach($optionalfieldsarraytemp as $optionalfield)
+                {
+                    echo "&" . $optionalfield["optionformname"] . "=\"+ document.reserve." . $optionalfield["optionformname"] . ".value +\"";
+                }
 
             ?>";
 
