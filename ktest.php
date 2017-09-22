@@ -10,7 +10,7 @@ $my_connection = \model\Db::getInstance();
 model\Setting::update($my_connection, 'policies', $newPolicy);
 echo preg_replace('/\v+|\\\r\\\n/', '<br/>', model\Setting::fetchValue(\model\Db::getInstance(), 'policies'));
 
-echo '<br /><p>Now we shall create a new random user.</p>';
+echo '<br /><p>Now, we shall create a new random user.</p>';
 $username = generateRandomString(96);
 echo '<br />';
 $kus = \model\User::create()
