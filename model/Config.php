@@ -19,8 +19,8 @@ class Config
 
 /** @var array $db */
 $db = parse_url(getenv('DATABASE_URL'));
-Config::write('db.host', $db["host"]);
-Config::write('db.port', $db["port"]);
-Config::write('db.basename', $db["path"]);
-Config::write('db.user', $db["user"]);
-echo('pgsql:' . 'host=' . Config::read('db.host') . ';' . 'port=' . Config::read('db.port') . ';' . 'dbname=' . Config::read('db.basename'));
+Config::write('db.host', 'localhost');
+Config::write('db.port', '5432');
+Config::write('db.basename', 'openroomtesting');
+Config::write('db.user', 'panda');
+Config::write('db.password', 'Apple@1234');

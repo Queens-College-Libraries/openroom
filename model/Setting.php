@@ -18,10 +18,7 @@ class Setting
 
     public static function fetchValue(\PDO $db, string $settingName)
     {
-        $req = $db->prepare('SELECT value FROM settings WHERE name = :name');
-        $req->execute(array('name' => $settingName));
-        $setting = $req->fetch();
-        return $setting['value'];
+        return \model\SettingRepository::fetchSetting($db, $settingName)->getValue();
     }
 
     public static function update(\PDO $db, $settingname, $settingvalue)
@@ -38,15 +35,15 @@ class Setting
         return $this->name;
     }
 
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
     public function setName($inputName): Setting
     {
         $this->name = $inputName;
         return $this;
+    }
+
+    public function getValue(): string
+    {
+        return $this->value;
     }
 
     public function setValue($inputValue): Setting
