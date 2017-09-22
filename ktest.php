@@ -18,46 +18,11 @@ $kus = \model\User::create()
     ->setDisplayName(generateRandomString(24))
     ->setPassword(\model\User::hashPassword('hunter2'))
     ->setEmail(generateRandomString(16) . '@' . generateRandomString(8) . '.' . generateRandomString(3));
-model\User::addUser($my_connection, $kus);
-$users = model\User::fetchCount($my_connection);
+model\UserSQLRepository::saveUser($my_connection, $kus);
 highlight_string("<?php\n\$data =\n" . var_export($kus, true) . ";\n?>");
 
-echo '<br />';
-
-echo 'The number of users is ' . $users;
 
 echo '<br />';
-
-$this_user = model\User::fetchByUsername($my_connection, $username);
-
-echo '<br />';
-
-highlight_string("<?php\n\$thisUser =\n" . var_export($this_user, true) . ";\n?>");
-
-echo '<br />';
-
-$all_users = model\User::fetchAll($my_connection);
-
-echo '<br />';
-
-foreach ($all_users as $user){
-
-    highlight_string("<?php\n\$thisUser =\n" . var_export($user, true) . ";\n?>");
-}
-
-echo '<br />';
-echo '<br />';
-echo '<br />';
-echo '<br />';
-echo '<br />';
-echo '<br />';
-echo '<br />';
-echo '<br />';
-
-echo '<hr />';
-
-$claimed_user = \model\User::fetchByUsername($my_connection,'admin');
-$password = $claimed_user->getPassword();
 
 $my_connection = null;
 
