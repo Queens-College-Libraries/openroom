@@ -8,7 +8,7 @@ $errormsg = "";
 
 //$admin_user = "admin";
 if ($admin_user != "") {
-    if (mysql_query("INSERT INTO administrators VALUES('" . $admin_user . "');")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO administrators VALUES('" . $admin_user . "');")) {
         $successmsg .= "Administrative user " . $admin_user . " added!<br/><br/>";
     } else {
         $errormsg .= "Unable to add Administrative user.<br/><br/>";
@@ -19,7 +19,7 @@ if ($admin_user != "") {
 
 //$instance_name = "OpenRoom";
 if ($instance_name != "" && $errormsg == "") {
-    if (mysql_query("UPDATE settings SET settingvalue='" . $instance_name . "' WHERE settingname = 'instance_name';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $instance_name . "' WHERE settingname = 'instance_name';")) {
         $successmsg .= "Instance Name set to " . $instance_name . "!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Instance Name.<br/><br/>";
@@ -30,7 +30,7 @@ if ($instance_name != "" && $errormsg == "") {
 
 //$instance_url = "www.example.com/openroom/";
 if ($instance_url != "" && $errormsg == "") {
-    if (mysql_query("UPDATE settings SET settingvalue='" . $instance_url . "' WHERE settingname = 'instance_url';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $instance_url . "' WHERE settingname = 'instance_url';")) {
         $successmsg .= "Instance URL set to " . $instance_url . "!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Instance URL.<br/><br/>";
@@ -41,7 +41,7 @@ if ($instance_url != "" && $errormsg == "") {
 
 //$theme = "default";
 if ($theme != "" && $errormsg == "") {
-    if (mysql_query("UPDATE settings SET settingvalue='" . $theme . "' WHERE settingname = 'theme';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $theme . "' WHERE settingname = 'theme';")) {
         $successmsg .= "Theme set to " . $theme . "!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Theme.<br/><br/>";
@@ -52,7 +52,7 @@ if ($theme != "" && $errormsg == "") {
 
 //$https = "true";
 if ($https != "" && $errormsg == "") {
-    if (mysql_query("UPDATE settings SET settingvalue='" . $https . "' WHERE settingname = 'https';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $https . "' WHERE settingname = 'https';")) {
         $successmsg .= "SSL set to " . $https . "!<br/><br/>";
     } else {
         $errormsg .= "Unable to set SSL.<br/><br/>";
@@ -63,7 +63,7 @@ if ($https != "" && $errormsg == "") {
 
 //$login_method = "ldap";
 if ($login_method != "" && $errormsg == "") {
-    if (mysql_query("UPDATE settings SET settingvalue='" . $login_method . "' WHERE settingname = 'login_method';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $login_method . "' WHERE settingname = 'login_method';")) {
         $successmsg .= "Login Method set to " . $login_method . "!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Login Method.<br/><br/>";
@@ -76,12 +76,12 @@ if ($login_method != "" && $errormsg == "") {
 //$ldap_baseDN = "cn=users,dc=bsu,dc=edu";
 if ($login_method == "ldap" && $errormsg == "") {
     if ($ldap_host != "" && $ldap_baseDN != "" && $errormsg == "") {
-        if (mysql_query("UPDATE settings SET settingvalue='" . $ldap_host . "' WHERE settingname = 'ldap_host';")) {
+        if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $ldap_host . "' WHERE settingname = 'ldap_host';")) {
             $successmsg .= "LDAP Host set to " . $ldap_host . "!<br/><br/>";
         } else {
             $errormsg .= "Unable to set LDAP Host.<br/><br/>";
         }
-        if (mysql_query("UPDATE settings SET settingvalue='" . $ldap_baseDN . "' WHERE settingname = 'ldap_baseDN';")) {
+        if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $ldap_baseDN . "' WHERE settingname = 'ldap_baseDN';")) {
             $successmsg .= "LDAP baseDN set to " . $ldap_baseDN . "!<br/><br/>";
         } else {
             $errormsg .= "Unable to set LDAP baseDN.<br/><br/>";
@@ -96,7 +96,7 @@ if ($login_method == "ldap" && $errormsg == "") {
 //$email_filter = array("bsu.edu");
 if ($email_filter != "" && $errormsg == "") {
     $email_filter = serialize($email_filter);
-    if (mysql_query("UPDATE settings SET settingvalue='" . $email_filter . "' WHERE settingname = 'email_filter';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_filter . "' WHERE settingname = 'email_filter';")) {
         $successmsg .= "Email Filter set!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Email Filter.<br/><br/>";
@@ -107,7 +107,7 @@ if ($email_filter != "" && $errormsg == "") {
 
 //$interval = 30;
 if ($interval != "" && $errormsg == "") {
-    if (mysql_query("UPDATE settings SET settingvalue='" . $interval . "' WHERE settingname = 'interval';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $interval . "' WHERE settingname = 'interval';")) {
         $successmsg .= "Interval set to " . $interval . "!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Interval.<br/><br/>";
@@ -118,7 +118,7 @@ if ($interval != "" && $errormsg == "") {
 
 //$time_format = "g:i a";
 if ($time_format != "" && $errormsg == "") {
-    if (mysql_query("UPDATE settings SET settingvalue='" . $time_format . "' WHERE settingname = 'time_format';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $time_format . "' WHERE settingname = 'time_format';")) {
         $successmsg .= "Time Format set!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Time Format.<br/><br/>";
@@ -129,7 +129,7 @@ if ($time_format != "" && $errormsg == "") {
 
 //$limit_duration = 240;
 if ($limit_duration != "" && $errormsg == "") {
-    if (mysql_query("UPDATE settings SET settingvalue='" . $limit_duration . "' WHERE settingname = 'limit_duration';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_duration . "' WHERE settingname = 'limit_duration';")) {
         $successmsg .= "Limit Duration set!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Limit Duration.<br/><br/>";
@@ -141,7 +141,7 @@ if ($limit_duration != "" && $errormsg == "") {
 //$limit_total = array(240,"day");
 if ($limit_total != "" && $errormsg == "") {
     $limit_total = serialize($limit_total);
-    if (mysql_query("UPDATE settings SET settingvalue='" . $limit_total . "' WHERE settingname = 'limit_total';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_total . "' WHERE settingname = 'limit_total';")) {
         $successmsg .= "Limit Total set!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Limit Total.<br/><br/>";
@@ -153,7 +153,7 @@ if ($limit_total != "" && $errormsg == "") {
 //$limit_frequency = array(0,"day");
 if ($limit_frequency != "" && $errormsg == "") {
     $limit_frequency = serialize($limit_frequency);
-    if (mysql_query("UPDATE settings SET settingvalue='" . $limit_frequency . "' WHERE settingname = 'limit_frequency';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_frequency . "' WHERE settingname = 'limit_frequency';")) {
         $successmsg .= "Limit Frequency set!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Limit Frequency.<br/><br/>";
@@ -165,7 +165,7 @@ if ($limit_frequency != "" && $errormsg == "") {
 //$limit_window = array(6,"month");
 if ($limit_window != "" && $errormsg == "") {
     $limit_window = serialize($limit_window);
-    if (mysql_query("UPDATE settings SET settingvalue='" . $limit_window . "' WHERE settingname = 'limit_window';")) {
+    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_window . "' WHERE settingname = 'limit_window';")) {
         $successmsg .= "Limit Window set!<br/><br/>";
     } else {
         $errormsg .= "Unable to set Limit Window.<br/><br/>";
@@ -180,7 +180,7 @@ $systemid = "";
 for ($i = 0; $i < 10; $i++) {
     $systemid = $systemid . $random_array[rand(0, count($random_array))];
 }
-if (mysql_query("UPDATE settings SET settingvalue='" . $systemid . "' WHERE settingname = 'systemid';")) {
+if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $systemid . "' WHERE settingname = 'systemid';")) {
     $successmsg .= "System ID set!<br/><br/>";
 } else {
     $errormsg .= "Unable to set System ID.<br/><br/>";

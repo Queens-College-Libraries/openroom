@@ -51,8 +51,6 @@ class BannedUser
         $req = $db->prepare('SELECT exists(SELECT * FROM `bannedusers` WHERE username = :username)');
         $req->execute(array('username' => $username));
         $banneduser = $req->fetch();
-        $logger = new Logger(__DIR__ . '/logs');
-        $logger->info('User ' . $username . ' was banned. ');
         return $banneduser[0];
     }
 

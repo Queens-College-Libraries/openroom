@@ -1,12 +1,5 @@
 <?php
-$optionalfieldsarraytempsql = "SELECT * FROM optionalfields ORDER BY position ASC;";
-try {
-    $req = \model\Db::getInstance()->prepare("{$optionalfieldsarraytempsql}");
-    $req->execute();
-    $optionalfieldsarraytemp = $req->fetchAll();
-} catch (PDOException $e) {
-
-}
+$optionalfieldsarraytemp = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields ORDER BY optionorder ASC;");
 ?>
 <script language="javascript" type="text/javascript">
     //findPos(object)
@@ -31,15 +24,15 @@ try {
         var poptop = (findPos(obj)[1] + ((obj.height / 3) * 2));
         //determine browser window width
         var myWidth = 0, myHeight = 0;
-        if (typeof( window.innerWidth ) == 'number') {
+        if (typeof(window.innerWidth) == 'number') {
             //Non-IE
             myWidth = window.innerWidth;
             myHeight = window.innerHeight;
-        } else if (document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight )) {
+        } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
             //IE 6+ in 'standards compliant mode'
             myWidth = document.documentElement.clientWidth;
             myHeight = document.documentElement.clientHeight;
-        } else if (document.body && ( document.body.clientWidth || document.body.clientHeight )) {
+        } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
             //IE 4 compatible
             myWidth = document.body.clientWidth;
             myHeight = document.body.clientHeight;
@@ -63,15 +56,15 @@ try {
         var poptop = (findPos(obj)[1] + ((obj.height / 3) * 2));
         //determine browser window width
         var myWidth = 0, myHeight = 0;
-        if (typeof( window.innerWidth ) == 'number') {
+        if (typeof(window.innerWidth) == 'number') {
             //Non-IE
             myWidth = window.innerWidth;
             myHeight = window.innerHeight;
-        } else if (document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight )) {
+        } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
             //IE 6+ in 'standards compliant mode'
             myWidth = document.documentElement.clientWidth;
             myHeight = document.documentElement.clientHeight;
-        } else if (document.body && ( document.body.clientWidth || document.body.clientHeight )) {
+        } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
             //IE 4 compatible
             myWidth = document.body.clientWidth;
             myHeight = document.body.clientHeight;
@@ -178,10 +171,9 @@ try {
 
         params = "altusername=" + altusername + "&emailconfirmation=" + emailconfirmation + "&duration=" + document.reserve.duration.value + "&roomid=" + document.reserve.roomid.value + "&starttime=" + document.reserve.starttime.value + "&capacity=" + document.reserve.capacity.value + "&fullcapacity=" + document.reserve.fullcapacity.value + "<?php
             //Use the session var of optional fields to grab field values from the reserve form
-                foreach($optionalfieldsarraytemp as $optionalfield)
-                {
-                    echo "&" . $optionalfield["optionformname"] . "=\"+ document.reserve." . $optionalfield["optionformname"] . ".value +\"";
-                }
+            while ($optionalfield = mysqli_fetch_array($optionalfieldsarraytemp)) {
+                echo "&" . $optionalfield["optionformname"] . "=\"+ document.reserve." . $optionalfield["optionformname"] . ".value +\"";
+            }
 
             ?>";
 

@@ -78,8 +78,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             <tr class="reportodd">
                 <td><strong>Month</strong></td>
                 <?php
-                $rooms = mysql_query("SELECT * FROM rooms ORDER BY roomgroupid, roomname;");
-                while ($room = mysql_fetch_array($rooms)) {
+                $rooms = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms ORDER BY roomgroupid, roomname;");
+                while ($room = mysqli_fetch_array($rooms)) {
                     $roomid_array[] = $room["roomid"];
                     $roomname_array[] = $room["roomname"];
                     $totals_array[] = 0;
@@ -110,7 +110,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 //For each room find this day's totals
                 $rowtotal = 0;
                 foreach ($roomname_array as $key => $roomid) {
-                    $rescount = mysql_num_rows(mysql_query("SELECT reservationid, UNIX_TIMESTAMP(start), UNIX_TIMESTAMP(END), roomid, username, timeofrequest FROM cancelled WHERE (UNIX_TIMESTAMP(start) >= " . $fromstamp . " AND UNIX_TIMESTAMP(start) < " . strtotime("+1 month", $fromstamp) . ") AND roomid=" . $roomid_array[$key] . $orderbystr . ";"));
+                    $rescount = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT reservationid, UNIX_TIMESTAMP(start), UNIX_TIMESTAMP(end), roomid, username, timeofrequest FROM cancelled WHERE (UNIX_TIMESTAMP(start) >= " . $fromstamp . " AND UNIX_TIMESTAMP(start) < " . strtotime("+1 month", $fromstamp) . ") AND roomid=" . $roomid_array[$key] . $orderbystr . ";"));
                     echo "<td>" . $rescount . "</td>";
                     $totals_array[$key] += $rescount;
                     $rowtotal += $rescount;

@@ -23,7 +23,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
     switch ($op) {
         case "deletehours":
             $roomhoursid = isset($_REQUEST["roomhoursid"]) ? $_REQUEST["roomhoursid"] : "";
-            if (mysql_query("DELETE FROM roomhours WHERE roomhoursid=" . $roomhoursid . ";")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM roomhours WHERE roomhoursid=" . $roomhoursid . ";")) {
                 $successmsg = "Hours deleted.";
             } else {
                 $errormsg = "Unable to delete these hours! Please try again.";
@@ -43,9 +43,9 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             //Make sure starttime is less than endtime
             if ($endtime->isGreaterThan($starttime)) {
                 //Ensure that this new range does not conflict with existing ranges
-                $allhoursr = mysql_query("SELECT * FROM roomhours WHERE roomid=" . $roomid . " AND dayofweek=" . $wkdy . " ORDER BY start ASC;");
+                $allhoursr = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomhours WHERE roomid=" . $roomid . " AND dayofweek=" . $wkdy . " ORDER BY start ASC;");
                 $ccflag = 0;
-                while ($record = mysql_fetch_array($allhoursr)) {
+                while ($record = mysqli_fetch_array($allhoursr)) {
                     $tstart = new ClockTime();
                     $tstart->setMySQLTime($record["start"]);
                     $tend = new ClockTime();
@@ -61,7 +61,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                     $errormsg = "Can't add new hours as they conflict with existing hours for this room.";
                 } else {
                     //Add hours
-                    if (mysql_query("INSERT INTO roomhours(roomid,dayofweek,start,end) VALUES(" . $roomid . ",'" . $wkdy . "','" . $starttime->getTime() . "','" . $endtime->getTime() . "');")) {
+                    if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO roomhours(roomid,dayofweek,start,end) VALUES(" . $roomid . ",'" . $wkdy . "','" . $starttime->getTime() . "','" . $endtime->getTime() . "');")) {
                         $successmsg = "New hours added!";
                     } else {
                         $errormsg = "There was a problem adding the new hours. Please try again.";
@@ -132,12 +132,12 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             }
 
             $pgroupname = "";
-            $rooms = mysql_query("SELECT * FROM rooms ORDER BY roomgroupid ASC, roomposition ASC;");
-            while ($room = mysql_fetch_array($rooms)) {
+            $rooms = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms ORDER BY roomgroupid ASC, roomposition ASC;");
+            while ($room = mysqli_fetch_array($rooms)) {
                 $cgroupname = $room["roomgroupid"];
                 if ($pgroupname != $cgroupname) {
-                    $roomgroupname = mysql_query("SELECT * FROM roomgroups WHERE roomgroupid=" . $cgroupname . ";");
-                    $rgn = mysql_fetch_array($roomgroupname);
+                    $roomgroupname = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups WHERE roomgroupid=" . $cgroupname . ";");
+                    $rgn = mysqli_fetch_array($roomgroupname);
                     echo "<tr><td colspan=\"8\" class=\"tabletitle\">" . $rgn["roomgroupname"] . "</td></tr>";
                     echo "<tr><td class=\"tableheader\">Room Name</td><td class=\"tableheader\">Sunday</td><td class=\"tableheader\">Monday</td><td class=\"tableheader\">Tuesday</td><td class=\"tableheader\">Wednesday</td><td class=\"tableheader\">Thursday</td><td class=\"tableheader\">Friday</td><td class=\"tableheader\">Saturday</td></tr>";
                 }
@@ -148,8 +148,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
 
                 for ($wkdy = 0; $wkdy <= 6; $wkdy++) {
                     echo "<td><table class=\"timeblock\">";
-                    $thisday = mysql_query("SELECT * FROM roomhours WHERE roomid=" . $roomid . " AND dayofweek=" . $wkdy . " ORDER BY start ASC;");
-                    while ($rec = mysql_fetch_array($thisday)) {
+                    $thisday = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomhours WHERE roomid=" . $roomid . " AND dayofweek=" . $wkdy . " ORDER BY start ASC;");
+                    while ($rec = mysqli_fetch_array($thisday)) {
                         echo "<tr><td>" . substr($rec["start"], 0, -3) . "-" . substr($rec["end"], 0, -3) . " <a href=\"javascript:deletehrs(" . $rec["roomhoursid"] . ",'" . $room["roomname"] . "');\">x</a></td></tr>";
                     }
                     echo "<tr><td><hr/><span class=\"timeblocktext\"><strong>Add Hours</strong></span><br/><span class=\"timeblocktext\">Start</span><br/><form name=\"adddefaulthours\" action=\"defaulthours.php\" method=\"POST\"><input type=\"hidden\" name=\"anchorname\" value=\"" . $room["roomname"] . "\" /><input type=\"hidden\" name=\"op\" value=\"addhours\" /><input type=\"hidden\" name=\"roomid\" value=\"" . $roomid . "\" /><input type=\"hidden\" name=\"wkdy\" value=\"" . $wkdy . "\" /><select name=\"shour\">" . $hourstr . "</select>:<select name=\"sminute\">" . $minstr . "</select><br/><span class=\"timeblocktext\">End</span><br/><select name=\"ehour\">" . $hourstr . "</select>:<select name=\"eminute\">" . $minstr . "</select><input type=\"submit\" value=\"Add\" /></form></td></tr></table>";

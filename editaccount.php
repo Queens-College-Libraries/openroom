@@ -6,14 +6,13 @@ if (session_status() == PHP_SESSION_NONE) {
 include("includes/or-theme.php");
 include($_SESSION["themepath"] . "header.php");
 
-if ($_SESSION["systemid"] == \model\Setting::fetchValue(\model\Db::getInstance(),"systemid")) {
+if ($_SESSION["systemid"] == $settings["systemid"]) {
+
     //Form Processing
-    if (isset($_POST["submitted"])) {
-        $submitted = $_POST["submitted"];
-    }
+    $submitted = isset($_POST["submitted"]) ? $_POST["submitted"] : "";
     $errormsg = "";
 
-    $emaila = \model\User::fetchByUsername(\model\Db::getInstance(), $_SESSION["username"])->getEmail();
+    $emaila = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM users WHERE username='" . $_SESSION["username"] . "';"));
 
     if ($submitted == "1") {
         $password = isset($_POST["password"]) ? $_POST["password"] : "";
@@ -38,8 +37,7 @@ if ($_SESSION["systemid"] == \model\Setting::fetchValue(\model\Db::getInstance()
 
         if ($errormsg == "") {
             //Update account for this user
-            // mysql_query("UPDATE users SET password = '" . $encpass . "', email = '" . $email . "' WHERE username='" . $_SESSION["username"] . "';"
-            if (true) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE users SET password = '" . $encpass . "', email = '" . $email . "' WHERE username='" . $_SESSION["username"] . "';")) {
                 $successmsg = "Your account has been updated!";
             } else {
                 $errormsg = "Account could not be updated.<br/>";
@@ -47,7 +45,7 @@ if ($_SESSION["systemid"] == \model\Setting::fetchValue(\model\Db::getInstance()
         }
     }
 
-    $emaila = \model\User::fetchByUsername(\model\Db::getInstance(), $_SESSION["username"])->getEmail();
+    $emaila = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM users WHERE username='" . $_SESSION["username"] . "';"));
     $email = $emaila["email"];
 
     ?>

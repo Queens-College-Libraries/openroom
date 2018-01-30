@@ -45,8 +45,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                             $frommysql = date("Y-m-d H:i:s", $froma);
                             $tomysql = date("Y-m-d H:i:s", $toa);
                             foreach ($affectedrooms as $aroom) {
-                                $room = mysql_fetch_array(mysql_query("SELECT * FROM rooms WHERE roomid=" . $aroom . ";"));
-                                if (mysql_query("INSERT INTO roomspecialhours(roomid,fromrange,torange,start,end) VALUES(" . $aroom . ",'" . $frommysql . "','" . $tomysql . "','" . $starttime->getTime() . "','" . $endtime->getTime() . "');")) {
+                                $room = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid=" . $aroom . ";"));
+                                if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO roomspecialhours(roomid,fromrange,torange,start,end) VALUES(" . $aroom . ",'" . $frommysql . "','" . $tomysql . "','" . $starttime->getTime() . "','" . $endtime->getTime() . "');")) {
                                     $successmsg = "Special Hours have been added!";
                                 } else {
                                     $errormsg .= "<br/>Unable to add special hours to room " . $room["roomname"] . ". Please try again!";
@@ -68,7 +68,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
 
         case "deletespecialhours":
             $roomspecialhoursid = isset($_REQUEST["roomspecialhoursid"]) ? $_REQUEST["roomspecialhoursid"] : "";
-            if (mysql_query("DELETE FROM roomspecialhours WHERE roomspecialhoursid=" . $roomspecialhoursid . ";")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM roomspecialhours WHERE roomspecialhoursid=" . $roomspecialhoursid . ";")) {
                 $successmsg = "Special hours deleted.";
             } else {
                 $errormsg = "Unable to delete special hours. Please try again.";
@@ -123,20 +123,20 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         <table class="specialhourslist">
             <?php
             $pgroupname = "";
-            $rooms = mysql_query("SELECT * FROM rooms ORDER BY roomgroupid ASC, roomposition ASC;");
-            while ($room = mysql_fetch_array($rooms)) {
+            $rooms = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms ORDER BY roomgroupid ASC, roomposition ASC;");
+            while ($room = mysqli_fetch_array($rooms)) {
                 $cgroupname = $room["roomgroupid"];
                 if ($pgroupname != $cgroupname) {
-                    $roomgroupname = mysql_query("SELECT * FROM roomgroups WHERE roomgroupid=" . $cgroupname . ";");
-                    $rgn = mysql_fetch_array($roomgroupname);
+                    $roomgroupname = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups WHERE roomgroupid=" . $cgroupname . ";");
+                    $rgn = mysqli_fetch_array($roomgroupname);
                     echo "<tr><td colspan=\"8\" class=\"tabletitle\">" . $rgn["roomgroupname"] . "</td></tr>";
                 }
                 $pgroupname = $cgroupname;
 
                 echo "<tr><td><strong>" . $room["roomname"] . "</strong><ul>";
 
-                $specialhoursa = mysql_query("SELECT * FROM roomspecialhours WHERE roomid=" . $room["roomid"] . ";");
-                while ($specialhours = mysql_fetch_array($specialhoursa)) {
+                $specialhoursa = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomspecialhours WHERE roomid=" . $room["roomid"] . ";");
+                while ($specialhours = mysqli_fetch_array($specialhoursa)) {
                     $from = explode(" ", $specialhours["fromrange"]);
                     $to = explode(" ", $specialhours["torange"]);
                     echo "<li><strong>Date Range: </strong>" . $from[0] . " -- " . $to[0] . " | <strong>Hours:</strong> " . $specialhours["start"] . " -- " . $specialhours["end"] . " | <a href=\"javascript:confirmdelete(" . $specialhours["roomspecialhoursid"] . ");\">X</a></li>";
@@ -227,14 +227,14 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             <table>
                 <?php
                 $pgroupname = "";
-                $rooms = mysql_query("SELECT * FROM rooms ORDER BY roomgroupid ASC, roomposition ASC;");
+                $rooms = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms ORDER BY roomgroupid ASC, roomposition ASC;");
                 $to5 = 0;
                 $to1 = 0;
-                while ($room = mysql_fetch_array($rooms)) {
+                while ($room = mysqli_fetch_array($rooms)) {
                     $cgroupname = $room["roomgroupid"];
                     if ($pgroupname != $cgroupname) {
-                        $roomgroupname = mysql_query("SELECT * FROM roomgroups WHERE roomgroupid=" . $cgroupname . ";");
-                        $rgn = mysql_fetch_array($roomgroupname);
+                        $roomgroupname = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups WHERE roomgroupid=" . $cgroupname . ";");
+                        $rgn = mysqli_fetch_array($roomgroupname);
                         if ($to1 > 0) echo "</table>\n";
                         echo "<table><tr><td colspan=\"5\">" . $rgn["roomgroupname"] . "</td></tr>";
                         $to5 = 0;

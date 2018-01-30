@@ -23,13 +23,13 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "incorder":
             $opid = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
             if ($opid != "") {
-                $thisroom = mysql_fetch_array(mysql_query("SELECT * FROM rooms WHERE roomid=" . $opid . ";"));
+                $thisroom = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid=" . $opid . ";"));
                 $thispos = $thisroom["roomposition"];
                 $nextpos = $thispos + 1;
-                $thisgroupcount = mysql_num_rows(mysql_query("SELECT * FROM rooms WHERE roomgroupid=" . $thisroom["roomgroupid"] . ";"));
+                $thisgroupcount = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid=" . $thisroom["roomgroupid"] . ";"));
                 if ($nextpos < $thisgroupcount) {
-                    mysql_query("UPDATE rooms SET roomposition=" . $thispos . " WHERE roomposition=" . $nextpos . ";");
-                    mysql_query("UPDATE rooms SET roomposition=" . $nextpos . " WHERE roomid=" . $opid . ";");
+                    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomposition=" . $thispos . " WHERE roomposition=" . $nextpos . ";");
+                    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomposition=" . $nextpos . " WHERE roomid=" . $opid . ";");
                 }
             }
             break;
@@ -37,13 +37,13 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "decorder":
             $opid = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
             if ($opid != "") {
-                $thisroom = mysql_fetch_array(mysql_query("SELECT * FROM rooms WHERE roomid=" . $opid . ";"));
+                $thisroom = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid=" . $opid . ";"));
                 $thispos = $thisroom["roomposition"];
                 $prevpos = $thispos - 1;
-                $thisgroupcount = mysql_num_rows(mysql_query("SELECT * FROM rooms WHERE roomgroupid=" . $thisroom["roomgroupid"] . ";"));
+                $thisgroupcount = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid=" . $thisroom["roomgroupid"] . ";"));
                 if ($prevpos >= 0) {
-                    mysql_query("UPDATE rooms SET roomposition=" . $thispos . " WHERE roomposition=" . $prevpos . ";");
-                    mysql_query("UPDATE rooms SET roomposition=" . $prevpos . " WHERE roomid=" . $opid . ";");
+                    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomposition=" . $thispos . " WHERE roomposition=" . $prevpos . ";");
+                    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomposition=" . $prevpos . " WHERE roomid=" . $opid . ";");
                 }
             }
             break;
@@ -55,15 +55,15 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $roomgroupid = isset($_REQUEST["roomgroupid"]) ? $_REQUEST["roomgroupid"] : "";
 
             if ($roomgroupid != "") {
-                $roompositionr = mysql_query("SELECT * FROM rooms WHERE roomgroupid = $roomgroupid ORDER BY roomposition DESC;");
-                if (mysql_num_rows($roompositionr) > 0) {
-                    $roompositiona = mysql_fetch_array($roompositionr);
+                $roompositionr = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid = $roomgroupid ORDER BY roomposition DESC;");
+                if (mysqli_num_rows($roompositionr) > 0) {
+                    $roompositiona = mysqli_fetch_array($roompositionr);
                     $roomposition = $roompositiona["roomposition"] + 1;
                 } else {
                     $roomposition = 0;
                 }
                 if ($roomname != "" && $roomcapacity != "" && $roomdescription != "" && $roomgroupid != "" && $roomposition >= 0) {
-                    if (mysql_query("INSERT INTO rooms(roomname,roomposition,roomcapacity,roomgroupid,roomdescription) VALUES('$roomname',$roomposition,$roomcapacity,$roomgroupid,'$roomdescription');")) {
+                    if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO rooms(roomname,roomposition,roomcapacity,roomgroupid,roomdescription) VALUES('$roomname',$roomposition,$roomcapacity,$roomgroupid,'$roomdescription');")) {
                         $successmsg = "Room $roomname has been added!";
                     } else {
                         $errormsg = "Unable to add room $roomname. (Make sure you've added a <a href=\"roomgroups.php\">Room Group</a> first!)";
@@ -81,7 +81,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $roomgroupid = isset($_REQUEST["roomgroupid"]) ? $_REQUEST["roomgroupid"] : "";
             $roomid = isset($_REQUEST["roomid"]) ? $_REQUEST["roomid"] : "";
             if ($roomname != "" && $roomcapacity != "" && $roomdescription != "" && $roomgroupid != "" && $roomid != "") {
-                if (mysql_query("UPDATE rooms SET roomname='" . $roomname . "', roomcapacity=" . $roomcapacity . ", roomdescription='" . $roomdescription . "', roomgroupid=" . $roomgroupid . " WHERE roomid=" . $roomid . ";")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomname='" . $roomname . "', roomcapacity=" . $roomcapacity . ", roomdescription='" . $roomdescription . "', roomgroupid=" . $roomgroupid . " WHERE roomid=" . $roomid . ";")) {
                     $successmsg = "Room $roomname has been updated!";
                 } else {
                     $errormsg = "Unable to edit room $roomname. Please try again.";
@@ -94,14 +94,14 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "deleteroom":
             $opid = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
             if ($opid != "") {
-                $roomnamea = mysql_fetch_array(mysql_query("SELECT * FROM rooms WHERE roomid=" . $opid . ";"));
+                $roomnamea = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid=" . $opid . ";"));
                 $roomname = $roomnamea["roomname"];
                 $roomposition = $roomnamea["roomposition"];
                 $roomgroupid = $roomnamea["roomgroupid"];
                 //Grab all reservations for this room that start AFTER the current time.
-                $futureresa = mysql_query("SELECT * FROM reservations WHERE roomid=" . $opid . " AND start >= '" . date("Y-m-d H:i:s") . "';");
+                $futureresa = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM reservations WHERE roomid=" . $opid . " AND start >= '" . date("Y-m-d H:i:s") . "';");
                 //Cancel each reservation
-                while ($futureres = mysql_fetch_array($futureresa)) {
+                while ($futureres = mysqli_fetch_array($futureresa)) {
                     $_POST["reservationid"] = $futureres["reservationid"];
                     ob_start();
                     include("../or-cancel.php");
@@ -109,13 +109,13 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                     ob_end_clean();
                 }
                 //Move this room to deletedrooms table (minus position info)
-                if (mysql_query("INSERT INTO deletedrooms(roomid,roomname,roomcapacity,roomgroupid,roomdescription) VALUES(" . $roomnamea["roomid"] . ",'" . $roomnamea["roomname"] . "'," . $roomnamea["roomcapacity"] . "," . $roomnamea["roomgroupid"] . ",'" . $roomnamea["roomdescription"] . "');")) {
-                    if (mysql_query("DELETE FROM rooms WHERE roomid=" . $opid . ";")) {
-                        $rearrr = mysql_query("SELECT * FROM rooms WHERE roomposition > " . $roomposition . " AND roomgroupid = " . $roomgroupid . " ORDER BY roomposition ASC;");
-                        while ($rearr = mysql_fetch_array($rearrr)) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO deletedrooms(roomid,roomname,roomcapacity,roomgroupid,roomdescription) VALUES(" . $roomnamea["roomid"] . ",'" . $roomnamea["roomname"] . "'," . $roomnamea["roomcapacity"] . "," . $roomnamea["roomgroupid"] . ",'" . $roomnamea["roomdescription"] . "');")) {
+                    if (mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM rooms WHERE roomid=" . $opid . ";")) {
+                        $rearrr = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomposition > " . $roomposition . " AND roomgroupid = " . $roomgroupid . " ORDER BY roomposition ASC;");
+                        while ($rearr = mysqli_fetch_array($rearrr)) {
                             $thisid = $rearr["roomid"];
                             $thispos = $rearr["roomposition"] - 1;
-                            mysql_query("UPDATE rooms SET roomposition=" . $thispos . " WHERE roomid=" . $thisid . ";");
+                            mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomposition=" . $thispos . " WHERE roomid=" . $thisid . ";");
                         }
                         $successmsg = "Successfully deleted room $roomname!";
                     }
@@ -170,19 +170,19 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         <table class="roomslist">
             <?php
             $pgroupname = "";
-            $rooms = mysql_query("SELECT * FROM rooms ORDER BY roomgroupid ASC, roomposition ASC;");
-            while ($room = mysql_fetch_array($rooms)) {
+            $rooms = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms ORDER BY roomgroupid ASC, roomposition ASC;");
+            while ($room = mysqli_fetch_array($rooms)) {
                 $cgroupname = $room["roomgroupid"];
                 if ($pgroupname != $cgroupname) {
-                    $roomgroupname = mysql_query("SELECT * FROM roomgroups WHERE roomgroupid=" . $cgroupname . ";");
-                    $rgn = mysql_fetch_array($roomgroupname);
+                    $roomgroupname = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups WHERE roomgroupid=" . $cgroupname . ";");
+                    $rgn = mysqli_fetch_array($roomgroupname);
                     echo "<tr><td colspan=\"8\" class=\"tabletitle\">" . $rgn["roomgroupname"] . "</td></tr>";
                     echo "<tr><td class=\"tableheader\" colspan=\"2\">Order</td><td class=\"tableheader\">Name</td><td class=\"tableheader\">Capacity</td><td class=\"tableheader\">Group</td><td class=\"tableheader\">Description</td><td></td><td></td></tr>";
                 }
                 $pgroupname = $cgroupname;
                 $roomid = $room["roomid"];
 
-                $thisgroupcount = mysql_num_rows(mysql_query("SELECT * FROM rooms WHERE roomgroupid=" . $cgroupname . ";"));
+                $thisgroupcount = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid=" . $cgroupname . ";"));
                 $orderstring = "";
                 if ($room["roomposition"] >= 0 && $room["roomposition"] < $thisgroupcount - 1) {
                     $orderstring .= "<td><a href=\"rooms.php?op=incorder&id=" . $roomid . "\"><img src=\"images/movedown.gif\" style=\"display: inline;border: 0px;\" /></a></td>";
@@ -196,8 +196,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 }
 
                 $roomgroupstr = "<select name=\"roomgroupid\"><option></option>";
-                $roomgroups = mysql_query("SELECT * FROM roomgroups;");
-                while ($roomgroup = mysql_fetch_array($roomgroups)) {
+                $roomgroups = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups;");
+                while ($roomgroup = mysqli_fetch_array($roomgroups)) {
                     $selectedstr = "";
                     if ($roomgroup["roomgroupid"] == $room["roomgroupid"]) {
                         $selectedstr = "selected ";
@@ -232,8 +232,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                     <td>
                         <?php
                         $roomgroupstr = "<select name=\"roomgroupid\">";
-                        $roomgroups = mysql_query("SELECT * FROM roomgroups;");
-                        while ($roomgroup = mysql_fetch_array($roomgroups)) {
+                        $roomgroups = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups;");
+                        while ($roomgroup = mysqli_fetch_array($roomgroups)) {
                             $roomgroupstr .= "<option value=\"" . $roomgroup["roomgroupid"] . "\">" . $roomgroup["roomgroupname"] . "</option>";
                         }
                         $roomgroupstr .= "</select>";

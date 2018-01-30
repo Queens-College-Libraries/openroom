@@ -14,8 +14,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
     echo "You are not logged in. Please <a href=\"../index.php\">click here</a> and login with an account that is an authorized administrator or reporter.";
 } else {
     $optionalfields_string = "";
-    $optionalfields_array = mysql_query("SELECT * FROM optionalfields ORDER BY optionorder ASC;");
-    while ($optionalfield = mysql_fetch_array($optionalfields_array)) {
+    $optionalfields_array = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields ORDER BY optionorder ASC;");
+    while ($optionalfield = mysqli_fetch_array($optionalfields_array)) {
         //Determine if required
         if ($optionalfield["optionrequired"] == 1) {
             $optionalfields_string .= "<strong><span class=\'requiredmarker\'>*</span>";
@@ -202,8 +202,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                     <td>
                         <select name="roomid">
                             <?php
-                            $rooms = mysql_query("SELECT * FROM rooms ORDER BY roomgroupid, roomname ASC;");
-                            while ($room = mysql_fetch_array($rooms)) {
+                            $rooms = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms ORDER BY roomgroupid, roomname ASC;");
+                            while ($room = mysqli_fetch_array($rooms)) {
                                 $selectstr = "";
                                 if ($_POST["roomid"] == $room["roomid"]) {
                                     $selectstr = "selected";

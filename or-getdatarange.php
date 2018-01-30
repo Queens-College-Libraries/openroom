@@ -51,8 +51,8 @@ if ($fromrange == 0 || $torange == 0) {
     $output .= "<errormessage>One or both parameters are missing: fromrange, torange</errormessage>\n";
 } else {
     //Grab all reservations from DB with start OR end times between fromrange and torange
-    $reservations_result = mysql_query("SELECT reservationid, UNIX_TIMESTAMP(start), UNIX_TIMESTAMP(END), roomid, username, timeofrequest FROM reservations WHERE (UNIX_TIMESTAMP(start) >= " . $fromrange . " AND UNIX_TIMESTAMP(start) <= " . $torange . ") OR (UNIX_TIMESTAMP(END) >= " . $fromrange . " AND UNIX_TIMESTAMP(END) <= " . $torange . ") OR (UNIX_TIMESTAMP(END) >= " . $torange . " AND UNIX_TIMESTAMP(start) <= " . $fromrange . ") ORDER BY roomid, start ASC;");
-    while ($record = mysql_fetch_array($reservations_result)) {
+    $reservations_result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT reservationid, UNIX_TIMESTAMP(start), UNIX_TIMESTAMP(end), roomid, username, timeofrequest FROM reservations WHERE (UNIX_TIMESTAMP(start) >= " . $fromrange . " AND UNIX_TIMESTAMP(start) <= " . $torange . ") OR (UNIX_TIMESTAMP(end) >= " . $fromrange . " AND UNIX_TIMESTAMP(end) <= " . $torange . ") OR (UNIX_TIMESTAMP(end) >= " . $torange . " AND UNIX_TIMESTAMP(start) <= " . $fromrange . ") ORDER BY roomid, start ASC;");
+    while ($record = mysqli_fetch_array($reservations_result)) {
         $output .= "<reservation>\n<id>" . $record["reservationid"] . "</id>\n<start>" . $record["UNIX_TIMESTAMP(start)"] . "</start>\n<end>" . $record["UNIX_TIMESTAMP(end)"] . "</end>\n<roomid>" . $record["roomid"] . "</roomid>\n<username>" . (($record["username"] == $username || $isadministrator == "TRUE") ? $record["username"] : "") . "</username>\n";
         if ($isadministrator == "TRUE") {
             $output .= "<timeofrequest>" . $record["timeofrequest"] . "</timeofrequest>\n";
@@ -65,8 +65,8 @@ if ($fromrange == 0 || $torange == 0) {
             $displayprivateoptions = "";
         }
         //Retrieve optional field data
-        $ofdr = mysql_query("SELECT * FROM reservationoptions LEFT JOIN optionalfields ON reservationoptions.optionname = optionalfields.optionname WHERE reservationoptions.reservationid = '" . $record["reservationid"] . "'" . $displayprivateoptions . ";");
-        while ($ofd = mysql_fetch_array($ofdr)) {
+        $ofdr = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM reservationoptions LEFT JOIN optionalfields ON reservationoptions.optionname = optionalfields.optionname WHERE reservationoptions.reservationid = '" . $record["reservationid"] . "'" . $displayprivateoptions . ";");
+        while ($ofd = mysqli_fetch_array($ofdr)) {
             $output .= "<optionalfield>\n<optionname>" . $ofd["optionname"] . "</optionname>\n<optionvalue>" . $ofd["optionvalue"] . "</optionvalue>\n</optionalfield>\n";
         }
         $output .= "</optionalfields>\n</reservation>";

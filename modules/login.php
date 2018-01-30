@@ -60,11 +60,11 @@
             <li>
                 <ul id="loginusername">
                     <li>
-                        <span id="loginusernamelabel">Username:</span>
+                        <span id="loginusernamelabel">QC Username:</span>
                     </li>
                     <li>
-                        <input alt="Enter Username" type="text" name="username" id="usernamefield" class="textfield"
-                               autofocus="autofocus"/>
+                        <input alt="Enter your QC Username" type="text" name="username" id="usernamefield"
+                               class="textfield" placeholder="Your QC Username" autofocus="autofocus"/>
                     </li>
                 </ul>
             </li>
@@ -74,8 +74,8 @@
                         <span id="loginpasswordlabel">Password:</span>
                     </li>
                     <li>
-                        <input alt="Enter Password" type="password" name="password" id="passwordfield"
-                               class="textfield"/>
+                        <input alt="Enter your QC Password" type="password" name="password" id="passwordfield"
+                               class="textfield" placeholder="Your QC password"/>
                     </li>
                 </ul>
             </li>
@@ -83,7 +83,7 @@
                 <input id="loginsubmitbutton" class="button" type="submit" value="Log In"
                        onclick="ajaxAuthenticate()"/><br/>
                 <?php
-                if (model\Setting::fetchValue(\model\Db::getInstance(), 'login_method') == "normal") {
+                if ($settings["login_method"] == "normal") {
                     echo "<span class=\"registrationlink\"><a href=\"createaccount.php\">Create Account</a></span><br/><br/>";
                 }
                 ?>

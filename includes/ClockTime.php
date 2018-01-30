@@ -2,7 +2,7 @@
 
 /****************************************
  * This class describes durative time in the format of hours:minutes:seconds (with 0 padding)
- * This class can be used with the MySQL TIME datatype for modifying those values and storing them back
+ * This class can be used with the mysql TIME datatype for modifying those values and storing them back
  * in the database.  Modification consists of adding amounts of time in the hours:minutes:seconds format.
  * Hours must be an integer, minutes between 0 and 59 and seconds between 0 and 59.
  ****************************************/

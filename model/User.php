@@ -3,150 +3,191 @@
 namespace model;
 class User
 {
-    private $id;
     private $username;
-    private $displayName;
+    private $displayname;
     private $password;
-    private $email;
-    private $lastLogin;
-    private $isActive;
+    private $emailaddress;
+    private $lastlogin;
+    private $activationCode;
     private $isAdministrator;
     private $isReporter;
-    private $isBanned;
 
-    function __construct()
+    public function __construct($username)
     {
-    }
-
-    public static function create()
-    {
-        $instance = new self();
-        return $instance;
-    }
-
-    public static function hashPassword($input)
-    {
-        return password_hash($input, PASSWORD_DEFAULT);
-    }
-
-    public function setId($input)
-    {
-        $this->id = $input;
-        return $this;
-    }
-
-    public function getIsBanned(): bool
-    {
-        return $this->isBanned;
-    }
-
-    public function setIsBanned($input)
-    {
-        $this->isBanned = $input;
-        return $this;
-    }
-
-    public function getIsReporter(): bool
-    {
-        return $this->isReporter;
-    }
-
-    public function setIsReporter($input)
-    {
-        $this->isReporter = $input;
-        return $this;
-    }
-
-    public function getIsAdministrator(): bool
-    {
-        return $this->isAdministrator;
-    }
-
-    public function setIsAdministrator($input)
-    {
-        $this->isAdministrator = $input;
-        return $this;
-    }
-
-    public function getDisplayName()
-    {
-        return $this->displayName;
-    }
-
-    public function setDisplayName($input)
-    {
-        if ($input != null) {
-            $this->displayName = $input;
-        } else {
-            $this->displayName = $this->getUsername();
+        $this->username = $username;
+        $settings = [];
+        $db = Db::getInstance();
+        $q = $db->query('SELECT * FROM `settings`');
+        foreach ($q->fetchAll() as $row) {
+            $settings[$row['settingname']] = $row['settingvalue'];
         }
-        return $this;
+        $this->emailaddress = $this->ReturnEmailAddress($this->username, $settings);
+        if ($settings["login_method"] == "ldap") {
+            $this->password = "LDAP";
+        } else {
+            $this->password = "";
+        }
+        if ($settings["login_method"] == "ldap") {
+            $this->activationCode = "LDAP";
+        } else {
+            $this->activationCode = "";
+        }
+        $this->displayname = $this->ReturnDisplayName($this->username, $settings);
+        if (Administrator::exists($this->username)) {
+            $this->isAdministrator = true;
+        } else {
+            $this->isAdministrator = false;
+        }
+        if (Reporter::exists($this->username)) {
+            $this->isReporter = true;
+        } else {
+            $this->isReporter = false;
+        }
+        // if(!User::exists($this->username))
+        // {
+        //     try 
+        //     {
+        //         $db = Db::getInstance();
+        //         echo $this->username . " " . $this->password ." " . $this->emailaddress ." " . $this->activationCode;
+        //         $req = $db->prepare('INSERT INTO `users`(`username`, `password`, `email`, `active`) VALUES (:username, :password, :emailaddress, :activationCode)');
+        //         $req->bindParam(':username', $this->username, \PDO::PARAM_STR, 255);
+        //         $req->bindParam(':password', $this->password, \PDO::PARAM_STR, 255);
+        //         $req->bindParam(':emailaddress', $this->emailaddress, \PDO::PARAM_STR, 255);
+        //         $req->bindParam(':actvationCode', $this->activationCode, \PDO::PARAM_STR, 255);
+        //         $req->execute();
+        //     } catch (PDOException $e) 
+        //     {
+        //         echo 'Database connection has failed. Contact system administrator to resolve this issue!<br>';
+        //         $e->getMessage();
+        //         die();
+        //     }
+        // }
+        // else
+        // {
+        //     $db = Db::getInstance();
+        //     $req = $db->prepare('update `users` set lastlogin = now() where username = :username');
+        //     $req->bindParam(':username', $this->get_username(), \PDO::PARAM_STR, 255);
+        //     $req->execute();
+        // }
     }
 
-    public function getUsername()
+    function ReturnEmailAddress($input_username, $settings)
+    {
+        return $this->ReturnParameter($input_username, "mail", $settings);
+    }
+
+    function ReturnParameter($input_username, $input_parameter, $settings)
+    {
+        $ldapserver = $settings["ldap_baseDN"];
+        $qc_username = $settings["service_username"];
+        $password = $settings["service_password"];
+        $ldap = ldap_connect($ldapserver);
+        if ($bind = ldap_bind($ldap, $qc_username, $password)) {
+            $result = ldap_search($ldap, "", "(CN=$input_username)") or die ("Error in search query: " . ldap_error($ldap));
+            $data = ldap_get_entries($ldap, $result);
+            if (isset($data[0][$input_parameter][0])) {
+                return $data[0][$input_parameter][0];
+
+            } else {
+                return "fail";
+            }
+        }
+        ldap_close($ldap);
+        return "fail";
+    }
+
+    function ReturnDisplayName($input_username, $settings)
+    {
+        return $this->ReturnParameter($input_username, "displayname", $settings);
+    }
+
+    public static function get_all_users()
+    {
+        $list = [];
+        $db = Db::getInstance();
+        $req = $db->query('SELECT * FROM `users`');
+
+        // we create a list of Post objects from the database results
+        foreach ($req->fetchAll() as $user) {
+            $list[] = new User($user['username']);
+        }
+
+        return $list;
+    }
+
+    public static function get_a_specific_user($username)
+    {
+        $db = Db::getInstance();
+        $req = $db->prepare('SELECT * FROM `users` WHERE username = :username');
+        $req->execute(array('username' => $username));
+        $user = $req->fetch();
+
+        return new User($user['username']);
+    }
+
+    public static function exists($username)
+    {
+        $db = Db::getInstance();
+        $req = $db->prepare('SELECT exists(SELECT * FROM `users` WHERE username = :username)');
+        $req->execute(array('username' => $username));
+        $user = $req->fetch();
+        return $user[0];
+    }
+
+    public function get_username()
     {
         return $this->username;
     }
 
-    public function setUsername($input)
+    public function get_emailaddress()
     {
-        $this->username = $input;
-        return $this;
+        return $this->emailaddress;
     }
 
-    public function getPassword(): string
+    public function get_displayname()
     {
-        return $this->password;
+        return $this->displayname;
     }
 
-    public function setPassword($input)
+    public function get_isAdministrator()
     {
-        $this->password = $input;
-        return $this;
+        return $this->isAdministrator;
     }
 
-    public function getEmail()
+    public function get_isReporter()
     {
-        return $this->email;
+        return $this->isReporter;
     }
 
-    public function setEmail($input)
+    function IsNotNullOrEmptyString($question)
     {
-        $this->email = $input;
-        return $this;
+        return (!isset($question) || trim($question) === '');
     }
 
-    public function getLastLogin()
+    private function set_user_details()
     {
-        return $this->lastLogin;
-    }
-
-    public function setLastLogin($input)
-    {
-        $this->lastlogin = $input;
-        return $this;
-    }
-
-    public function verifyPassword($input)
-    {
-        if (password_verify($input, $this->password)) {
-            return true;
-        } else {
-            return false;
+        $settings = [];
+        $db = Db::getInstance();
+        $q = $db->query('SELECT * FROM `settings`');
+        foreach ($q->fetchAll() as $row) {
+            $settings[$row['settingname']] = $row['settingvalue'];
         }
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-
-    public function setIsActive($input)
-    {
-        $this->isActive = $input;
-        return $this;
+        $this->emailaddress = ReturnEmailAddress($this->username, $settings);
+        if ($settings["login_method"] == "ldap") {
+            $this->password = "LDAP";
+        } else {
+            $this->password = "";
+        }
+        $this->displayname = ReturnDisplayName($this->username, $settings);
+        if (Administrator::exists($this->username)) {
+            $this->isAdministrator = true;
+        } else {
+            $this->isAdministrator = false;
+        }
+        if (Reporter::exists($this->username)) {
+            $this->isReporter = true;
+        } else {
+            $this->isReporter = false;
+        }
     }
 }

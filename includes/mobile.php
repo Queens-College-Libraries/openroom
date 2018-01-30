@@ -54,10 +54,10 @@ switch ($op) {
 				ORDER BY roomname;";
 
 
-            $available_rooms = mysql_query($non_reserved_rooms);
+            $available_rooms = mysqli_query($GLOBALS["___mysqli_ston"], $non_reserved_rooms);
 
             echo "<span id=\"instructions\">";
-            if (mysql_num_rows($available_rooms) < 1) {
+            if (mysqli_num_rows($available_rooms) < 1) {
                 echo "No rooms are available with these requirements. Please change the fields above and try again.";
             } else {
                 echo "Select a room below to make your reservation.";
@@ -66,7 +66,7 @@ switch ($op) {
 
             $norooms = true;
 
-            while ($available_room = mysql_fetch_array($available_rooms)) {
+            while ($available_room = mysqli_fetch_array($available_rooms)) {
                 //Can this reservation be made in this room?
                 $_POST["ajax_indicator"] = "FALSE";
                 $_POST["roomid"] = $available_room["roomid"];
@@ -109,13 +109,13 @@ switch ($op) {
 
     case "make_reservation":
 
-        $room_info = mysql_query("SELECT * FROM rooms WHERE roomid = " . $_POST["roomid"] . ";");
-        $room_info = mysql_fetch_array($room_info);
+        $room_info = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid = " . $_POST["roomid"] . ";");
+        $room_info = mysqli_fetch_array($room_info);
 
         echo "starttime=" . $from . "&fullcapacity=" . $room_info["roomcapacity"];
 
-        $optionalfieldsarraytemp = mysql_query("SELECT * FROM optionalfields ORDER BY optionorder ASC;");
-        while ($optionalfield = mysql_fetch_array($optionalfieldsarraytemp)) {
+        $optionalfieldsarraytemp = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields ORDER BY optionorder ASC;");
+        while ($optionalfield = mysqli_fetch_array($optionalfieldsarraytemp)) {
             echo "&" . $optionalfield["optionformname"] . "=" . $_POST[$optionalfield["optionformname"]];
         }
         break;

@@ -96,9 +96,9 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             </tr>
 
             <?php
-            $records = mysql_query("SELECT * FROM reservations,rooms WHERE reservations.username='" . $lookupname . "' AND reservations.roomid = rooms.roomid" . $orderbystr . ";");
+            $records = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM reservations,rooms WHERE reservations.username='" . $lookupname . "' AND reservations.roomid = rooms.roomid" . $orderbystr . ";");
             $count = 2;
-            while ($record = mysql_fetch_array($records)) {
+            while ($record = mysqli_fetch_array($records)) {
                 if ($count == 2) {
                     echo "<tr class=\"reporteven\">";
                     $count = 1;
@@ -109,8 +109,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 echo "<td>" . $record["roomname"] . "</td><td><div class=\"reportscroll\">";
 
                 //Optional Fields
-                $opfields = mysql_query("SELECT * FROM reservationoptions WHERE reservationid = " . $record["reservationid"] . ";");
-                while ($opfield = mysql_fetch_array($opfields)) {
+                $opfields = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM reservationoptions WHERE reservationid = " . $record["reservationid"] . ";");
+                while ($opfield = mysqli_fetch_array($opfields)) {
                     echo "<strong>" . $opfield["optionname"] . ": </strong>" . $opfield["optionvalue"] . "<br/>";
                 }
 

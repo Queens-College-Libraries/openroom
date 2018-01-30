@@ -12,8 +12,8 @@ $isadministrator = isset($_SESSION["isadministrator"]) ? $_SESSION["isadministra
 
 $reservationid = isset($_POST["reservationid"]) ? $_POST["reservationid"] : 0;
 
-$reservation_res = mysql_query("SELECT * FROM reservations WHERE reservationid='" . $reservationid . "';");
-$reservation = mysql_fetch_array($reservation_res);
+$reservation_res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM reservations WHERE reservationid='" . $reservationid . "';");
+$reservation = mysqli_fetch_array($reservation_res);
 
 $res_username = $reservation["username"];
 
@@ -21,10 +21,10 @@ $errormsg = "";
 
 if (($isadministrator || $username == $res_username) && $username != "") {
     //Simply transfer this reservation to the cancelled table. Its ID will still be used when reporting and checking its optional fields (which are left alone).
-    $cancel_res = mysql_query("INSERT INTO cancelled(reservationid,start,end,roomid,username,timeofrequest) VALUES('" . $reservationid . "','" . $reservation["start"] . "','" . $reservation["end"] . "','" . $reservation["roomid"] . "','" . $reservation["username"] . "','" . $reservation["timeofrequest"] . "');");
+    $cancel_res = mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO cancelled(reservationid,start,end,roomid,username,timeofrequest) VALUES('" . $reservationid . "','" . $reservation["start"] . "','" . $reservation["end"] . "','" . $reservation["roomid"] . "','" . $reservation["username"] . "','" . $reservation["timeofrequest"] . "');");
     //Then delete it from the reservations table
     if ($cancel_res) {
-        $remove_res = mysql_query("DELETE FROM reservations WHERE reservationid=" . $reservationid . ";");
+        $remove_res = mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM reservations WHERE reservationid=" . $reservationid . ";");
         if ($remove_res) {
             $email_can_verbose = implode(",", unserialize($settings["email_can_verbose"]));
             $email_can_terse = implode(",", unserialize($settings["email_can_terse"]));
@@ -61,14 +61,14 @@ if (($isadministrator || $username == $res_username) && $username != "") {
                 }
             }
             if ($settings["login_method"] == "normal") {
-                $emailrecord = mysql_query("SELECT * FROM users WHERE username='" . $username . "';");
+                $emailrecord = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM users WHERE username='" . $username . "';");
                 if ($emailrecord) {
-                    $user_emaila = mysql_fetch_array($emailrecord);
+                    $user_emaila = mysqli_fetch_array($emailrecord);
                     $user_email = $user_emaila["email"];
                 }
             }
 
-            $roomname = mysql_fetch_array(mysql_query("SELECT * FROM rooms WHERE roomid=" . $reservation["roomid"] . ";"));
+            $roomname = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid=" . $reservation["roomid"] . ";"));
             $capacity = $roomname["roomcapacity"];
             $roomname = $roomname["roomname"];
             $starttime = strtotime($reservation["start"]);
@@ -78,8 +78,9 @@ if (($isadministrator || $username == $res_username) && $username != "") {
 
             //Create verbose, terse and GEF messages.
             //VERBOSE
-            $verbose_msg = "Your reservation for Room " . $roomname . " from " . date("F j, Y g:i a", $starttime) . " to " . date("F j, Y g:i a", $endtime) . " has been cancelled.<br/><br/>" . "Thank you for using " . $settings["instance_name"] . "!";
+            $verbose_msg = "Your reservation for Room " . $roomname . " from " . date("F j, Y g:i a", $starttime) . " to " . date("F j, Y g:i a", $endtime) . " has been cancelled.<br/><br/>" . "Thank you for using " . $settings["instance_name"] . "! \n\n";
 
+            $verbose_msg .= "Please call (718-997-3900) or email (musiclibrary@qc.cuny.edu) the Music  Library if you need further assistance. \n\n";
             $terse_msg = $verbose_msg;
 
             $gef_msg = "<html><body><b>Date</b>: " . date("l, F j", $starttime) . "<br/><br/><b>Time</b>: " . date("g:i a", $starttime) . " - " . date("g:i a", $endtime) . "<br/><br/><b>Username</b>: " . $username . "</body></html>";
@@ -109,10 +110,10 @@ if (($isadministrator || $username == $res_username) && $username != "") {
                 } else {
                     $thecond = $settings["email_condition"];
                     //Get optionname from optionalfields table
-                    $optionnamearray = mysql_fetch_array(mysql_query("SELECT * FROM optionalfields WHERE optionformname ='" . $thecond . "';"));
+                    $optionnamearray = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname ='" . $thecond . "';"));
                     $optionname = $optionnamearray["optionname"];
                     //Get any record with this optionname and this reservation's ID from reservationoptions table
-                    $thisoptions = mysql_fetch_array(mysql_query("SELECT * FROM reservationoptions WHERE reservationid=" . $reservationid . " AND optionname='" . $optionname . "';"));
+                    $thisoptions = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM reservationoptions WHERE reservationid=" . $reservationid . " AND optionname='" . $optionname . "';"));
                     $thisov = $thisoptions["optionvalue"];
                     if ($thisov == $settings["email_condition_value"]) {
                         mail($email_cond_verbose, $settings["instance_name"] . " Cancellation (Condition Met)", $verbose_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
@@ -124,7 +125,7 @@ if (($isadministrator || $username == $res_username) && $username != "") {
 
             echo "This reservation has been cancelled!|" . $starttime . "|" . mktime(23, 59, 59, date("m", $starttime), date("d", $starttime), date("Y", $starttime));
         } else {
-            mysql_query("DELETE FROM cancelled WHERE reservationid=" . $reservationid . ";");
+            mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM cancelled WHERE reservationid=" . $reservationid . ";");
             $errormsg = "There was a problem cancelling your reservation. If this problem persists, please contact an administrator. Code: E-Cancel-Inner";
         }
     } else {

@@ -1,54 +1,61 @@
 <?php
 
 namespace model;
+
 class Setting
 {
-    private $name;
-    private $value;
+    public $name;
+    public $value;
 
-    public function __construct()
+    public function __construct($name, $value)
     {
+        $this->name = $name;
+        $this->value = $value;
     }
 
-    public static function create()
+    public static function all()
     {
-        $instance = new self();
-        return $instance;
+        $list = [];
+        $db = Db::getInstance();
+        $req = $db->query('SELECT `settingname`, `settingvalue` FROM `settings`');
+        foreach ($req->fetchAll() as $setting) {
+            $list[] = new Setting($setting['settingname'], $setting['settingvalue']);
+        }
+        return $list;
     }
 
-    public static function fetchValue(\PDO $db, string $settingName)
+    public static function fetch_all()
     {
-        return \model\SettingRepository::fetchSetting($db, $settingName)->getValue();
+        $settings = [];
+        $db = Db::getInstance();
+        $q = $db->query('SELECT `settingname`, `settingvalue` FROM `settings`');
+        foreach ($q->fetchAll() as $row) {
+            $settings[$row['settingname']] = $row['settingvalue'];
+        }
+        return $settings;
     }
 
-    public static function update(\PDO $db, $settingname, $settingvalue)
+    public static function find($settingname)
     {
-        $req = $db->prepare('UPDATE settings SET value = :value WHERE name = :name');
-        $req->bindParam(':name', $settingname, \PDO::PARAM_STR);
-        $req->bindParam(':value', $settingvalue, \PDO::PARAM_STR);
+        $db = Db::getInstance();
+        $req = $db->prepare('SELECT `settingname`, `settingvalue` FROM `settings` WHERE settingname = :settingname');
+        $req->execute(array('settingname' => $settingname));
+        $setting = $req->fetch();
+        return new Setting($setting['settingname'], $setting['settingvalue']);
+    }
+
+    public static function update($settingname, $settingvalue): bool
+    {
+        $db = Db::getInstance();
+        $req = $db->prepare('UPDATE `settings` SET `settingvalue` = :settingvalue WHERE `settingname` = :settingname');
+        $req->bindParam(':settingname', $settingname, \PDO::PARAM_STR);
+        $req->bindParam(':settingvalue', $settingvalue, \PDO::PARAM_STR);
         $req->execute();
         return true;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName($inputName): Setting
-    {
-        $this->name = $inputName;
-        return $this;
-    }
-
-    public function getValue(): string
+    public function get_value()
     {
         return $this->value;
-    }
-
-    public function setValue($inputValue): Setting
-    {
-        $this->value = $inputValue;
-        return $this;
     }
 }

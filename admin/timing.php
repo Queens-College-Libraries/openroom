@@ -22,7 +22,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "allowsimultaneousreservations":
             $allowsimultaneousreservations = isset($_REQUEST["allowsimultaneousreservations"]) ? $_REQUEST["allowsimultaneousreservations"] : "";
             if ($allowsimultaneousreservations == "true" || $allowsimultaneousreservations == "false") {
-                if (mysql_query("UPDATE settings SET settingvalue='" . $allowsimultaneousreservations . "' WHERE settingname='allow_simultaneous_reservations';")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $allowsimultaneousreservations . "' WHERE settingname='allow_simultaneous_reservations';")) {
                     $successmsg = "Simultaneous Reservations setting has been set.";
                 } else {
                     $errormsg = "Unable to update Simultaneous Reservation setting. Please try again.";
@@ -34,7 +34,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "allowpastreservations":
             $allowpastreservations = isset($_REQUEST["allowpastreservations"]) ? $_REQUEST["allowpastreservations"] : "";
             if ($allowpastreservations == "true" || $allowpastreservations == "false") {
-                if (mysql_query("UPDATE settings SET settingvalue='" . $allowpastreservations . "' WHERE settingname='allow_past_reservations';")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $allowpastreservations . "' WHERE settingname='allow_past_reservations';")) {
                     $successmsg = "Past Reservations setting has been set.";
                 } else {
                     $errormsg = "Unable to update Past Reservation setting. Please try again.";
@@ -46,7 +46,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "interval":
             $interval = isset($_REQUEST["interval"]) ? $_REQUEST["interval"] : "";
             if (preg_match("/^\\d*$/", $interval) && $interval != "") {
-                if (mysql_query("UPDATE settings SET settingvalue='" . $interval . "' WHERE settingname='interval';")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $interval . "' WHERE settingname='interval';")) {
                     $successmsg = "Interval has been updated to " . $interval . " minutes.";
                 } else {
                     $errormsg = "Unable to update Interval. Try again.";
@@ -58,7 +58,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "time_format":
             $time_format = isset($_REQUEST["time_format"]) ? $_REQUEST["time_format"] : "";
             if ($time_format != "") {
-                if (mysql_query("UPDATE settings SET settingvalue='" . $time_format . "' WHERE settingname='time_format';")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $time_format . "' WHERE settingname='time_format';")) {
                     $successmsg = "Time Format changed to " . $time_format . ".";
                 } else {
                     $errormsg = "Unable to set Time Format. Please try again.";
@@ -70,7 +70,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "limit_duration":
             $limit_duration = isset($_REQUEST["limit_duration"]) ? $_REQUEST["limit_duration"] : "";
             if (preg_match("/^\\d*$/", $limit_duration) && $limit_duration != "") {
-                if (mysql_query("UPDATE settings SET settingvalue='" . $limit_duration . "' WHERE settingname='limit_duration';")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_duration . "' WHERE settingname='limit_duration';")) {
                     $successmsg = "Duration Limit has been updated to " . $limit_duration . " minutes.";
                 } else {
                     $errormsg = "Unable to update Duration Limit. Try again.";
@@ -86,7 +86,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 if ($limit_total_period == "day" || $limit_total_period == "week" || $limit_total_period == "month" || $limit_total_period == "year") {
                     $limit_total_arr = array($limit_total, $limit_total_period);
                     $limit_total_arr = serialize($limit_total_arr);
-                    if (mysql_query("UPDATE settings SET settingvalue='" . $limit_total_arr . "' WHERE settingname='limit_total';")) {
+                    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_total_arr . "' WHERE settingname='limit_total';")) {
                         $successmsg = "Total Limit set to " . $limit_total . " minutes per " . $limit_total_period . ".";
                     } else {
                         $errormsg = "Unable to set Total Limit. Please try again.";
@@ -105,7 +105,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 if ($limit_frequency_period == "day" || $limit_frequency_period == "week" || $limit_frequency_period == "month" || $limit_frequency_period == "year") {
                     $limit_frequency_arr = array($limit_frequency, $limit_frequency_period);
                     $limit_frequency_arr = serialize($limit_frequency_arr);
-                    if (mysql_query("UPDATE settings SET settingvalue='" . $limit_frequency_arr . "' WHERE settingname='limit_frequency';")) {
+                    if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_frequency_arr . "' WHERE settingname='limit_frequency';")) {
                         $successmsg = "Frequency Limit set to " . $limit_frequency . " reservation(s) per " . $limit_frequency_period . ".";
                     } else {
                         $errormsg = "Unable to set Frequency Limit. Please try again.";
@@ -125,7 +125,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                     if (preg_match("/^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/", $limit_window_date) && $limit_window_date != "") {
                         $limit_window_arr = array(0, $limit_window_date);
                         $limit_window_arr = serialize($limit_window_arr);
-                        if (mysql_query("UPDATE settings SET settingvalue='" . $limit_window_arr . "' WHERE settingname='limit_window';")) {
+                        if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_window_arr . "' WHERE settingname='limit_window';")) {
                             $successmsg = "Window Limit successfully changed to Permanent: " . $limit_window_date . ".";
                         } else {
                             $errormsg = "Unable to set Window Limit. Please try again.";
@@ -140,7 +140,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                         if ($limit_window_period == "day" || $limit_window_period == "week" || $limit_window_period == "month" || $limit_window_period == "year") {
                             $limit_window_arr = array($limit_window_range, $limit_window_period);
                             $limit_window_arr = serialize($limit_window_arr);
-                            if (mysql_query("UPDATE settings SET settingvalue='" . $limit_window_arr . "' WHERE settingname='limit_window';")) {
+                            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_window_arr . "' WHERE settingname='limit_window';")) {
                                 $successmsg = "Window Limit set to Sliding: " . $limit_window_range . " " . $limit_window_period . "s.";
                             } else {
                                 $errormsg = "Unable to set Window Limit. Please try again.";
@@ -161,7 +161,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "limit_openingday":
             $limit_openingday = isset($_REQUEST["limit_openingday"]) ? $_REQUEST["limit_openingday"] : "";
             if (preg_match("/^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/", $limit_openingday) || $limit_openingday == "") {
-                if (mysql_query("UPDATE settings SET settingvalue='" . $limit_openingday . "' WHERE settingname='limit_openingday';")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $limit_openingday . "' WHERE settingname='limit_openingday';")) {
                     $successmsg = "Opening Date was set successfully!";
                 } else {
                     $errormsg = "Unable to set Opening Date. Please try again.";

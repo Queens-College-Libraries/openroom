@@ -12,8 +12,8 @@ $_POST["torange"] = (isset($_POST["torange"]) && $_POST["torange"] != 0) ? mktim
 $_POST["group"] = (isset($_POST["group"])) ? $_POST["group"] : "";
 
 if ($_POST["group"] == "") {
-    $groups = mysql_query("SELECT * FROM roomgroups ORDER BY roomgroupid ASC;");
-    $group = mysql_fetch_array($groups);
+    $groups = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups ORDER BY roomgroupid ASC;");
+    $group = mysqli_fetch_array($groups);
     $_POST["group"] = $group["roomgroupid"];
 }
 
@@ -31,7 +31,7 @@ $currentmdy = date('l, F d, Y', $_POST["fromrange"]);
 
 if ($_SESSION["username"] != "") {
     //Get all groups from DB to create Group Selector
-    $groups = mysql_query("SELECT * FROM roomgroups ORDER BY roomgroupid ASC;");
+    $groups = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups ORDER BY roomgroupid ASC;");
     /*$group_str = "<select id=\"groupselector\" onchange=\"dayviewer('". $_POST["fromrange"] ."','". $_POST["torange"] ."',this.value,'');\">";
     while($group = mysql_fetch_array($groups)){
         $selected_str = "";
@@ -40,7 +40,7 @@ if ($_SESSION["username"] != "") {
     }
     $group_str .= "</select>";*/
     $group_str = "<table><tr>";
-    while ($group = mysql_fetch_array($groups)) {
+    while ($group = mysqli_fetch_array($groups)) {
         $selected_str = "class=\"grouptab\"";
         if ($group["roomgroupid"] == $_POST["group"]) $selected_str = "class=\"selected\"";
         $group_str .= "<td onClick=\"dayviewer('" . $_POST["fromrange"] . "','" . $_POST["torange"] . "','" . $group["roomgroupid"] . "','');\" " . $selected_str . ">" . $group["roomgroupname"] . "</td>";
@@ -54,8 +54,8 @@ if ($_SESSION["username"] != "") {
     //Create optional field form items string for reservation form
     //Select all records from optionalfields table in order of optionorder ascending
     $optionalfields_string = "";
-    $optionalfields_array = mysql_query("SELECT * FROM optionalfields ORDER BY optionorder ASC;");
-    while ($optionalfield = mysql_fetch_array($optionalfields_array)) {
+    $optionalfields_array = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields ORDER BY optionorder ASC;");
+    while ($optionalfield = mysqli_fetch_array($optionalfields_array)) {
         //Determine if required
         if ($optionalfield["optionrequired"] == 1) {
             $optionalfields_string .= "<strong><span class=\'requiredmarker\'>*</span>";

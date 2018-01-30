@@ -18,7 +18,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
     if (isset($_REQUEST["remindermessage"])) {
         $remindermessage = $_REQUEST["remindermessage"];
 
-        if (mysql_query("UPDATE settings SET settingvalue='" . $remindermessage . "' WHERE settingname='remindermessage';")) {
+        if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $remindermessage . "' WHERE settingname='remindermessage';")) {
             $successmsg = "Reminder Message updated!";
         } else {
             $errormsg = "Unable to update Reminder Message. Please try again.";

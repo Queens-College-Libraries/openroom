@@ -41,10 +41,10 @@ if ($username != "") {
         $errormsg = "";
 
         if ($onlychecking != "TRUE") {
-            $optionalfieldsarraytemp = mysql_query("SELECT * FROM optionalfields ORDER BY optionorder ASC;");
-            while ($optionalfield = mysql_fetch_array($optionalfieldsarraytemp)) {
+            $optionalfieldsarraytemp = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields ORDER BY optionorder ASC;");
+            while ($optionalfield = mysqli_fetch_array($optionalfieldsarraytemp)) {
                 //Store sanitized user values in array for later use
-                $ofvalues[$optionalfield["optionformname"]] = mysql_real_escape_string(isset($_POST[$optionalfield["optionformname"]]) ? $_POST[$optionalfield["optionformname"]] : "");
+                $ofvalues[$optionalfield["optionformname"]] = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], isset($_POST[$optionalfield["optionformname"]]) ? $_POST[$optionalfield["optionformname"]] : "");
 
                 //If value is required make sure there is something there
                 if ($optionalfield["optionrequired"] == 1) {
@@ -345,24 +345,24 @@ if ($username != "") {
             //MAKE SURE TO END RESERVATIONS ONE MINUTE BEFORE THE SELECTED END TIME FOR COLLISION'S SAKE
             //First insert the reservation itself
             if ($onlychecking != "TRUE") {
-                $ins_res = mysql_query("INSERT INTO reservations(start,end,roomid,username,numberingroup) VALUES('" . date("Y-m-d H:i:s", $starttime) . "','" . date("Y-m-d H:i:s", ($endtime - 1)) . "','" . $roomid . "','" . $username . "','" . $capacity . "');");
+                $ins_res = mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO reservations(start,end,roomid,username,numberingroup) VALUES('" . date("Y-m-d H:i:s", $starttime) . "','" . date("Y-m-d H:i:s", ($endtime - 1)) . "','" . $roomid . "','" . $username . "','" . $capacity . "');");
                 if ($ins_res) {
                     //Grab the new reservationid by grabbing the most recently entered reservation (this one)
-                    $id_res = mysql_query("SELECT * FROM reservations ORDER BY timeofrequest DESC;");
+                    $id_res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM reservations ORDER BY timeofrequest DESC;");
                     if ($id_res) {
-                        $id_a = mysql_fetch_array($id_res);
+                        $id_a = mysqli_fetch_array($id_res);
                         $reservationid = $id_a["reservationid"];
                         //Then insert the optional field values (reservationoptions table)
                         foreach ($ofvalues as $key => $ofvalue) {
                             //Get the option's name
-                            $opt_name_res = mysql_query("SELECT * FROM optionalfields WHERE optionformname='" . $key . "';");
+                            $opt_name_res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $key . "';");
                             if ($opt_name_res) {
-                                $opt_name_a = mysql_fetch_array($opt_name_res);
+                                $opt_name_a = mysqli_fetch_array($opt_name_res);
                                 $opt_name = $opt_name_a["optionname"];
                                 $fixedofvalue = htmlspecialchars($ofvalue, ENT_QUOTES);
                                 $fixedofvalue = str_replace("\\", "", $fixedofvalue);
 
-                                $opt_res = mysql_query("INSERT INTO reservationoptions VALUES('" . $opt_name . "','" . $reservationid . "','" . $fixedofvalue . "');");
+                                $opt_res = mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO reservationoptions VALUES('" . $opt_name . "','" . $reservationid . "','" . $fixedofvalue . "');");
                             } else {
                                 //Optional fields not selectable, remove reservation
                                 $errormsg .= "Error in reserving room. Please try again. If you continue to have problems, please contact an administrator.<br/>";
@@ -423,9 +423,9 @@ if ($username != "") {
                         $user_real_gef = "<b>Name</b>: " . $user_real . "<br/><br/>";
                     }
                     if ($settings["login_method"] == "normal") {
-                        $emailrecord = mysql_query("SELECT * FROM users WHERE username='" . $username . "';");
+                        $emailrecord = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM users WHERE username='" . $username . "';");
                         if ($emailrecord) {
-                            $user_emaila = mysql_fetch_array($emailrecord);
+                            $user_emaila = mysqli_fetch_array($emailrecord);
                             $user_email = $user_emaila["email"];
                         }
                     }
@@ -438,10 +438,11 @@ if ($username != "") {
                         "E-mail: " . $user_email . "\n\n" .
                         "Room: " . $thisroom->name . "\n\n" .
                         "Date and Time: " . date("F j, Y g:i a", $starttime) . " - " . date("F j, Y g:i a", $endtime) . "\n\n" .
-                        "Number in Group: " . $capacity . "\n\n";
+                        "Number in Group: " . $capacity . "\n\n" .
+                        "Please call (718-997-3900) or email (musiclibrary@qc.cuny.edu) the Music Library if you need further assistance.\n\n";
 
                     foreach ($ofvalues as $key => $ofval) {
-                        $opname = mysql_fetch_array(mysql_query("SELECT * FROM optionalfields WHERE optionformname='" . $key . "';"));
+                        $opname = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $key . "';"));
                         $opname = $opname["optionname"];
                         $verbose_msg .= $opname . ": " . str_replace("\\", "", $ofval) . "\n\n";
                         $gef_msg_of .= "<b>" . $opname . "</b>: " . str_replace("\\", "", $ofval) . "<br/><br/>";

@@ -17,10 +17,9 @@ class Config
 
 }
 
-/** @var array $db */
-$db = parse_url(getenv('DATABASE_URL'));
-Config::write('db.host', 'localhost');
-Config::write('db.port', '5432');
-Config::write('db.basename', 'openroomtesting');
-Config::write('db.user', 'panda');
-Config::write('db.password', 'Apple@1234');
+// db
+Config::write('db.host', '127.0.0.1');
+Config::write('db.port', '3306');
+Config::write('db.basename', 'spaces');
+Config::write('db.user', 'music');
+Config::write('db.password', '5RnXxtojcbDs19');

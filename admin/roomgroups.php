@@ -23,7 +23,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $roomgroupname = isset($_REQUEST["roomgroupname"]) ? $_REQUEST["roomgroupname"] : "";
             $roomgroupid = isset($_REQUEST["roomgroupid"]) ? $_REQUEST["roomgroupid"] : "";
             if ($roomgroupname != "" && $roomgroupid != "") {
-                if (mysql_query("UPDATE roomgroups SET roomgroupname='" . $roomgroupname . "' WHERE roomgroupid=" . $roomgroupid . ";")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE roomgroups SET roomgroupname='" . $roomgroupname . "' WHERE roomgroupid=" . $roomgroupid . ";")) {
                     $successmsg = "Group renamed to " . $roomgroupname . "!";
                 } else {
                     $errormsg = "Unable to edit group. Please try again.";
@@ -34,11 +34,11 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             //When groups are deleted, move rooms from that group into no group.
             $roomgroupid = isset($_REQUEST["roomgroupid"]) ? $_REQUEST["roomgroupid"] : "";
             if ($roomgroupid != "") {
-                $roomsingroupa = mysql_query("SELECT * FROM rooms WHERE roomgroupid=" . $roomgroupid . ";");
-                while ($roomingroup = mysql_fetch_array($roomsingroupa)) {
-                    mysql_query("UPDATE rooms SET roomgroupid=0 WHERE roomgroupid=" . $roomgroupid . ";");
+                $roomsingroupa = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid=" . $roomgroupid . ";");
+                while ($roomingroup = mysqli_fetch_array($roomsingroupa)) {
+                    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomgroupid=0 WHERE roomgroupid=" . $roomgroupid . ";");
                 }
-                if (mysql_query("DELETE FROM roomgroups WHERE roomgroupid=" . $roomgroupid . ";")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM roomgroups WHERE roomgroupid=" . $roomgroupid . ";")) {
                     $successmsg = "Group has been deleted!";
                 } else {
                     $errormsg = "There was a problem deleting the group. Please try again.";
@@ -50,7 +50,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "addgroup":
             $roomgroupname = isset($_REQUEST["roomgroupname"]) ? $_REQUEST["roomgroupname"] : "";
             if ($roomgroupname != "") {
-                if (mysql_query("INSERT INTO roomgroups(roomgroupname) VALUES('" . $roomgroupname . "');")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO roomgroups(roomgroupname) VALUES('" . $roomgroupname . "');")) {
                     $successmsg = "New group \"" . $roomgroupname . "\" has been added!";
                 } else {
                     $errormsg = "Unable to add new group. Please try again!";
@@ -100,8 +100,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         <h3><a href="index.php">Administration</a> - Room Groups</h3>
         <table class="roomgroupslist">
             <?php
-            $groupa = mysql_query("SELECT * FROM roomgroups;");
-            while ($group = mysql_fetch_array($groupa)) {
+            $groupa = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups;");
+            while ($group = mysqli_fetch_array($groupa)) {
                 echo "<tr><td><form name=\"editroomgroup\" action=\"roomgroups.php\" method=\"POST\"><input type=\"text\" name=\"roomgroupname\" value=\"" . $group["roomgroupname"] . "\"/></td><td><input type=\"hidden\" name=\"roomgroupid\" value=\"" . $group["roomgroupid"] . "\" /><input type=\"hidden\" name=\"op\" value=\"editgroup\" /><input type=\"submit\" value=\"Save Changes\" /></td><td><a href=\"javascript:confirmdelete(" . $group["roomgroupid"] . ");\">Delete</a></form></td></tr>";
             }
             ?>

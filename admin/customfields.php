@@ -22,16 +22,16 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
     switch ($op) {
         case "deleteoption":
             //Delete from the table and subtract 1 from the optionorder of all fields with a higher order
-            $record = mysql_fetch_array(mysql_query("SELECT * FROM optionalfields WHERE optionformname='" . $optionformname . "';"));
-            if (mysql_query("DELETE FROM optionalfields WHERE optionformname='" . $optionformname . "';")) {
-                $allrecs = mysql_query("SELECT * FROM optionalfields;");
-                while ($arec = mysql_fetch_array($allrecs)) {
+            $record = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $optionformname . "';"));
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM optionalfields WHERE optionformname='" . $optionformname . "';")) {
+                $allrecs = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields;");
+                while ($arec = mysqli_fetch_array($allrecs)) {
                     if ($arec["optionorder"] > $record["optionorder"]) {
-                        mysql_query("UPDATE optionalfields SET optionorder=" . ($arec["optionorder"] - 1) . " WHERE optionformname='" . $arec["optionformname"] . "';");
+                        mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE optionalfields SET optionorder=" . ($arec["optionorder"] - 1) . " WHERE optionformname='" . $arec["optionformname"] . "';");
                     }
                 }
 
-                mysql_query("DELETE FROM reservationoptions WHERE optionname='" . $record["optionname"] . "';");
+                mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM reservationoptions WHERE optionname='" . $record["optionname"] . "';");
 
                 $successmsg = $record["optionname"] . " has been deleted. <strong>You may want to update On Condition Emails under <a href=\"email.php\">Email Setup</a> if this field was set up as a condition.</strong>";
             } else {
@@ -60,9 +60,9 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                             if ($optionprivate == "0" || $optionprivate == "1") {
                                 if ($optionrequired == "0" || $optionrequired == "1") {
                                     //Get highest order
-                                    $ordera = mysql_fetch_array(mysql_query("SELECT * FROM optionalfields ORDER BY optionorder DESC;"));
+                                    $ordera = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields ORDER BY optionorder DESC;"));
                                     $highestorder = $ordera["optionorder"];
-                                    if (mysql_query("INSERT INTO optionalfields VALUES('" . $optionname . "','" . $optionformname . "','" . $optiontype . "','" . $optionchoices . "'," . ($highestorder + 1) . ",'" . $optionquestion . "'," . $optionprivate . "," . $optionrequired . ");")) {
+                                    if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO optionalfields VALUES('" . $optionname . "','" . $optionformname . "','" . $optiontype . "','" . $optionchoices . "'," . ($highestorder + 1) . ",'" . $optionquestion . "'," . $optionprivate . "," . $optionrequired . ");")) {
                                         $successmsg = "New Custom Field has been added!";
                                     } else {
                                         $errormsg = "There was a problem adding this field to the database. Please try again.";
@@ -87,25 +87,25 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             }
             break;
         case "incorder":
-            $allcount = mysql_num_rows(mysql_query("SELECT * FROM optionalfields;"));
-            $thisop = mysql_fetch_array(mysql_query("SELECT * FROM optionalfields WHERE optionformname='" . $optionformname . "';"));
+            $allcount = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields;"));
+            $thisop = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $optionformname . "';"));
             $thispos = $thisop["optionorder"];
             if ($thispos < ($allcount - 1)) {
-                $nextop = mysql_fetch_array(mysql_query("SELECT * FROM optionalfields WHERE optionorder=" . ($thispos + 1) . ";"));
+                $nextop = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionorder=" . ($thispos + 1) . ";"));
                 $nextname = $nextop["optionformname"];
-                mysql_query("UPDATE optionalfields SET optionorder=" . $thispos . " WHERE optionformname='" . $nextname . "';");
-                mysql_query("UPDATE optionalfields SET optionorder=" . ($thispos + 1) . " WHERE optionformname='" . $optionformname . "';");
+                mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE optionalfields SET optionorder=" . $thispos . " WHERE optionformname='" . $nextname . "';");
+                mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE optionalfields SET optionorder=" . ($thispos + 1) . " WHERE optionformname='" . $optionformname . "';");
             }
             break;
         case "decorder":
-            $allcount = mysql_num_rows(mysql_query("SELECT * FROM optionalfields;"));
-            $thisop = mysql_fetch_array(mysql_query("SELECT * FROM optionalfields WHERE optionformname='" . $optionformname . "';"));
+            $allcount = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields;"));
+            $thisop = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $optionformname . "';"));
             $thispos = $thisop["optionorder"];
             if ($thispos > 0) {
-                $nextop = mysql_fetch_array(mysql_query("SELECT * FROM optionalfields WHERE optionorder=" . ($thispos - 1) . ";"));
+                $nextop = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionorder=" . ($thispos - 1) . ";"));
                 $nextname = $nextop["optionformname"];
-                mysql_query("UPDATE optionalfields SET optionorder=" . $thispos . " WHERE optionformname='" . $nextname . "';");
-                mysql_query("UPDATE optionalfields SET optionorder=" . ($thispos - 1) . " WHERE optionformname='" . $optionformname . "';");
+                mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE optionalfields SET optionorder=" . $thispos . " WHERE optionformname='" . $nextname . "';");
+                mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE optionalfields SET optionorder=" . ($thispos - 1) . " WHERE optionformname='" . $optionformname . "';");
             }
             break;
     }
@@ -175,11 +175,11 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 <td class="tableheader">Delete</td>
             </tr>
             <?php
-            $ofa = mysql_query("SELECT * FROM optionalfields ORDER BY optionorder ASC;");
-            $ofn = mysql_num_rows($ofa);
+            $ofa = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields ORDER BY optionorder ASC;");
+            $ofn = mysqli_num_rows($ofa);
             $orderstr = "";
             $count = 0;
-            while ($of = mysql_fetch_array($ofa)) {
+            while ($of = mysqli_fetch_array($ofa)) {
                 if ($of["optiontype"] == 0) {
                     $oftype = "Text";
                 } else {

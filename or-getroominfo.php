@@ -90,14 +90,14 @@ if ($group != "") {
 //Setup output string
 $output = "<roominfo>\n";
 
-$room_result = mysql_query("SELECT * FROM rooms " . $roomstring . " " . $grpstr . "ORDER BY roomposition ASC;");
+$room_result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms " . $roomstring . " " . $grpstr . "ORDER BY roomposition ASC;");
 //For each room
-while ($record = mysql_fetch_array($room_result)) {
+while ($record = mysqli_fetch_array($room_result)) {
     $output .= "\t<room position=\"" . $record["roomposition"] . "\">\n\t\t<id>" . $record["roomid"] . "</id>\n\t\t<name>" . $record["roomname"] . "</name>\n\t\t<capacity>" . $record["roomcapacity"] . "</capacity>\n\t\t<description>" . $record["roomdescription"] . "</description>\n\t\t<hours>\n";
     //Get default hours for this room
-    $dhours_result = mysql_query("SELECT * FROM roomhours WHERE roomid=" . $record["roomid"] . " ORDER BY dayofweek, start ASC;");
+    $dhours_result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomhours WHERE roomid=" . $record["roomid"] . " ORDER BY dayofweek, start ASC;");
     $prevwkdy = "";
-    while ($dhours = mysql_fetch_array($dhours_result)) {
+    while ($dhours = mysqli_fetch_array($dhours_result)) {
         if ($prevwkdy != $dhours["dayofweek"] && $prevwkdy != "") {
             $output .= "\t\t\t</" . $wkdystr . ">\n";
         }
@@ -143,9 +143,9 @@ while ($record = mysql_fetch_array($room_result)) {
 
     //Fetch any specialhours for this room that are within the given range
     //$shours_result = mysql_query("SELECT UNIX_TIMESTAMP(fromrange),UNIX_TIMESTAMP(torange),start,end FROM roomspecialhours WHERE roomid=". $record["roomid"] ." AND ((fromrange >= FROM_UNIXTIME(". $fromrange .") AND torange <= FROM_UNIXTIME(". $torange .")) OR (fromrange >= FROM_UNIXTIME(". $fromrange .") AND fromrange <= FROM_UNIXTIME(". $torange .")) OR (torange >= FROM_UNIXTIME(". $fromrange .") AND torange <= FROM_UNIXTIME(". $torange ."))) ORDER BY fromrange ASC;");
-    $shours_result = mysql_query("SELECT UNIX_TIMESTAMP(fromrange),UNIX_TIMESTAMP(torange),start,END FROM roomspecialhours WHERE roomid=" . $record["roomid"] . " AND ((fromrange < FROM_UNIXTIME(" . $fromrange . ") AND torange > FROM_UNIXTIME(" . $torange . ")) OR (fromrange >= FROM_UNIXTIME(" . $fromrange . ") AND fromrange <= FROM_UNIXTIME(" . $torange . ")) OR (torange >= FROM_UNIXTIME(" . $fromrange . ") AND torange <= FROM_UNIXTIME(" . $torange . "))) ORDER BY fromrange ASC;");
+    $shours_result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT UNIX_TIMESTAMP(fromrange),UNIX_TIMESTAMP(torange),start,end FROM roomspecialhours WHERE roomid=" . $record["roomid"] . " AND ((fromrange < FROM_UNIXTIME(" . $fromrange . ") AND torange > FROM_UNIXTIME(" . $torange . ")) OR (fromrange >= FROM_UNIXTIME(" . $fromrange . ") AND fromrange <= FROM_UNIXTIME(" . $torange . ")) OR (torange >= FROM_UNIXTIME(" . $fromrange . ") AND torange <= FROM_UNIXTIME(" . $torange . "))) ORDER BY fromrange ASC;");
     //Special Hours start AND end in this day													//Special Hours start in this day																//Special Hours end in this day
-    while ($shours = mysql_fetch_array($shours_result)) {
+    while ($shours = mysqli_fetch_array($shours_result)) {
         $output .= "\t\t\t<hourset>\n";
 
         $output .= "\t\t\t\t<fromrange>" . $shours["UNIX_TIMESTAMP(fromrange)"] . "</fromrange>\n\t\t\t\t<torange>" . $shours["UNIX_TIMESTAMP(torange)"] . "</torange>\n\t\t\t\t<start>" . $shours["start"] . "</start>\n\t\t\t\t<end>" . $shours["end"] . "</end>\n\t\t\t</hourset>\n";
@@ -153,8 +153,8 @@ while ($record = mysql_fetch_array($room_result)) {
 
     $output .= "\t\t</specialhours>\n\t\t<groups>\n";
 
-    $groups_result = mysql_query("SELECT * FROM roomgroups WHERE roomgroupid = " . $record["roomgroupid"] . ";");
-    while ($groups = mysql_fetch_array($groups_result)) {
+    $groups_result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups WHERE roomgroupid = " . $record["roomgroupid"] . ";");
+    while ($groups = mysqli_fetch_array($groups_result)) {
         $output .= "\t\t\t<group>\n\t\t\t\t<groupid>" . $groups["roomgroupid"] . "</groupid>\n\t\t\t\t<groupname>" . $groups["roomgroupname"] . "</groupname>\n\t\t\t</group>\n";
     }
 

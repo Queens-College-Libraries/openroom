@@ -149,7 +149,7 @@ switch ($op) {
                 <select name="size">
                     <option>How many people in your group?</option>
                     <?php
-                    $max_capacity = mysql_fetch_array(mysql_query("SELECT roomcapacity FROM rooms ORDER BY roomcapacity DESC;"));
+                    $max_capacity = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT roomcapacity FROM rooms ORDER BY roomcapacity DESC;"));
                     $max_capacity = $max_capacity["roomcapacity"];
                     for ($cap = 1; $cap <= $max_capacity; $cap++) {
                         echo "<option value=\"" . $cap . "\">" . $cap . "</option>";
@@ -158,8 +158,8 @@ switch ($op) {
                 </select>
                 <?php
                 //List required optionalfields here
-                $optional_fields = mysql_query("SELECT * FROM optionalfields WHERE optionrequired = 1 ORDER BY optionorder ASC;");
-                while ($optional_field = mysql_fetch_array($optional_fields)) {
+                $optional_fields = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionrequired = 1 ORDER BY optionorder ASC;");
+                while ($optional_field = mysqli_fetch_array($optional_fields)) {
                     if ($optional_field["optiontype"] == 0) {
                         echo $optional_field["optionquestion"] .
                             "<input type=\"text\" class=\"mobiletextfield\" name=\"" . $optional_field["optionformname"] . "\" />";
@@ -234,9 +234,9 @@ switch ($op) {
 				start >= CURRENT_TIMESTAMP()
 				ORDER BY reservations.start ASC;";
 
-        $your_reservations = mysql_query($query);
+    $your_reservations = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-        if (mysql_num_rows($your_reservations) < 1) {
+    if (mysqli_num_rows($your_reservations) < 1) {
             ?>
             <div id="noreservations">
                 You have no upcoming reservations.
@@ -244,11 +244,11 @@ switch ($op) {
             <?php
         }
 
-        while ($your_res = mysql_fetch_array($your_reservations)) {
+    while ($your_res = mysqli_fetch_array($your_reservations)) {
             $start_timestamp = strtotime($your_res["start"]);
             $end_timestamp = strtotime($your_res["end"]);
             $duration = ($end_timestamp - $start_timestamp + 1) / 60;
-            $option_fields = mysql_query("SELECT * FROM reservationoptions WHERE reservationid=" . $your_res["reservationid"] . ";");
+        $option_fields = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM reservationoptions WHERE reservationid=" . $your_res["reservationid"] . ";");
             ?>
             <div id="reservation_<?php echo $your_res["reservationid"]; ?>" class="reservation_button">
                 <table cellpadding="0" cellspacing="0">
@@ -259,7 +259,7 @@ switch ($op) {
                             echo "<span class=\"resdate\">" . date("M j, Y", $start_timestamp) . " at " . date("g:i a", $start_timestamp) . "</span><br/>";
                             echo "<span class=\"resduration\">Duration: " . $duration . " minutes</span><br/>";
 
-                            while ($option_field = mysql_fetch_array($option_fields)) {
+                            while ($option_field = mysqli_fetch_array($option_fields)) {
                                 echo "<span class=\"resoption\">" . $option_field["optionname"] . ": " . $option_field["optionvalue"] . "</span><br/>";
                             }
                             ?>

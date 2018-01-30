@@ -26,7 +26,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $email_res_verbose = str_replace(" ", "", $email_res_verbose);
             $email_res_verbose = explode(",", $email_res_verbose);
             $email_res_verbose = serialize($email_res_verbose);
-            if (mysql_query("UPDATE settings SET settingvalue='" . $email_res_verbose . "' WHERE settingname='email_res_verbose';")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_res_verbose . "' WHERE settingname='email_res_verbose';")) {
                 $successmsg = "OnReservations-Verbose has been updated.";
             } else {
                 $errormsg = "Unable to update OnReservations-Verbose. Make sure each email address is separated by a comma.";
@@ -40,7 +40,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $email_res_terse = str_replace(" ", "", $email_res_terse);
             $email_res_terse = explode(",", $email_res_terse);
             $email_res_terse = serialize($email_res_terse);
-            if (mysql_query("UPDATE settings SET settingvalue='" . $email_res_terse . "' WHERE settingname='email_res_terse';")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_res_terse . "' WHERE settingname='email_res_terse';")) {
                 $successmsg = "OnReservations-Terse has been updated.";
             } else {
                 $errormsg = "Unable to update OnReservations-Terse. Make sure each email address is separated by a comma.";
@@ -54,7 +54,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $email_res_gef = str_replace(" ", "", $email_res_gef);
             $email_res_gef = explode(",", $email_res_gef);
             $email_res_gef = serialize($email_res_gef);
-            if (mysql_query("UPDATE settings SET settingvalue='" . $email_res_gef . "' WHERE settingname='email_res_gef';")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_res_gef . "' WHERE settingname='email_res_gef';")) {
                 $successmsg = "OnReservations-GEF has been updated.";
             } else {
                 $errormsg = "Unable to update OnReservations-GEF. Make sure each email address is separated by a comma.";
@@ -68,7 +68,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $email_can_verbose = str_replace(" ", "", $email_can_verbose);
             $email_can_verbose = explode(",", $email_can_verbose);
             $email_can_verbose = serialize($email_can_verbose);
-            if (mysql_query("UPDATE settings SET settingvalue='" . $email_can_verbose . "' WHERE settingname='email_can_verbose';")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_can_verbose . "' WHERE settingname='email_can_verbose';")) {
                 $successmsg = "OnCancellation-Verbose has been updated.";
             } else {
                 $errormsg = "Unable to update OnCancellation-Verbose. Make sure each email address is separated by a comma.";
@@ -82,7 +82,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $email_can_terse = str_replace(" ", "", $email_can_terse);
             $email_can_terse = explode(",", $email_can_terse);
             $email_can_terse = serialize($email_can_terse);
-            if (mysql_query("UPDATE settings SET settingvalue='" . $email_can_terse . "' WHERE settingname='email_can_terse';")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_can_terse . "' WHERE settingname='email_can_terse';")) {
                 $successmsg = "OnCancellation-Terse has been updated.";
             } else {
                 $errormsg = "Unable to update OnCancellation-Terse. Make sure each email address is separated by a comma.";
@@ -96,7 +96,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $email_can_gef = str_replace(" ", "", $email_can_gef);
             $email_can_gef = explode(",", $email_can_gef);
             $email_can_gef = serialize($email_can_gef);
-            if (mysql_query("UPDATE settings SET settingvalue='" . $email_can_gef . "' WHERE settingname='email_can_gef';")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_can_gef . "' WHERE settingname='email_can_gef';")) {
                 $successmsg = "OnCancellation-GEF has been updated.";
             } else {
                 $errormsg = "Unable to update OnCancellation-GEF. Make sure each email address is separated by a comma.";
@@ -106,7 +106,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "email_system":
             $email_system = isset($_REQUEST["email_system"]) ? $_REQUEST["email_system"] : "";
             if ($email_system != "" && preg_match('/^([a-z0-9])(([-a-z0-9._])*([a-z0-9]))*\@([a-z0-9])(([a-z0-9-])*([a-z0-9]))+' . '(\.([a-z0-9])([-a-z0-9_-])?([a-z0-9])+)+$/i', $email_system)) {
-                if (mysql_query("UPDATE settings SET settingvalue='" . $email_system . "' WHERE settingname='email_system';")) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_system . "' WHERE settingname='email_system';")) {
                     $successmsg = "System Email has been updated.";
                 } else {
                     $errormsg = "Unable to set System Email. Please try again.";
@@ -118,7 +118,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "condition":
             $email_condition = isset($_REQUEST["email_condition"]) ? $_REQUEST["email_condition"] : "";
             $email_condition_value = isset($_REQUEST["email_condition_value"]) ? $_REQUEST["email_condition_value"] : "";
-            if ((mysql_query("UPDATE settings SET settingvalue='" . $email_condition . "' WHERE settingname='email_condition';")) && (mysql_query("UPDATE settings SET settingvalue='" . $email_condition_value . "' WHERE settingname='email_condition_value';"))) {
+            if ((mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_condition . "' WHERE settingname='email_condition';")) && (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_condition_value . "' WHERE settingname='email_condition_value';"))) {
                 $successmsg = "Condition has been updated.";
             } else {
                 $errormsg = "Unable to update Condition. Please try again.";
@@ -130,7 +130,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $email_cond_verbose = str_replace(" ", "", $email_cond_verbose);
             $email_cond_verbose = explode(",", $email_cond_verbose);
             $email_cond_verbose = serialize($email_cond_verbose);
-            if (mysql_query("UPDATE settings SET settingvalue='" . $email_cond_verbose . "' WHERE settingname='email_cond_verbose';")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_cond_verbose . "' WHERE settingname='email_cond_verbose';")) {
                 $successmsg = "OnCondition-Verbose has been updated.";
             } else {
                 $errormsg = "Unable to update OnCondition-Verbose. Make sure each email address is separated by a comma.";
@@ -142,7 +142,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $email_cond_terse = str_replace(" ", "", $email_cond_terse);
             $email_cond_terse = explode(",", $email_cond_terse);
             $email_cond_terse = serialize($email_cond_terse);
-            if (mysql_query("UPDATE settings SET settingvalue='" . $email_cond_terse . "' WHERE settingname='email_cond_terse';")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_cond_terse . "' WHERE settingname='email_cond_terse';")) {
                 $successmsg = "OnCondition-Terse has been updated.";
             } else {
                 $errormsg = "Unable to update OnCondition-Terse. Make sure each email address is separated by a comma.";
@@ -154,7 +154,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $email_cond_gef = str_replace(" ", "", $email_cond_gef);
             $email_cond_gef = explode(",", $email_cond_gef);
             $email_cond_gef = serialize($email_cond_gef);
-            if (mysql_query("UPDATE settings SET settingvalue='" . $email_cond_gef . "' WHERE settingname='email_cond_gef';")) {
+            if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $email_cond_gef . "' WHERE settingname='email_cond_gef';")) {
                 $successmsg = "OnCondition-GEF has been updated.";
             } else {
                 $errormsg = "Unable to update OnCondition-GEF. Make sure each email address is separated by a comma.";
@@ -251,8 +251,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                                 <?php
                                 //Grab all optional fields
                                 $ofselected = "";
-                                $ofs = mysql_query("SELECT * FROM optionalfields;");
-                                while ($of = mysql_fetch_array($ofs)) {
+                                $ofs = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields;");
+                                while ($of = mysqli_fetch_array($ofs)) {
                                     if ($settings["email_condition"] == $of["optionformname"]) {
                                         $ofselected = " selected";
                                     }
