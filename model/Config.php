@@ -18,8 +18,8 @@ class Config
 }
 
 // db
-Config::write('db.host', '127.0.0.1');
+Config::write('db.host', 'locahost');
 Config::write('db.port', '3306');
-Config::write('db.basename', 'spaces');
-Config::write('db.user', 'music');
-Config::write('db.password', '5RnXxtojcbDs19');
+Config::write('db.basename', 'openroom');
+Config::write('db.user', 'openroom');
+Config::write('db.password', 'change_me');
