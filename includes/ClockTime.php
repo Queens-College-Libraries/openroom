@@ -16,7 +16,7 @@ class ClockTime
 
 
 //constructor
-    function __construct($h, $m, $s)
+    function ClockTime($h, $m, $s)
     {
         if ($h < 0) $h * (-1);
         if ($m < 0) $m * (-1);
