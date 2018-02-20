@@ -2,6 +2,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
 require_once(__DIR__ . '/../vendor/autoload.php');
 include("../includes/or-dbinfo.php");
 
@@ -17,7 +18,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
 
     if (isset($_REQUEST["starttime"])) {
         $starttime = $_REQUEST["starttime"];
-
+        
         if (model\Setting::update('starttime', $starttime)) {
             $successmsg = $successmsg . "Start time updated! ";
         } else {
@@ -69,16 +70,16 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 <li>
                     Opening time: </br />
                     <input type="range" min="0" max="23" step="1" name="starttime" style="width: 80%;"
-                           value="<?php echo $settings["starttime"] ?>"
+                           value="<?php if(isset($settings["starttime"] )){echo $settings["starttime"];}?>"
                            oninput="starttimeoutput.value = starttime.value"/>
-                    <output name="starttimeoutput"><?php echo $settings["starttime"]; ?></output>
+                    <output name="starttimeoutput"><?php if(isset($settings["starttime"] )){echo $settings["starttime"];} ?></output>
                 </li>
                 <br/>
                 <li>
                     Closing time: <br/>
                     <input type="range" min="0" max="23" step="1" name="endtime" style="width: 80%;"
-                           value="<?php echo $settings["endtime"]; ?>" oninput="endtimeoutput.value = endtime.value"/>
-                    <output name="endtimeoutput"><?php echo $settings["endtime"]; ?></output>
+                           value="<?php if(isset($settings["endtime"] )){echo $settings["endtime"];} ?>" oninput="endtimeoutput.value = endtime.value"/>
+                    <output name="endtimeoutput"><?php if(isset($settings["endtime"] )){echo $settings["endtime"];} ?></output>
                 </li>
                 <br/>
                 <input type="submit" value="Update"/>
