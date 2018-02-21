@@ -104,19 +104,20 @@ if ($_SESSION["username"] != "") {
             $specialroomhours = $room->specialhours->hourset;
             $collision = "";
             //Loop runs for all hoursets of this room on this day
-            foreach ($roomhours as $hourset) {
-                $roomstart = new ClockTime(0, 0, 0);
-                $roomstart->setMySQLTime((string)$hourset->start);
-                $roomstop = new ClockTime(0, 0, 0);
-                $roomstop->setMySQLTime((string)$hourset->end);
-                //echo $collision .", ";
-                //If a good collision (stalactite, bat, spelunker, salamander, stalagmite) has already occured, don't run this function
-                if ($collision != "bat" && $collision != "stalactite" && $collision != "spelunker" && $collision != "salamander" && $collision != "stalagmite") {
-                    $collision = collisionCave($roomstart, $roomstop, $current_time, $current_stop);
+            if(isset($roomhours)) {
+                foreach ($roomhours as $hourset) {
+                    $roomstart = new ClockTime(0, 0, 0);
+                    $roomstart->setMySQLTime((string)$hourset->start);
+                    $roomstop = new ClockTime(0, 0, 0);
+                    $roomstop->setMySQLTime((string)$hourset->end);
+                    //echo $collision .", ";
+                    //If a good collision (stalactite, bat, spelunker, salamander, stalagmite) has already occured, don't run this function
+                    if ($collision != "bat" && $collision != "stalactite" && $collision != "spelunker" && $collision != "salamander" && $collision != "stalagmite") {
+                        $collision = collisionCave($roomstart, $roomstop, $current_time, $current_stop);
+                    }
+                    //echo $roomstart->getTime() .", ". $roomstop->getTime() .", ". $current_time->getTime() .", ". $current_stop->getTime() .", ". $room->name .", ". $collision ."<br/>";
                 }
-                //echo $roomstart->getTime() .", ". $roomstop->getTime() .", ". $current_time->getTime() .", ". $current_stop->getTime() .", ". $room->name .", ". $collision ."<br/>";
             }
-
             //If special hours exist for this day, throw away previous results and
             //check special hours instead.
             if ((string)$specialroomhours->start[0] != "") {
