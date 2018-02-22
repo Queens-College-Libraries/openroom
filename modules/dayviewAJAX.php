@@ -105,6 +105,7 @@ if ($_SESSION["username"] != "") {
             $collision = "";
             //Loop runs for all hoursets of this room on this day
             //Proceed only is room has default hours
+
             if(isset($roomhours)) {
                 foreach ($roomhours as $hourset) {
                     $roomstart = new ClockTime(0, 0, 0);
@@ -119,7 +120,6 @@ if ($_SESSION["username"] != "") {
                     //echo $roomstart->getTime() .", ". $roomstop->getTime() .", ". $current_time->getTime() .", ". $current_stop->getTime() .", ". $room->name .", ". $collision ."<br/>";
                 }
             }
-
             //If special hours exist for this day, throw away previous results and
             //check special hours instead.
             if ((string)$specialroomhours->start[0] != "") {

@@ -15,62 +15,77 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
 } else {
 
     $op = isset($_REQUEST["op"]) ? $_REQUEST["op"] : "";
-    $anchorname = isset($_REQUEST["anchorname"]) ? $_REQUEST["anchorname"] : "";
 
     $successmsg = "";
     $errormsg = "";
 
     switch ($op) {
-        case "deletehours":
+        case "adddefaulthours":
+            $starthour = isset($_REQUEST["starthour"]) ? $_REQUEST["starthour"] : "";
+            $startminute = isset($_REQUEST["startminute"]) ? $_REQUEST["startminute"] : "";
+            $endhour = isset($_REQUEST["endhour"]) ? $_REQUEST["endhour"] : "";
+            $endminute = isset($_REQUEST["endminute"]) ? $_REQUEST["endminute"] : "";
+            $affectedrooms = isset($_REQUEST["affectedrooms"]) ? $_REQUEST["affectedrooms"] : "";
+            //days that the change applies to
+            $affecteddays = isset($_REQUEST["affecteddays"]) ? $_REQUEST["affecteddays"] : "";
+
+            //All fields required
+            if ($starthour != "" && $startminute != "" && $endhour != "" && $endminute != "" && $affectedrooms != "" && is_array($affectedrooms) && $affecteddays != "" && is_array($affecteddays)) {
+                //Make sure from and to are in proper formats
+                        //Make sure endtime is greater than starttime
+                        $starttime = new ClockTime($starthour, $startminute, 0);
+                        $endtime = new ClockTime($endhour, $endminute, 0);
+                        if (($endtime->isGreaterThan($starttime)) || ($starttime->getTime() == "00:00:00" && $endtime->getTime() == "00:00:00")) {
+                            //Iterate through selected rooms
+                            foreach ($affectedrooms as $aroom) {
+                                //iterate through selected days
+                                foreach($affecteddays as $aday) {
+                                    ///get all the hours for the room on this day
+                                    $allhoursr = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomhours WHERE roomid=" . $aroom . " AND dayofweek=" . $aday . " ORDER BY start ASC;");
+                                    $ccflag = 0;
+                                    //check to see if there any conflicts
+                                    while ($record = mysqli_fetch_array($allhoursr)) {
+                                        $tstart = new ClockTime();
+                                        $tstart->setMySQLTime($record["start"]);
+                                        $tend = new ClockTime();
+                                        $tend->setMySQLTime($record["end"]);
+                                        $ccresult = collisionCave($tstart, $tend, $starttime, $endtime);
+                                        //acceptable results: sunmilk, ceiling, moonmilk, floor
+                                        //if ANY other result occurs during this loop, this time is not acceptable
+                                        if ($ccresult != "sunmilk" && $ccresult != "moonmilk" && $ccresult != "ceiling" && $ccresult != "floor" && $ccflag != 1) {
+                                            $ccflag = 1;
+                                        }
+                                    }
+                                    if ($ccflag) {
+                                        $errormsg = "Can't add new hours as they conflict with existing hours for this room.";
+                                    } else {
+                                        //Add hours
+                                        if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO roomhours(roomid,dayofweek,start,end) VALUES(" . $aroom . ",'" . $aday . "','" . $starttime->getTime() . "','" . $endtime->getTime() . "');")) {
+                                            $successmsg = "New hours added!";
+                                        } else {
+                                            $room = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid=" . $aroom . ";"));
+                                            $errormsg = "There was a problem adding the new hours. Please try again.";
+                                            $errormsg .= "<br/>Unable to add default hours to room " . $room["roomname"] . ". Please try again!";
+
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            $errormsg .= "<br/>Opening time must occur before Closing time!";
+                        }
+            } else {
+                $errormsg .= "<br/>Some parameters are missing. Make sure all form fields are filled out.";
+            }
+            break;
+
+        case "deletedefaulthours":
             $roomhoursid = isset($_REQUEST["roomhoursid"]) ? $_REQUEST["roomhoursid"] : "";
             if (mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM roomhours WHERE roomhoursid=" . $roomhoursid . ";")) {
                 $successmsg = "Hours deleted.";
             } else {
                 $errormsg = "Unable to delete these hours! Please try again.";
             }
-            break;
-        case "addhours":
-            $shour = isset($_REQUEST["shour"]) ? $_REQUEST["shour"] : "";
-            $sminute = isset($_REQUEST["sminute"]) ? $_REQUEST["sminute"] : "";
-            $ehour = isset($_REQUEST["ehour"]) ? $_REQUEST["ehour"] : "";
-            $eminute = isset($_REQUEST["eminute"]) ? $_REQUEST["eminute"] : "";
-            $roomid = isset($_REQUEST["roomid"]) ? $_REQUEST["roomid"] : "";
-            $wkdy = isset($_REQUEST["wkdy"]) ? $_REQUEST["wkdy"] : "";
-
-            $starttime = new ClockTime($shour, $sminute, 0);
-            $endtime = new ClockTime($ehour, $eminute, 0);
-
-            //Make sure starttime is less than endtime
-            if ($endtime->isGreaterThan($starttime)) {
-                //Ensure that this new range does not conflict with existing ranges
-                $allhoursr = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomhours WHERE roomid=" . $roomid . " AND dayofweek=" . $wkdy . " ORDER BY start ASC;");
-                $ccflag = 0;
-                while ($record = mysqli_fetch_array($allhoursr)) {
-                    $tstart = new ClockTime();
-                    $tstart->setMySQLTime($record["start"]);
-                    $tend = new ClockTime();
-                    $tend->setMySQLTime($record["end"]);
-                    $ccresult = collisionCave($tstart, $tend, $starttime, $endtime);
-                    //acceptable results: sunmilk, ceiling, moonmilk, floor
-                    //if ANY other result occurs during this loop, this time is not acceptable
-                    if ($ccresult != "sunmilk" && $ccresult != "moonmilk" && $ccresult != "ceiling" && $ccresult != "floor" && $ccflag != 1) {
-                        $ccflag = 1;
-                    }
-                }
-                if ($ccflag) {
-                    $errormsg = "Can't add new hours as they conflict with existing hours for this room.";
-                } else {
-                    //Add hours
-                    if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO roomhours(roomid,dayofweek,start,end) VALUES(" . $roomid . ",'" . $wkdy . "','" . $starttime->getTime() . "','" . $endtime->getTime() . "');")) {
-                        $successmsg = "New hours added!";
-                    } else {
-                        $errormsg = "There was a problem adding the new hours. Please try again.";
-                    }
-                }
-            } else {
-                $errormsg = "Can't add new hours. The Start time must occur before the End time.";
-            }
-
             break;
     }
 
@@ -87,20 +102,19 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             function deletehrs(roomhoursid, anchorname) {
                 var answer = confirm("Are you sure you would like to delete these hours?\n\nNOTE: Modifying hours will NOT delete room reservations. For special hours (such as holidays, etc.) please use the Special Hours section in administration.");
                 if (answer) {
-                    window.location = "defaulthours.php?op=deletehours&roomhoursid=" + roomhoursid + "&anchorname=" + anchorname;
+                    window.location = "myhours.php?op=deletedefaulthours&roomhoursid=" + roomhoursid + "&anchorname=" + anchorname;
                 }
                 else {
 
                 }
             }
 
-            function jumpToAnchor() {
-                var anchorpoint = "<?php echo $anchorname; ?>";
-                if (anchorpoint != "") {
-                    window.location = window.location + "#" + anchorpoint;
-                }
-            }
         </script>
+
+        <script src="../includes/datechooser/date-functions.js" type="text/javascript"></script>
+        <script src="../includes/datechooser/datechooser.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="../includes/datechooser/datechooser.css">
+
     </head>
 
     <body onLoad="jumpToAnchor();">
@@ -120,47 +134,120 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             ?>
         </center>
         <h3><a href="index.php">Administration</a> - Default Hours</h3>
-        <table class="defaulthourslist">
-            <?php
-            $hourstr = "";
-            for ($hr = 0; $hr <= 24; $hr++) {
-                $hourstr .= "<option value=\"$hr\">" . $hr . "</option>\n";
-            }
-            $minstr = "";
-            for ($min = 0; $min <= 59; $min++) {
-                $minstr .= "<option value=\"$min\">" . $min . "</option>\n";
-            }
-
-            $pgroupname = "";
+        <br/>
+        <hr/>
+        <br/>
+        <h3>Current Room Hours:</h3><br>
+        <?php
             $rooms = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms ORDER BY roomgroupid ASC, roomposition ASC;");
-            while ($room = mysqli_fetch_array($rooms)) {
-                $cgroupname = $room["roomgroupid"];
-                if ($pgroupname != $cgroupname) {
-                    $roomgroupname = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups WHERE roomgroupid=" . $cgroupname . ";");
-                    $rgn = mysqli_fetch_array($roomgroupname);
-                    echo "<tr><td colspan=\"8\" class=\"tabletitle\">" . $rgn["roomgroupname"] . "</td></tr>";
-                    echo "<tr><td class=\"tableheader\">Room Name</td><td class=\"tableheader\">Sunday</td><td class=\"tableheader\">Monday</td><td class=\"tableheader\">Tuesday</td><td class=\"tableheader\">Wednesday</td><td class=\"tableheader\">Thursday</td><td class=\"tableheader\">Friday</td><td class=\"tableheader\">Saturday</td></tr>";
-                }
-                $pgroupname = $cgroupname;
-                $roomid = $room["roomid"];
 
-                echo "<tr><td><a name=\"" . $room["roomname"] . "\"></a><strong>" . $room["roomname"] . "</strong></td>";
+            $roomgroups = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups;");
+            while($group = mysqli_fetch_array($roomgroups)){
+                echo "<h4><strong>" . $group["roomgroupname"] . ":</strong></h4>";
+                echo "<table>";
+                echo "<tr><th>Room</th><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr>";
+                $rooms =  mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid =" . $group["roomgroupid"] . ";");
+                while($room = mysqli_fetch_array($rooms)){
+                    echo "<tr>";
+                    echo "<td width=200px align='center'>" . $room['roomname'] . "</td>";
 
-                for ($wkdy = 0; $wkdy <= 6; $wkdy++) {
-                    echo "<td><table class=\"timeblock\">";
-                    $thisday = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomhours WHERE roomid=" . $roomid . " AND dayofweek=" . $wkdy . " ORDER BY start ASC;");
-                    while ($rec = mysqli_fetch_array($thisday)) {
-                        echo "<tr><td>" . substr($rec["start"], 0, -3) . "-" . substr($rec["end"], 0, -3) . " <a href=\"javascript:deletehrs(" . $rec["roomhoursid"] . ",'" . $room["roomname"] . "');\">x</a></td></tr>";
+                    for ($wkdy = 0; $wkdy <= 6; $wkdy++) {
+                        echo "<td width=500px align='center'>";
+                        $thisday = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomhours WHERE roomid=" . $room["roomid"] . " AND dayofweek=" . $wkdy . " ORDER BY start ASC;");
+                        while ($rec = mysqli_fetch_array($thisday)) {
+                            echo  substr($rec["start"], 0, -3) . "-" . substr($rec["end"], 0, -3) . " <a href=\"javascript:deletehrs(" . $rec["roomhoursid"] . ",'" . $room["roomname"] . "');\">x\n</a>";
+                        }
+                        echo "</td>";
                     }
-                    echo "<tr><td><hr/><span class=\"timeblocktext\"><strong>Add Hours</strong></span><br/><span class=\"timeblocktext\">Start</span><br/><form name=\"adddefaulthours\" action=\"defaulthours.php\" method=\"POST\"><input type=\"hidden\" name=\"anchorname\" value=\"" . $room["roomname"] . "\" /><input type=\"hidden\" name=\"op\" value=\"addhours\" /><input type=\"hidden\" name=\"roomid\" value=\"" . $roomid . "\" /><input type=\"hidden\" name=\"wkdy\" value=\"" . $wkdy . "\" /><select name=\"shour\">" . $hourstr . "</select>:<select name=\"sminute\">" . $minstr . "</select><br/><span class=\"timeblocktext\">End</span><br/><select name=\"ehour\">" . $hourstr . "</select>:<select name=\"eminute\">" . $minstr . "</select><input type=\"submit\" value=\"Add\" /></form></td></tr></table>";
-                    echo "</td>";
-                }
 
-                echo "</tr>\n";
+
+                    echo "</tr>";
+                }
+                echo "</table>";
             }
+        ?>
+        <br/>
+        <hr/>
+        <br/>
+
+        <h3>Add Default Hours</h3><br/>
+        <em>Note: Please be sure to cancel any current reservations that may be removed as a result of adding default
+            hours. This will be automated in a future version of this system.</em><br/>
+        <form name="adddefaulthours" action="myhours.php" method="POST">
+            <table>
+                <tr>
+                    <td>
+                        <strong>Open:</strong>
+                    </td>
+                    <td>
+                        <select name="starthour">
+                            <?php
+                            for ($i = 0; $i <= 24; $i++) {
+                                echo "<option value=\"" . $i . "\">" . $i . "</option>";
+                            }
+                            ?>
+                        </select>:<select name="startminute">
+                            <?php
+                            for ($i = 0; $i <= 59; $i++) {
+                                echo "<option value=\"" . $i . "\">" . $i . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Close:</strong>
+                    </td>
+                    <td>
+                        <select name="endhour">
+                            <?php
+                            for ($i = 0; $i <= 24; $i++) {
+                                echo "<option value=\"" . $i . "\">" . $i . "</option>";
+                            }
+                            ?>
+                        </select>:<select name="endminute">
+                            <?php
+                            for ($i = 0; $i <= 59; $i++) {
+                                echo "<option value=\"" . $i . "\">" . $i . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><em>(To close room for entire day, leave hours set to 00:00-00:00.)</em><br/><br/>
+                    </td>
+                </tr>
+            </table>
+            <strong>Days Affected:&nbsp;&nbsp;&emsp; </strong>
+            <?php
+                $weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
+                for ($i = 0; $i <= 6; $i++) {
+                    echo "<input type=\"checkbox\" name=\"affecteddays[]\" value=\"" . $i . "\" /><strong>" . $weekdays[$i] . "</strong>";
+                }
             ?>
-        </table>
-        <br/><br/>
+            <br><br><h4><strong>Rooms Affected: </strong></h4>
+            <table>
+                <?php
+                $roomgroup = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups;");
+                while ($group = mysqli_fetch_array($roomgroup)) {
+                    echo "<h4>" . $group["roomgroupname"] . "</h4>";
+                    echo "<table>";
+                    $rooms = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid=" . $group["roomgroupid"] . ";");
+                    while ($room = mysqli_fetch_array($rooms)){
+                        echo "<tr><td><input type=\"checkbox\" name=\"affectedrooms[]\" value=\"" . $room["roomid"] . "\" /><strong>" . $room["roomname"] . "</strong></td></tr>\n";
+                    }
+                    echo "</table>";
+                  }
+
+                ?>
+            </table>
+            <br/>
+            <input type="hidden" name="op" value="adddefaulthours"/>
+            <input type="submit" value="Add Hours"/><br/><br/><br/>
+        </form>
+
         <?php
         }
         ?>
