@@ -390,7 +390,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                             <ul>
                                 <li>
                                     <input id="limit_window_date" size="10" maxlength="10" name="limit_window_date"
-                                           type="text" value="<?php echo $permval; ?>">
+                                           type="text" value="<?php if(isset($permval)){
+                                               echo $permval;}?>">
                                     <img src="../includes/datechooser/calendar.gif"
                                          onclick="showChooser(this, 'limit_window_date', 'chooserSpan3', 1950, 2060, Date.patterns.ShortDatePattern, false);">
                                     <div id="chooserSpan3" class="dateChooser select-free"
