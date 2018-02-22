@@ -52,11 +52,15 @@ if ($_SESSION["systemid"] == $settings["systemid"]) {
 
     <center>
         <?php
-        if ($successmsg != "") {
-            echo "<div id=\"successmsg\">" . $successmsg . "</div>";
+        if(isset($successmsg)) {
+            if ($successmsg != "")  {
+                echo "<div id=\"successmsg\">" . $successmsg . "</div>";
+            }
         }
-        if ($errormsg != "") {
-            echo "<div id=\"errormsg\">" . $errormsg . "</div>";
+        if(isset($errormsg)) {
+            if ($errormsg != "") {
+                echo "<div id=\"errormsg\">" . $errormsg . "</div>";
+            }
         }
         ?>
     </center>
