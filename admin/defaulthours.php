@@ -25,9 +25,17 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $startminute = isset($_REQUEST["startminute"]) ? $_REQUEST["startminute"] : "";
             $endhour = isset($_REQUEST["endhour"]) ? $_REQUEST["endhour"] : "";
             $endminute = isset($_REQUEST["endminute"]) ? $_REQUEST["endminute"] : "";
+            $startperiod = isset($_REQUEST["startperiod"]) ? $_REQUEST["startperiod"] : "";
+            $endperiod = isset($_REQUEST["endperiod"]) ? $_REQUEST["endperiod"] : "";
             $affectedrooms = isset($_REQUEST["affectedrooms"]) ? $_REQUEST["affectedrooms"] : "";
             //days that the change applies to
             $affecteddays = isset($_REQUEST["affecteddays"]) ? $_REQUEST["affecteddays"] : "";
+
+            if($startperiod == "PM" && $starthour != 12)
+              $starthour += 12;
+
+            if($endperiod == "PM" && $endhour != 12)
+              $endhour += 12;
 
             //All fields required
             if ($starthour != "" && $startminute != "" && $endhour != "" && $endminute != "" && $affectedrooms != "" && is_array($affectedrooms) && $affecteddays != "" && is_array($affecteddays)) {
@@ -102,7 +110,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             function deletehrs(roomhoursid, anchorname) {
                 var answer = confirm("Are you sure you would like to delete these hours?\n\nNOTE: Modifying hours will NOT delete room reservations. For special hours (such as holidays, etc.) please use the Special Hours section in administration.");
                 if (answer) {
-                    window.location = "myhours.php?op=deletedefaulthours&roomhoursid=" + roomhoursid + "&anchorname=" + anchorname;
+                    window.location = "defaulthours.php?op=deletedefaulthours&roomhoursid=" + roomhoursid + "&anchorname=" + anchorname;
                 }
                 else {
 
@@ -144,7 +152,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $roomgroups = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups;");
             while($group = mysqli_fetch_array($roomgroups)){
                 echo "<h4><strong>" . $group["roomgroupname"] . ":</strong></h4>";
-                echo "<table>";
+                //echo "<table class='defaulthourstable'>";
+                echo "<table border=1 frame=void rules=rows>";
                 echo "<tr><th>Room</th><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr>";
                 $rooms =  mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid =" . $group["roomgroupid"] . ";");
                 while($room = mysqli_fetch_array($rooms)){
@@ -155,7 +164,18 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                         echo "<td width=500px align='center'>";
                         $thisday = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomhours WHERE roomid=" . $room["roomid"] . " AND dayofweek=" . $wkdy . " ORDER BY start ASC;");
                         while ($rec = mysqli_fetch_array($thisday)) {
-                            echo  substr($rec["start"], 0, -3) . "-" . substr($rec["end"], 0, -3) . " <a href=\"javascript:deletehrs(" . $rec["roomhoursid"] . ",'" . $room["roomname"] . "');\">x\n</a>";
+                            $starth = (int)substr($rec["start"], 0, 2);
+                            $endh = (int)substr($rec["end"], 0, 1);
+                            $startm = (int)substr($rec["start"], 3, 4);
+                            $endm = (int)substr($rec["end"], 3, 4);
+
+                            if($starth > 12)
+                                $starth -= 12;
+
+                            if($endh > 12)
+                                $endh -= 12;
+
+                            echo  $starth .":". $startm. "-" . $endh .":". $endm . " <a href=\"javascript:deletehrs(" . $rec["roomhoursid"] . ",'" . $room["roomname"] . "');\">x\n</a>";
                         }
                         echo "</td>";
                     }
@@ -173,7 +193,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         <h3>Add Default Hours</h3><br/>
         <em>Note: Please be sure to cancel any current reservations that may be removed as a result of adding default
             hours. This will be automated in a future version of this system.</em><br/>
-        <form name="adddefaulthours" action="myhours.php" method="POST">
+        <form name="adddefaulthours" action="defaulthours.php" method="POST">
             <table>
                 <tr>
                     <td>
@@ -182,7 +202,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                     <td>
                         <select name="starthour">
                             <?php
-                            for ($i = 0; $i <= 24; $i++) {
+
+                            for ($i = 1; $i <= 12; $i++) {
                                 echo "<option value=\"" . $i . "\">" . $i . "</option>";
                             }
                             ?>
@@ -193,6 +214,14 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                             }
                             ?>
                         </select>
+                      <select name="startperiod">
+                          <?php
+                          $timePeriods = ["AM" , "PM"];
+                          for ($i = 0; $i < 2; $i++) {
+                              echo "<option value=\"" . $timePeriods[$i] . "\">" .  $timePeriods[$i] . "</option>";
+                          }
+                          ?>
+                      </select>
                     </td>
                 </tr>
                 <tr>
@@ -202,7 +231,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                     <td>
                         <select name="endhour">
                             <?php
-                            for ($i = 0; $i <= 24; $i++) {
+                            for ($i = 1; $i <= 12; $i++) {
                                 echo "<option value=\"" . $i . "\">" . $i . "</option>";
                             }
                             ?>
@@ -210,6 +239,14 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                             <?php
                             for ($i = 0; $i <= 59; $i++) {
                                 echo "<option value=\"" . $i . "\">" . $i . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <select name="endperiod">
+                            <?php
+                            $timePeriods = ["AM" , "PM"];
+                            for ($i = 0; $i < 2; $i++) {
+                                echo "<option value=\"" . $timePeriods[$i] . "\">" .  $timePeriods[$i] . "</option>";
                             }
                             ?>
                         </select>
