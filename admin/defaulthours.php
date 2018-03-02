@@ -152,30 +152,20 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $roomgroups = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups;");
             while($group = mysqli_fetch_array($roomgroups)){
                 echo "<h4><strong>" . $group["roomgroupname"] . ":</strong></h4>";
-                //echo "<table class='defaulthourstable'>";
                 echo "<table border=1 frame=void rules=rows>";
                 echo "<tr><th>Room</th><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr>";
                 $rooms =  mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid =" . $group["roomgroupid"] . ";");
                 while($room = mysqli_fetch_array($rooms)){
                     echo "<tr>";
-                    echo "<td width=200px align='center'>" . $room['roomname'] . "</td>";
+                    echo "<td width=500px align='center'>" . $room['roomname'] . "</td>";
 
                     for ($wkdy = 0; $wkdy <= 6; $wkdy++) {
-                        echo "<td width=500px align='center'>";
+                        echo "<td width=3000px align='center'>";
                         $thisday = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomhours WHERE roomid=" . $room["roomid"] . " AND dayofweek=" . $wkdy . " ORDER BY start ASC;");
                         while ($rec = mysqli_fetch_array($thisday)) {
-                            $starth = (int)substr($rec["start"], 0, 2);
-                            $endh = (int)substr($rec["end"], 0, 1);
-                            $startm = (int)substr($rec["start"], 3, 4);
-                            $endm = (int)substr($rec["end"], 3, 4);
-
-                            if($starth > 12)
-                                $starth -= 12;
-
-                            if($endh > 12)
-                                $endh -= 12;
-
-                            echo  $starth .":". $startm. "-" . $endh .":". $endm . " <a href=\"javascript:deletehrs(" . $rec["roomhoursid"] . ",'" . $room["roomname"] . "');\">x\n</a>";
+                            $start = substr($rec["start"], 0, -3);
+                            $end = substr($rec["end"], 0, -3);
+                            echo  date('h:ia', strtotime($start))."-".date('h:ia', strtotime($end))." <a href=\"javascript:deletehrs(" . $rec["roomhoursid"] . ",'" . $room["roomname"] . "');\">x\n</a>";
                         }
                         echo "</td>";
                     }
