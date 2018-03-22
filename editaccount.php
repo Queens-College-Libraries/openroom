@@ -35,7 +35,7 @@ if ($_SESSION["systemid"] == $settings["systemid"]) {
             $errormsg .= "Invalid email address.<br/>";
         }
 
-        if ($errormsg == "") {
+        if ($errormsg == "" && isset($successmsg)) {
             //Update account for this user
             if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE users SET password = '" . $encpass . "', email = '" . $email . "' WHERE username='" . $_SESSION["username"] . "';")) {
                 $successmsg = "Your account has been updated!";
@@ -52,7 +52,7 @@ if ($_SESSION["systemid"] == $settings["systemid"]) {
 
     <center>
         <?php
-        if ($successmsg != "") {
+        if (isset($successmsg) && $successmsg != "") {
             echo "<div id=\"successmsg\">" . $successmsg . "</div>";
         }
         if ($errormsg != "") {
