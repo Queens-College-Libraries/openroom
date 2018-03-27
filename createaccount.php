@@ -48,7 +48,7 @@ if ($activatecode == "" && $activateusername == "") {
         $errormsg .= "Invalid email address.<br/>";
     }
 
-    if ($errormsg == "" && $submitted == "1") {
+    if ($errormsg == "" && $submitted == "1" && isset($successmsg)) {
         //Create account for this user
         $encpass = sha1($password);
         $activationcode = rand_str();
@@ -66,7 +66,7 @@ if ($activatecode == "" && $activateusername == "") {
 
     <center>
         <?php
-        if ($successmsg != "") {
+        if (isset($successmsg) && $successmsg != "") {
             echo "<div id=\"successmsg\">" . $successmsg . "</div>";
         }
         if ($errormsg != "") {
@@ -77,12 +77,13 @@ if ($activatecode == "" && $activateusername == "") {
     <h3><a href="index.php"><?php echo $settings["instance_name"]; ?></a> - Create an Account</h3>
 
     <?php
-    if ($successmsg == "") {
+    if (isset($successmsg) && $successmsg == "") {
         ?>
         <form name="createaccount" method="POST" action="createaccount.php">
             <table border="0">
                 <tr>
-                    <td>Desired Username:</td>
+                    <td>Desire
+                    Username:</td>
                     <td><input type="text" name="desiredusername" value="<?php echo $desiredusername; ?>"/></td>
                     <td><em>Valid Characters: a-z, A-Z, 0-9</em></td>
                 </tr>
