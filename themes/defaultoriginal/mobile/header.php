@@ -16,12 +16,10 @@ require_once("includes/or-dbinfo.php");
     <img src="<?php echo $_SESSION["themepath"]; ?>images/openroom.gif" border="0" alt="OpenRoom"/>
     <?php
     if ($_SESSION["systemid"] == $settings["systemid"]) {
-        if (isset($_SESSION["username"])  ) {
-            if($_SESSION["username"] != "") {
-                echo "<a id=\"navigation_button\" class=\"logout\" href=\"modules/logout.php\">Logout</a>";
-                echo "<a id=\"navigation_button\" class=\"viewreservations\" href=\"?op=viewreservations\">My Reservations</a>";
-                echo "<a id=\"navigation_button\" class=\"makereservation\" href=\"?op=makereservation\">Reserve</a>";
-            }
+        if ($_SESSION["username"] != "") {
+            echo "<a id=\"navigation_button\" class=\"logout\" href=\"modules/logout.php\">Logout</a>";
+            echo "<a id=\"navigation_button\" class=\"viewreservations\" href=\"?op=viewreservations\">My Reservations</a>";
+            echo "<a id=\"navigation_button\" class=\"makereservation\" href=\"?op=makereservation\">Reserve</a>";
         }
     }
     ?>
