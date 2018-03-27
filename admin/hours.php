@@ -2,10 +2,8 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 require_once(__DIR__ . '/../vendor/autoload.php');
 include("../includes/or-dbinfo.php");
-
 if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
     echo "You are not logged in. Please <a href=\"../index.php\">click here</a> and login with an account that is an authorized administrator or reporter.";
 } elseif ($_SESSION["isadministrator"] != "TRUE") {
@@ -15,7 +13,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
 } else {
     $successmsg = "";
     $errormsg = "";
-
     if (isset($_REQUEST["starttime"])) {
         $starttime = $_REQUEST["starttime"];
         
@@ -27,7 +24,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
     }
     if (isset($_REQUEST["endtime"])) {
         $endtime = $_REQUEST["endtime"];
-
         if (model\Setting::update('endtime', $endtime)) {
             $successmsg = $successmsg . "Closing time updated! ";
         } else {
@@ -69,17 +65,16 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             <ul>
                 <li>
                     Opening time: </br />
-                    <input type="range" min="0" max="23" step="1" name="starttime" style="width: 80%;"
+                    <input type="time" min="0" max="23" step="1" name="starttime" style="width: 17%;"
                            value="<?php if(isset($settings["starttime"] )){echo $settings["starttime"];}?>"
                            oninput="starttimeoutput.value = starttime.value"/>
-                    <output name="starttimeoutput"><?php if(isset($settings["starttime"] )){echo $settings["starttime"];} ?></output>
                 </li>
                 <br/>
                 <li>
                     Closing time: <br/>
-                    <input type="range" min="0" max="23" step="1" name="endtime" style="width: 80%;"
+                    <input type="time" min="0" max="23" step="1" name="endtime" style="width: 17%;"
                            value="<?php if(isset($settings["endtime"] )){echo $settings["endtime"];} ?>" oninput="endtimeoutput.value = endtime.value"/>
-                    <output name="endtimeoutput"><?php if(isset($settings["endtime"] )){echo $settings["endtime"];} ?></output>
+                    
                 </li>
                 <br/>
                 <input type="submit" value="Update"/>
