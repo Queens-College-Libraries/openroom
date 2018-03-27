@@ -65,14 +65,14 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             <ul>
                 <li>
                     Opening time: </br />
-                    <input type="time" min="0" max="23" step="1" name="starttime" style="width: 17%;"
+                    <input type="time" step="60" name="starttime" style="width: 17%;"
                            value="<?php if(isset($settings["starttime"] )){echo $settings["starttime"];}?>"
                            oninput="starttimeoutput.value = starttime.value"/>
                 </li>
                 <br/>
                 <li>
                     Closing time: <br/>
-                    <input type="time" min="0" max="23" step="1" name="endtime" style="width: 17%;"
+                    <input type="time" step="60" name="endtime" style="width: 17%;"
                            value="<?php if(isset($settings["endtime"] )){echo $settings["endtime"];} ?>" oninput="endtimeoutput.value = endtime.value"/>
                     
                 </li>
