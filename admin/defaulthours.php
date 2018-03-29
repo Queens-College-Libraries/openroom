@@ -259,15 +259,14 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
           </div>
 
           <div class = "row col-lg-12">
-            <h4><strong>Rooms Affected: </strong></h4>
+            <strong>Rooms Affected: </strong>
           </div>
 
-            <div class = "row">
+            <div class = "row col-lg-12">
                 <?php
                 $roomgroup = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups;");
                 while ($group = mysqli_fetch_array($roomgroup)) {
-                    echo "<h4>" . $group["roomgroupname"] . "</h4>";
-                    echo "<div class = 'row'>";
+                    echo $group["roomgroupname"];
                     $rooms = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid=" . $group["roomgroupid"] . ";");
                     while ($room = mysqli_fetch_array($rooms)){
                         echo "<div class = 'col-lg-auto'><input type=\"checkbox\" name=\"affectedrooms[]\" value=\"" . $room["roomid"] . "\" /><strong>" . $room["roomname"] . "</strong></div>\n";
