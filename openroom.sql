@@ -254,8 +254,8 @@ INSERT INTO `settings` (`settingname`, `settingvalue`) VALUES
   ('remindermessage', ''),
   ('systemid', '0000000001'),
   ('theme', 'default'),
-  ('time_format', 'g:i a');
-  ('starttime', '8');
+  ('time_format', 'g:i a'),
+  ('starttime', '8'),
   ('endtime', '20');
 
 -- --------------------------------------------------------
