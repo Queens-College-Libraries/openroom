@@ -67,7 +67,7 @@ if ($activatecode == "" && $activateusername == "") {
     <h3><a href="index.php"><?php echo $settings["instance_name"]; ?></a> - Create an Account</h3>
 
     <?php
-    if (isset($successmsg) && $successmsg == "") {
+    if ($successmsg == "") {
         ?>
         <form name="createaccount" method="POST" action="createaccount.php">
             <table border="0">
