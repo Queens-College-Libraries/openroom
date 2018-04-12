@@ -3,22 +3,15 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 require_once("includes/or-dbinfo.php");
-
 //Check if user is logged in. Set $username accordingly.
 $username = isset($_SESSION["username"]) ? $_SESSION["username"] : "";
-
 //Check if user is an administrative user. Set $isadministrator accordingly.
 $isadministrator = isset($_SESSION["isadministrator"]) ? $_SESSION["isadministrator"] : "FALSE";
-
 $reservationid = isset($_POST["reservationid"]) ? $_POST["reservationid"] : 0;
-
 $reservation_res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM reservations WHERE reservationid='" . $reservationid . "';");
 $reservation = mysqli_fetch_array($reservation_res);
-
 $res_username = $reservation["username"];
-
 $errormsg = "";
-
 if (($isadministrator || $username == $res_username) && $username != "") {
     //Simply transfer this reservation to the cancelled table. Its ID will still be used when reporting and checking its optional fields (which are left alone).
     $cancel_res = mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO cancelled(reservationid,start,end,roomid,username,timeofrequest) VALUES('" . $reservationid . "','" . $reservation["start"] . "','" . $reservation["end"] . "','" . $reservation["roomid"] . "','" . $reservation["username"] . "','" . $reservation["timeofrequest"] . "');");
@@ -33,7 +26,6 @@ if (($isadministrator || $username == $res_username) && $username != "") {
             $email_cond_terse = implode(",", unserialize($settings["email_cond_terse"]));
             $email_cond_gef = implode(",", unserialize($settings["email_cond_gef"]));
             $email_system = $settings["email_system"];
-
             //Get user's email address
             //If using login_method ldap just use the user's username and the ldap_baseDN dc's
             //If using login_method normal you must grab the user's email property from the users table
@@ -67,7 +59,6 @@ if (($isadministrator || $username == $res_username) && $username != "") {
                     $user_email = $user_emaila["email"];
                 }
             }
-
             $roomname = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid=" . $reservation["roomid"] . ";"));
             $capacity = $roomname["roomcapacity"];
             $roomname = $roomname["roomname"];
@@ -75,25 +66,27 @@ if (($isadministrator || $username == $res_username) && $username != "") {
             $endtime = strtotime($reservation["end"]);
             $endtime += 60;
             $duration = $endtime - $starttime;
-
             //Create verbose, terse and GEF messages.
             //VERBOSE
             $verbose_msg = "Your reservation for Room " . $roomname . " from " . date("F j, Y g:i a", $starttime) . " to " . date("F j, Y g:i a", $endtime) . " has been cancelled.<br/><br/>" . "Thank you for using " . $settings["instance_name"] . "! \n\n";
-
-            $verbose_msg .= "Please call (718-997-3900) or email (musiclibrary@qc.cuny.edu) the Music  Library if you need further assistance. \n\n";
+            if(isset($settings["phone_number"])  && !isset($settings["email_system"])){ 
+                $verbose_msg .= "Please call ". $settings["phone_number"] . " if you need further assistance";
+            }
+            else if (!isset($settings["phone_number"])  && isset($settings["email_system"])){
+                $verbose_msg .= "Please email " .$settings["email_system"]." if you need further assistance. \n\n";
+            }
+            else {
+                $verbose_msg .= "Please call " .$settings["phone_number"]. " or email " . $settings["email_system"] . " if you need further assistance. \n\n";
+            }
             $terse_msg = $verbose_msg;
-
             $gef_msg = "<html><body><b>Date</b>: " . date("l, F j", $starttime) . "<br/><br/><b>Time</b>: " . date("g:i a", $starttime) . " - " . date("g:i a", $endtime) . "<br/><br/><b>Username</b>: " . $username . "</body></html>";
-
             $bccstr = "";
             if ($email_can_verbose != "") {
                 $bccstr = "\r\nBcc: " . $email_can_verbose;
             }
-
             mail($user_email, $settings["instance_name"] . " Cancellation", $verbose_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system . $bccstr . "',' -f" . $email_system);
             mail($email_can_terse, $settings["instance_name"] . " Cancellation", $terse_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
             mail($email_can_gef, "Cancelled: Room " . $roomname, $gef_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-
             //On Condition emails
             //Get the current email_condition and email_value
             //If condition == "none" skip this, if it is "duration" or "capacity" check those values
@@ -122,7 +115,6 @@ if (($isadministrator || $username == $res_username) && $username != "") {
                     }
                 }
             }
-
             echo "This reservation has been cancelled!|" . $starttime . "|" . mktime(23, 59, 59, date("m", $starttime), date("d", $starttime), date("Y", $starttime));
         } else {
             mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM cancelled WHERE reservationid=" . $reservationid . ";");

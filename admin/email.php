@@ -115,6 +115,19 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 $errormsg = "Unable to set System Email. Make sure the format is correct.";
             }
             break;
+        case "phone_number":
+            $phone_number = isset($_REQUEST["phone_number"]) ? $_REQUEST["phone_number"] : "";
+            
+            if ($phone_number != "" && preg_match("/^(?:1(?:[. -])?)?(?:\((?=\d{3}\)))?([2-9]\d{2})(?:(?<=\(\d{3})\))? ?(?:(?<=\d{3})[.-])?([2-9]\d{2})[. -]?(\d{4})(?: (?i:ext)\.? ?(\d{1,5}))?$/", $phone_number)) {
+                if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE settings SET settingvalue='" . $phone_number . "' WHERE settingname='phone_number';")) {
+                    $successmsg = "Phone Number has been updated.";
+                } else {
+                    $errormsg = "Unable to set Phone Number. Please try again.";
+                }
+            } else {
+                $errormsg = "Unable to set Phone Number. Make sure the format is correct.";
+            }
+            break;
         case "condition":
             $email_condition = isset($_REQUEST["email_condition"]) ? $_REQUEST["email_condition"] : "";
             $email_condition_value = isset($_REQUEST["email_condition_value"]) ? $_REQUEST["email_condition_value"] : "";
@@ -325,6 +338,19 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                         <form name="systemaddress" action="email.php" method="POST">
                             <input type="text" name="email_system" value="<?php echo $settings["email_system"]; ?>"/>
                             <input type="hidden" name="op" value="email_system"/>
+                            <input type="submit" value="Save"/>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+            <br/>
+            <li>
+                Phone Number - <span class="notetext">This is the number that will be used for users to contact administrators.</span>
+                <ul>
+                    <li>
+                        <form name="phonenumber" action="email.php" method="POST">
+                            <input type="text" name="phone_number" value="<?php echo $settings["phone_number"]; ?>"/>
+                            <input type="hidden" name="op" value="phone_number"/>
                             <input type="submit" value="Save"/>
                         </form>
                     </li>
