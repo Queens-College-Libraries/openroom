@@ -18,10 +18,7 @@ require_once("includes/or-dbinfo.php");
       
     echo isset($_SESSION["username"]) ? "<strong>Logged in as</strong>: " . $_SESSION["username"] : "&nbsp;"; ?></span>&nbsp;<?php echo ($_SESSION["isadministrator"] == "TRUE") ? "<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;" : "";
     echo ($_SESSION["isreporter"] == "TRUE") ? "<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;" : "";
-    if ($settings["login_method"] == "normal" && $_SESSION["username"] != "") {
-        echo "|&nbsp;<a href=\"editaccount.php\">Edit Account</a>&nbsp;|";
 
-    }
     if(isset($_SESSION["isreporter"])) {
         echo ($_SESSION["isreporter"] == "TRUE") ? "<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;" : "";
     }

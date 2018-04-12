@@ -2,31 +2,24 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 include("includes/or-theme.php");
 include($_SESSION["themepath"] . "header.php");
-
 function rand_str($length = 12, $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890')
 {
     // Length of character list
     $chars_length = (strlen($chars) - 1);
-
     // Start our string
     $string = $chars{rand(0, $chars_length)};
-
     // Generate random string
     for ($i = 1; $i < $length; $i = strlen($string)) {
         // Grab a random character from our list
         $r = $chars{rand(0, $chars_length)};
-
         // Make sure the same two characters don't appear next to each other
         if ($r != $string{$i - 1}) $string .= $r;
     }
-
     // Return the string
     return $string;
 }
-
 //Form Processing
 $desiredusername = isset($_POST["desiredusername"]) ? $_POST["desiredusername"] : "";
 $password = isset($_POST["password"]) ? $_POST["password"] : "";
@@ -36,7 +29,6 @@ $submitted = isset($_POST["submitted"]) ? $_POST["submitted"] : "";
 $activateusername = isset($_GET["username"]) ? $_GET["username"] : "";
 $activatecode = isset($_GET["code"]) ? $_GET["code"] : "";
 $errormsg = "";
-
 if ($activatecode == "" && $activateusername == "") {
     if (!(preg_match("/^[A-Za-z0-9_-]+$/", $desiredusername)) && $submitted == "1") {
         $errormsg .= "Invalid characters in username.<br/>";
@@ -47,8 +39,7 @@ if ($activatecode == "" && $activateusername == "") {
     if (!(filter_var($email, FILTER_VALIDATE_EMAIL)) && $submitted == "1") {
         $errormsg .= "Invalid email address.<br/>";
     }
-
-    if ($errormsg == "" && $submitted == "1" && isset($successmsg)) {
+    if ($errormsg == "" && $submitted == "1") {
         //Create account for this user
         $encpass = sha1($password);
         $activationcode = rand_str();
@@ -61,12 +52,11 @@ if ($activatecode == "" && $activateusername == "") {
             $errormsg = "Account could not be created. Try using a different username.<br/>";
         }
     }
-
     ?>
 
     <center>
         <?php
-        if (isset($successmsg) && $successmsg != "") {
+        if ($successmsg != "") {
             echo "<div id=\"successmsg\">" . $successmsg . "</div>";
         }
         if ($errormsg != "") {
@@ -77,13 +67,12 @@ if ($activatecode == "" && $activateusername == "") {
     <h3><a href="index.php"><?php echo $settings["instance_name"]; ?></a> - Create an Account</h3>
 
     <?php
-    if (isset($successmsg) && $successmsg == "") {
+    if ($successmsg == "") {
         ?>
         <form name="createaccount" method="POST" action="createaccount.php">
             <table border="0">
                 <tr>
-                    <td>Desire
-                    Username:</td>
+                    <td>Desired Username:</td>
                     <td><input type="text" name="desiredusername" value="<?php echo $desiredusername; ?>"/></td>
                     <td><em>Valid Characters: a-z, A-Z, 0-9</em></td>
                 </tr>

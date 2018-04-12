@@ -238,6 +238,7 @@ INSERT INTO `settings` (`settingname`, `settingvalue`) VALUES
   ('email_res_terse', 'a:1:{i:0;s:0:"";}'),
   ('email_res_verbose', 'a:1:{i:0;s:0:"";}'),
   ('email_system', ''),
+  ('phone_number', ''),
   ('https', 'true'),
   ('instance_name', 'OpenRoom'),
   ('instance_url', ''),
@@ -254,8 +255,8 @@ INSERT INTO `settings` (`settingname`, `settingvalue`) VALUES
   ('remindermessage', ''),
   ('systemid', '0000000001'),
   ('theme', 'default'),
-  ('time_format', 'g:i a');
-  ('starttime', '8');
+  ('time_format', 'g:i a'),
+  ('starttime', '8'),
   ('endtime', '20');
 
 -- --------------------------------------------------------
