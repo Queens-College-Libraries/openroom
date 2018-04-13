@@ -1,8 +1,8 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 
--- 
+--
 -- Table structure for table `administrators`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `administrators` (
   `username` VARCHAR(255) NOT NULL,
@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS `administrators` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `bannedusers`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `bannedusers` (
   `username` VARCHAR(255) NOT NULL,
@@ -26,9 +26,9 @@ CREATE TABLE IF NOT EXISTS `bannedusers` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `cancelled`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `cancelled` (
   `reservationid` BIGINT(20)   NOT NULL,
@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS `cancelled` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `deletedrooms`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `deletedrooms` (
   `roomid`          INT(11)      NOT NULL,
@@ -62,9 +62,9 @@ CREATE TABLE IF NOT EXISTS `deletedrooms` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `optionalfields`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `optionalfields` (
   `optionname`     VARCHAR(255) NOT NULL,
@@ -86,9 +86,9 @@ CREATE TABLE IF NOT EXISTS `optionalfields` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `reporters`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `reporters` (
   `username` VARCHAR(255) NOT NULL,
@@ -99,9 +99,9 @@ CREATE TABLE IF NOT EXISTS `reporters` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `reservationoptions`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `reservationoptions` (
   `optionname`    VARCHAR(255) NOT NULL,
@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS `reservationoptions` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `reservations`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `reservations` (
   `reservationid` BIGINT(20)   NOT NULL AUTO_INCREMENT,
@@ -135,9 +135,9 @@ CREATE TABLE IF NOT EXISTS `reservations` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `roomgroups`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `roomgroups` (
   `roomgroupid`   BIGINT(20)   NOT NULL AUTO_INCREMENT,
@@ -150,9 +150,9 @@ CREATE TABLE IF NOT EXISTS `roomgroups` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `roomhours`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `roomhours` (
   `roomhoursid` BIGINT(20)  NOT NULL AUTO_INCREMENT,
@@ -168,9 +168,9 @@ CREATE TABLE IF NOT EXISTS `roomhours` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `rooms`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `rooms` (
   `roomid`          INT(11)      NOT NULL AUTO_INCREMENT,
@@ -187,9 +187,9 @@ CREATE TABLE IF NOT EXISTS `rooms` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `roomspecialhours`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `roomspecialhours` (
   `roomspecialhoursid` BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -206,9 +206,9 @@ CREATE TABLE IF NOT EXISTS `roomspecialhours` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `settings`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `settings` (
   `settingname`  VARCHAR(255) NOT NULL,
@@ -218,9 +218,9 @@ CREATE TABLE IF NOT EXISTS `settings` (
   ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 
--- 
+--
 -- Dumping data for table `settings`
--- 
+--
 
 INSERT INTO `settings` (`settingname`, `settingvalue`) VALUES
   ('allow_past_reservations', 'false'),
@@ -261,9 +261,9 @@ INSERT INTO `settings` (`settingname`, `settingvalue`) VALUES
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `users`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `users` (
   `username`  VARCHAR(255) NOT NULL,
@@ -275,4 +275,3 @@ CREATE TABLE IF NOT EXISTS `users` (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
-
