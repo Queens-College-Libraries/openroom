@@ -2,23 +2,17 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 include("includes/or-theme.php");
 include($_SESSION["themepath"] . "header.php");
-
 if ($_SESSION["systemid"] == $settings["systemid"]) {
-
     //Form Processing
     $submitted = isset($_POST["submitted"]) ? $_POST["submitted"] : "";
     $errormsg = "";
-
     $emaila = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM users WHERE username='" . $_SESSION["username"] . "';"));
-
     if ($submitted == "1") {
         $password = isset($_POST["password"]) ? $_POST["password"] : "";
         $confirm = isset($_POST["confirm"]) ? $_POST["confirm"] : "";
         $email = isset($_POST["email"]) ? $_POST["email"] : "";
-
         if ($password != "" || $confirm != "") {
             if ($password != $confirm) {
                 $errormsg .= "New Password and Conform Password do not match.<br/>";
@@ -30,11 +24,9 @@ if ($_SESSION["systemid"] == $settings["systemid"]) {
         else {
             $encpass = $emaila["password"];
         }
-
         if (!(filter_var($email, FILTER_VALIDATE_EMAIL))) {
             $errormsg .= "Invalid email address.<br/>";
         }
-
         if ($errormsg == "") {
             //Update account for this user
             if (mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE users SET password = '" . $encpass . "', email = '" . $email . "' WHERE username='" . $_SESSION["username"] . "';")) {
@@ -44,10 +36,8 @@ if ($_SESSION["systemid"] == $settings["systemid"]) {
             }
         }
     }
-
     $emaila = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM users WHERE username='" . $_SESSION["username"] . "';"));
     $email = $emaila["email"];
-
     ?>
 
     <center>

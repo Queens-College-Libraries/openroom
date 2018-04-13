@@ -56,39 +56,37 @@
 
 <div id="loginform">
     <form id="authentication" onsubmit="return false" action="">
-        <ul>
-            <li>
-                <ul id="loginusername">
-                    <li>
-                        <span id="loginusernamelabel">QC Username:</span>
-                    </li>
-                    <li>
-                        <input alt="Enter your QC Username" type="text" name="username" id="usernamefield"
-                               class="textfield" placeholder="Your QC Username" autofocus="autofocus"/>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <ul id="loginpassword">
-                    <li>
-                        <span id="loginpasswordlabel">Password:</span>
-                    </li>
-                    <li>
-                        <input alt="Enter your QC Password" type="password" name="password" id="passwordfield"
-                               class="textfield" placeholder="Your QC password"/>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <input id="loginsubmitbutton" class="button" type="submit" value="Log In"
-                       onclick="ajaxAuthenticate()"/><br/>
-                <?php
-                if ($settings["login_method"] == "normal") {
-                    echo "<span class=\"registrationlink\"><a href=\"createaccount.php\">Create Account</a></span><br/><br/>";
-                }
-                ?>
-            </li>
-        </ul>
+          <div id="loginusername" class = "row">
+              <div class = "col-lg-4 usernamelabel">
+                  <span id="loginusernamelabel">Olivet Username:</span>
+              </div>
+              <div class = "col-lg-8 usernamefield">
+                  <input alt="Enter your Olivet Username" type="text" name="username" id="usernamefield"
+                         class="textfield" placeholder="Your Olivet Username" autofocus="autofocus"/>
+              </div>
+          </div>
+
+          <div id="loginpassword" class = "row">
+              <div class = "col-lg-4">
+                  <span id="loginpasswordlabel">Password:</span>
+              </div>
+              <div class = "col-lg-8">
+                  <input alt="Enter your Olivet Password" type="password" name="password" id="passwordfield"
+                         class="textfield" placeholder="Your Olivet password"/>
+              </div>
+          </div>
+          <div class = "row">
+              <div class = "col-lg-8">
+                  <input id="loginsubmitbutton" class="button btn btn-primary" type="submit" value="Log In"
+                         onclick="ajaxAuthenticate()"/><br/>
+                  <?php
+                  if ($settings["login_method"] == "normal") {
+                      echo "<span class=\"registrationlink\"><a href=\"createaccount.php\">Create Account</a></span><br/><br/>";
+                  }
+                  ?>
+            </div>
+          </div>
+        <!--</ul>-->
     </form>
     <div id="errormessage"></div>
 </div>
