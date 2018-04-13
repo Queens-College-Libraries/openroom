@@ -104,6 +104,8 @@ if ($_SESSION["username"] != "") {
             $specialroomhours = $room->specialhours->hourset;
             $collision = "";
             //Loop runs for all hoursets of this room on this day
+            //Proceed only is room has default hours
+
             if(isset($roomhours)) {
                 foreach ($roomhours as $hourset) {
                     $roomstart = new ClockTime(0, 0, 0);
