@@ -58,11 +58,11 @@
     <form id="authentication" onsubmit="return false" action="">
           <div id="loginusername" class = "row">
               <div class = "col-lg-4 usernamelabel">
-                  <span id="loginusernamelabel">Olivet Username:</span>
+                  <span id="loginusernamelabel">Username:</span>
               </div>
               <div class = "col-lg-8 usernamefield">
-                  <input alt="Enter your Olivet Username" type="text" name="username" id="usernamefield"
-                         class="textfield" placeholder="Your Olivet Username" autofocus="autofocus"/>
+                  <input alt="Enter your Username" type="text" name="username" id="usernamefield"
+                         class="textfield" placeholder="Your Username" autofocus="autofocus"/>
               </div>
           </div>
 
@@ -71,8 +71,8 @@
                   <span id="loginpasswordlabel">Password:</span>
               </div>
               <div class = "col-lg-8">
-                  <input alt="Enter your Olivet Password" type="password" name="password" id="passwordfield"
-                         class="textfield" placeholder="Your Olivet password"/>
+                  <input alt="Enter your Password" type="password" name="password" id="passwordfield"
+                         class="textfield" placeholder="Your password"/>
               </div>
           </div>
           <div class = "row">
