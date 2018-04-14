@@ -2,9 +2,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 include("../includes/or-dbinfo.php");
-
 if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
     echo "You are not logged in. Please <a href=\"../index.php\">click here</a> and login with an account that is an authorized administrator or reporter.";
 } elseif ($_SESSION["isadministrator"] != "TRUE") {
@@ -12,12 +10,9 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
 } elseif ($_SESSION["systemid"] != $settings["systemid"]) {
     echo "You are not logged in. Please <a href=\"../index.php\">click here</a> and login with an account that is an authorized administrator or reporter.";
 } else {
-
     $op = isset($_REQUEST["op"]) ? $_REQUEST["op"] : "";
-
     $successmsg = "";
     $errormsg = "";
-
     switch ($op) {
         //Swap roomposition values with room having position++
         case "incorder":
@@ -53,7 +48,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $roomcapacity = isset($_REQUEST["roomcapacity"]) ? $_REQUEST["roomcapacity"] : "";
             $roomdescription = isset($_REQUEST["roomdescription"]) ? $_REQUEST["roomdescription"] : "";
             $roomgroupid = isset($_REQUEST["roomgroupid"]) ? $_REQUEST["roomgroupid"] : "";
-
             if ($roomgroupid != "") {
                 $roompositionr = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid = $roomgroupid ORDER BY roomposition DESC;");
                 if (mysqli_num_rows($roompositionr) > 0) {
@@ -127,8 +121,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             }
             break;
     }
-
-
     ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -144,7 +136,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                     window.location = "rooms.php?op=deleteroom&id=" + roomid;
                 }
                 else {
-
                 }
             }
         </script>
@@ -181,7 +172,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 }
                 $pgroupname = $cgroupname;
                 $roomid = $room["roomid"];
-
                 $thisgroupcount = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid=" . $cgroupname . ";"));
                 $orderstring = "";
                 if ($room["roomposition"] >= 0 && $room["roomposition"] < $thisgroupcount - 1) {
@@ -194,7 +184,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 } else {
                     $orderstring .= "<td></td>";
                 }
-
                 $roomgroupstr = "<select name=\"roomgroupid\"><option></option>";
                 $roomgroups = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM roomgroups;");
                 while ($roomgroup = mysqli_fetch_array($roomgroups)) {
@@ -205,8 +194,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                     $roomgroupstr .= "<option value=\"" . $roomgroup["roomgroupid"] . "\" " . $selectedstr . ">" . $roomgroup["roomgroupname"] . "</option>";
                 }
                 $roomgroupstr .= "</select>";
-
-
                 echo "<tr>" . $orderstring . "<td><form name=\"editroom\" method=\"POST\" action=\"rooms.php\"><input type=\"hidden\" name=\"op\" value=\"editroom\"/><input type=\"hidden\" name=\"roomid\" value=\"" . $room["roomid"] . "\" /><input name=\"roomname\" type=\"text\" class=\"medtxt\" value=\"" . $room["roomname"] . "\" /></td><td><input class=\"smalltxt\" type=\"text\" name=\"roomcapacity\" value=\"" . $room["roomcapacity"] . "\"/></td><td>" . $roomgroupstr . "</td><td><textarea rows=\"3\" cols=\"20\" name=\"roomdescription\">" . $room["roomdescription"] . "</textarea></td><td><input type=\"submit\" value=\"Save Changes\" /></form></td><td><a href=\"javascript:confirmdelete(" . $roomid . ",'" . $room["roomname"] . "');\">Delete Room</a></td></tr>\n";
             }
             ?>
