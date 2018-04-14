@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: khada
- * Date: 12/29/16
- * Time: 9:29 PM
- */
 
 namespace model;
 //
