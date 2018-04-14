@@ -27,7 +27,7 @@ $instance_name = "Openroom Testing";
  * This should be the same address you provide to users.
  * DO NOT include protocol (http:// or https://) or filenames (index.html).
 */
-$instance_url = "library-test.qc.cuny.edu/or";
+$instance_url = "localhost";
 
 //Theme
 /*
@@ -55,7 +55,7 @@ $https = "true";
 *"ldap"
 *Users will be granted access as long as they authenticate against your LDAP server.
 */
-$login_method = "ldap";
+$login_method = "normal";
 
 
 //LDAP Settings
