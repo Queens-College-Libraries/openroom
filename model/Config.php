@@ -18,7 +18,7 @@ class Config
 }
 
 // db
-Config::write('db.host', 'locahost');
+Config::write('db.host', '127.0.0.1');
 Config::write('db.port', '3306');
 Config::write('db.basename', 'openroom');
 Config::write('db.user', 'openroomdemo');
