@@ -42,8 +42,8 @@ p {
 
 .button {
     border: 2px #000000 solid;
-    background-color: #EEEEEE;
-    width: 55px;
+    /*background-color: #EEEEEE;*/
+    max-width: 55px;
     margin-bottom: 5px;
 }
 
@@ -324,4 +324,8 @@ p {
     padding: 4px;
     text-align: center;
     width: 300px;
+}
+
+#loginsubmitbutton {
+    width: auto;
 }
