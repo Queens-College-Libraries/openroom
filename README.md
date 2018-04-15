@@ -11,4 +11,8 @@ The project is free and open source (GPLv3).
 * Twig for templating and better theme support  
 * jQuery and bootstrap for front end 
 
+## Proposed supported web browsers 
+
+* Support current versions of Apple Safari, Google Chrome, Microsoft Edge, and Mozilla Firefox  
+
 Thoughts? 
