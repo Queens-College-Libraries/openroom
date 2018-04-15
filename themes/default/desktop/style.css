@@ -3,9 +3,8 @@
 @import "css/bootstrap-reboot.css";
 @import "css/bootstrap.min.css";
 
-
 body {
-    margin: 0px;
+    margin: 0;
     padding-top: 4px;
     background-color: #FFFFFF;
     font-family: Helvetica, arial, sans-serif;
@@ -21,8 +20,8 @@ p {
 }
 
 #loginform ul {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     border: none;
     list-style: none;
 }
@@ -42,8 +41,9 @@ p {
 
 .button {
     border: 2px #000000 solid;
-    /*background-color: #EEEEEE;*/
-    max-width: 55px;
+    background-color: #9fcdff;
+    color: #1b1e21;
+    width: 55px;
     margin-bottom: 5px;
 }
 
@@ -56,9 +56,9 @@ p {
 
 #heading {
     background-color: #FFFFFF;
-    border: 0px;
+    border: 0;
     margin: 0 auto;
-    padding: 0px;
+    padding: 0;
     text-align: right;
     width: 800px;
 }
@@ -66,9 +66,7 @@ p {
 #remindermessage {
     background-color: #FFFFDD;
     border: 1px #AAAA00 solid;
-    margin: 0 auto;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    margin: 10px auto;
     padding: 3px;
     text-align: center;
     width: 700px;
@@ -82,7 +80,7 @@ p {
     background-color: #E1DBAF;
     border: 1px #000000 solid;
     margin: 0 auto;
-    padding: 0px;
+    padding: 0;
     width: 800px;
 }
 
@@ -117,7 +115,7 @@ p {
 }
 
 #calendarTableHeader {
-    border: 0px;
+    border: 0;
     width: 100%;
 }
 
