@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 include("configuration.php");
 include("includes/or-dbinfo.php");
 
