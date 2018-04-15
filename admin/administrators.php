@@ -23,7 +23,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $adminname = isset($_REQUEST["adminname"]) ? $_REQUEST["adminname"] : "";
             if ($adminname != "") {
                 if (model\Administrator::add($adminname)) {
-                    $successmsg = $adminname . " has been added to the adminstrator list.";
+                    $successmsg = $adminname . " has been added to the administrator list.";
                 } else {
                     if (model\Administrator::find($adminname)->username == $adminname) {
                         $errormsg .= "The records show that " . $adminname . " is already an administrator. ";
@@ -38,7 +38,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $adminname = isset($_REQUEST["adminname"]) ? $_REQUEST["adminname"] : "";
             if ($adminname != "") {
                 if (model\Administrator::remove($adminname)) {
-                    $successmsg = $adminname . " has been deleted from the adminstrator list.";
+                    $successmsg = $adminname . " has been deleted from the administrator list.";
                 } else {
                     $errormsg = "Unable to delete this administrator. Try again.";
                 }
