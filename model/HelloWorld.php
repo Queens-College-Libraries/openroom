@@ -1,14 +1,52 @@
 <?php
 declare(strict_types=1);
+
 namespace model;
+
+use Psr\Http\Message\ResponseInterface;
+
+/**
+ *
+ *
+ * @package   model
+ */
 class HelloWorld
 {
-    public function announce(): void
-    {
-        echo 'Hello, autoloaded world!';
+    /**
+     * @var string
+     */
+    private $foo;
+    /**
+     * @var ResponseInterface
+     */
+    private $response;
+
+    /**
+     * HelloWorld constructor.
+     *
+     * @param ResponseInterface $response
+     * @param string $foo
+     */
+    public function __construct(
+        string $foo,
+        ResponseInterface $response
+    ) {
+        $this->foo = $foo;
+        $this->response = $response;
     }
-    public function sayBye(): void
+
+    /**
+     *
+     *
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     */
+    public function __invoke(): ResponseInterface
     {
-        echo 'Goodbye, cruel world!';
+        $response = $this->response->withHeader('Content-Type', 'text/html');
+        $response->getBody()
+            ->write("<html><head></head><body>Hello, {$this->foo} world!</body></html>");
+
+        return $response;
     }
 }
