@@ -7,4 +7,8 @@ class HelloWorld
     {
         echo 'Hello, autoloaded world!';
     }
+    public function sayBye(): void
+    {
+        echo 'Goodbye, cruel world!';
+    }
 }
