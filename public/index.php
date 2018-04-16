@@ -1,14 +1,20 @@
 <?php
 declare(strict_types=1);
+
+use DI\ContainerBuilder;
+use model\HelloWorld;
+use function DI\create;
+
 require_once dirname(__DIR__) . '/vendor/autoload.php';
-$containerBuilder = new \DI\ContainerBuilder();
+
+$containerBuilder = new ContainerBuilder();
 $containerBuilder->useAutowiring(false);
 $containerBuilder->useAnnotations(false);
 $containerBuilder->addDefinitions([
-    \model\HelloWorld::class => \DI\create(\model\HelloWorld::class)
+    HelloWorld::class => create(HelloWorld::class)
 ]);
 
 $container = $containerBuilder->build();
 
-$helloWorld = $container->get(\model\HelloWorld::class);
-$helloWorld->sayBye();
+$helloWorld = $container->get(HelloWorld::class);
+$helloWorld->announce();
