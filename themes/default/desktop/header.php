@@ -14,7 +14,7 @@ require_once("includes/or-dbinfo.php");
 <div id="heading">
 	<span class="username">
 	<?php
-    if ($_SESSION["systemid"] == $settings["systemid"]){
+    if (isset($_SESSION["username"]) && $_SESSION["systemid"] == $settings["systemid"]){
       
     echo isset($_SESSION["username"]) ? "<strong>Logged in as</strong>: " . $_SESSION["username"] : "&nbsp;"; ?></span>&nbsp;<?php echo ($_SESSION["isadministrator"] == "TRUE") ? "<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;" : "";
     echo ($_SESSION["isreporter"] == "TRUE") ? "<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;" : "";
