@@ -80,8 +80,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                         $tomonth = date("n", $toa);
                         $today = date("j", $toa);
                         $toyear = date("Y", $toa);
-                        $starttime = new ClockTime();
-                        $starttime->setTime($starthour, $startminute, 0);
+                        $starttime = new ClockTime($starthour, $startminute, 0);
                         $starttime = mktime($starthour, $startminute, 0, $frommonth, $fromday, $fromyear);
                         $endtime = $starttime + ($duration * 60);
                         $curtime = $starttime;

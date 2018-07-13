@@ -14,7 +14,7 @@
 *	SELECT, INSERT, UPDATE, and DELETE privileges on the openroom database
 *$dbdatabase is the name of the database OpenRoom uses (default: openroom)
 */
-$dbhost = "localhost";
+$dbhost = "127.0.0.1";
 $dbuser = "openroomdemo";
 $dbpass = "53PVs7nj2i2AD5FXNLNpZyW3B3sG31WGPThmPCntdldKwxZ5vvb3Pg266HSN8NG";
 $dbdatabase = "openroom";

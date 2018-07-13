@@ -127,7 +127,13 @@ class ClockTime
 
     function addHours($hrs)
     {
-        $this->hours += $hrs;
+        if(!(is_int($this->hours))) { 
+            if(is_int($hrs)) { 
+                $this->hours = $hrs;
+            } 
+        } else {
+            $this->hours += (int)$hrs;
+        }
     }
 
     function isGreaterThan($clockTime)
