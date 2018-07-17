@@ -61,7 +61,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         $startminute = isset($_POST["startminute"]) ? $_POST["startminute"] : "";
         $duration = isset($_POST["duration"]) ? $_POST["duration"] : "";
         $daysineffect = isset($_POST["daysineffect"]) ? $_POST["daysineffect"] : "";
-
         //Make sure from and to are in proper formats
         if ((preg_match("/^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/", $from)) && (preg_match("/^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/", $to))) {
             //Make sure from occurs before to
@@ -334,6 +333,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 Availability</strong> or <input type="radio" name="onlychecking"
                                                 value="multireserve" <?php echo $onlychkselb; ?> /><strong>Finalize
                 Reservations</strong><br/><br/>
+            <input type="hidden" name="isFromMultipleReservations" id="isFromMultipleReservations" value="true"/>
             <input type="submit" value="Submit"/><br/><br/><br/>
         </form>
         <?php
