@@ -27,7 +27,8 @@ if ($username != "") {
     //Therefore you don't need to replace all isntances of $username with this, only on the final inserts
     $altusername = (isset($_POST["altusername"]) ? $_POST["altusername"] : "");
     $emailconfirmation = (isset($_POST["emailconfirmation"]) ? $_POST["emailconfirmation"] : "yes");
-
+    $emailconfirmation = (isset($_POST["multipleReservation"]) ? $_POST["emailconfirmation"] : "yes");
+    $isFromMultipleReservations = isset($_POST["isFromMultipleReservations"]) ? $_POST["isFromMultipleReservations"] : "false";
     if (isset($onlychecking) && ($onlychecking == "TRUE" || $onlychecking == "multireserve")) {
         $capacity = 1;
         $fullcapacity = 1;
@@ -432,60 +433,62 @@ if ($username != "") {
 
                     //Create verbose, terse and GEF messages.
                     //VERBOSE
-                    $verbose_msg = "Your room has been reserved!\n\n" .
-                        $user_real_str .
-                        "Username: " . $username . "\n\n" .
-                        "E-mail: " . $user_email . "\n\n" .
-                        "Room: " . $thisroom->name . "\n\n" .
-                        "Date and Time: " . date("F j, Y g:i a", $starttime) . " - " . date("F j, Y g:i a", $endtime) . "\n\n" .
-                        "Number in Group: " . $capacity . "\n\n" .
-                        "Please call (718-997-3900) or email (musiclibrary@qc.cuny.edu) the Music Library if you need further assistance.\n\n";
+                    if ($isFromMultipleReservations != "true") {
+                        $verbose_msg = "Your room has been reserved!\n\n" .
+                            $user_real_str .
+                            "Username: " . $username . "\n\n" .
+                            "E-mail: " . $user_email . "\n\n" .
+                            "Room: " . $thisroom->name . "\n\n" .
+                            "Date and Time: " . date("F j, Y g:i a", $starttime) . " - " . date("F j, Y g:i a", $endtime) . "\n\n" .
+                            "Number in Group: " . $capacity . "\n\n" .
+                            "Please call (718-997-3900) or email (musiclibrary@qc.cuny.edu) the Music Library if you need further assistance.\n\n";
 
-                    foreach ($ofvalues as $key => $ofval) {
-                        $opname = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $key . "';"));
-                        $opname = $opname["optionname"];
-                        $verbose_msg .= $opname . ": " . str_replace("\\", "", $ofval) . "\n\n";
-                        $gef_msg_of .= "<b>" . $opname . "</b>: " . str_replace("\\", "", $ofval) . "<br/><br/>";
-                    }
+                        foreach ($ofvalues as $key => $ofval) {
+                            $opname = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $key . "';"));
+                            $opname = $opname["optionname"];
+                            $verbose_msg .= $opname . ": " . str_replace("\\", "", $ofval) . "\n\n";
+                            $gef_msg_of .= "<b>" . $opname . "</b>: " . str_replace("\\", "", $ofval) . "<br/><br/>";
+                        }
 
-                    $terse_msg = $verbose_msg;
-                    $verbose_msg .= $settings["policies"] . "\n\n";
+                        $terse_msg = $verbose_msg;
+                        $verbose_msg .= $settings["policies"] . "\n\n";
 
-                    $gef_msg = "<html><body>" . $user_real_gef . "<b>Date and Time</b>: " . date("F j, Y", $starttime) . " " . date("g:i a", $starttime) . " - " . date("F j, Y", $endtime) . " " . date("g:i a", $endtime) . "<br/><br/><b>Username</b>: " . $username . "<br/><br/>" . $gef_msg_of . "</body></html>";
+                        $gef_msg = "<html><body>" . $user_real_gef . "<b>Date and Time</b>: " . date("F j, Y", $starttime) . " " . date("g:i a", $starttime) . " - " . date("F j, Y", $endtime) . " " . date("g:i a", $endtime) . "<br/><br/><b>Username</b>: " . $username . "<br/><br/>" . $gef_msg_of . "</body></html>";
 
-                    $bccstr = "";
-                    if ($email_res_verbose != "") {
-                        $bccstr = "\r\nBcc: " . $email_res_verbose;
-                    }
+                        $bccstr = "";
+                        if ($email_res_verbose != "") {
+                            $bccstr = "\r\nBcc: " . $email_res_verbose;
+                        }
 
-                    if ($emailconfirmation != "no") {
-                        mail($user_email, $settings["instance_name"] . " Reservation", $verbose_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system . $bccstr);
-                    } else {
-                        mail($email_res_verbose, $settings["instance_name"] . " Reservation", $verbose_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-                    }
-                    mail($email_res_terse, $settings["instance_name"] . " Reservation", $terse_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-                    mail($email_res_gef, "Room: " . $thisroom->name, $gef_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-
-                    //On Condition emails
-                    //Get the current email_condition and email_value
-                    //If condition == "none" skip this, if it is "duration" or "capacity" check those values
-                    //If it is something else, check that particular optional field
-                    if ($settings["email_condition"] != "none") {
-                        if ($settings["email_condition"] == "duration" && $duration >= $settings["email_condition_value"]) {
-                            mail($email_cond_verbose, $settings["instance_name"] . " Reservation (Condition Met)", $verbose_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-                            mail($email_cond_terse, $settings["instance_name"] . " Reservation (Condition Met)", $terse_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-                            mail($email_cond_gef, "Room: " . $thisroom->name, $gef_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-                        } elseif ($settings["email_condition"] == "capacity" && $capacity >= $settings["email_condition_value"]) {
-                            mail($email_cond_verbose, $settings["instance_name"] . " Reservation (Condition Met)", $verbose_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-                            mail($email_cond_terse, $settings["instance_name"] . " Reservation (Condition Met)", $terse_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-                            mail($email_cond_gef, "Room: " . $thisroom->name, $gef_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
-
+                        if ($emailconfirmation != "no") {
+                            mail($user_email, $settings["instance_name"] . " Reservation", $verbose_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system . $bccstr);
                         } else {
-                            $thecond = $settings["email_condition"];
-                            if ($ofvalues[$thecond] == $settings["email_condition_value"]) {
+                            mail($email_res_verbose, $settings["instance_name"] . " Reservation", $verbose_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+                        }
+                        mail($email_res_terse, $settings["instance_name"] . " Reservation", $terse_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+                        mail($email_res_gef, "Room: " . $thisroom->name, $gef_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+
+                        //On Condition emails
+                        //Get the current email_condition and email_value
+                        //If condition == "none" skip this, if it is "duration" or "capacity" check those values
+                        //If it is something else, check that particular optional field
+                        if ($settings["email_condition"] != "none") {
+                            if ($settings["email_condition"] == "duration" && $duration >= $settings["email_condition_value"]) {
                                 mail($email_cond_verbose, $settings["instance_name"] . " Reservation (Condition Met)", $verbose_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
                                 mail($email_cond_terse, $settings["instance_name"] . " Reservation (Condition Met)", $terse_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
                                 mail($email_cond_gef, "Room: " . $thisroom->name, $gef_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+                            } elseif ($settings["email_condition"] == "capacity" && $capacity >= $settings["email_condition_value"]) {
+                                mail($email_cond_verbose, $settings["instance_name"] . " Reservation (Condition Met)", $verbose_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+                                mail($email_cond_terse, $settings["instance_name"] . " Reservation (Condition Met)", $terse_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+                                mail($email_cond_gef, "Room: " . $thisroom->name, $gef_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+
+                            } else {
+                                $thecond = $settings["email_condition"];
+                                if ($ofvalues[$thecond] == $settings["email_condition_value"]) {
+                                    mail($email_cond_verbose, $settings["instance_name"] . " Reservation (Condition Met)", $verbose_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+                                    mail($email_cond_terse, $settings["instance_name"] . " Reservation (Condition Met)", $terse_msg, "From: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+                                    mail($email_cond_gef, "Room: " . $thisroom->name, $gef_msg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);
+                                }
                             }
                         }
                     }
