@@ -89,6 +89,14 @@ if ($username != "") {
         $xmlreservations = new SimpleXMLElement($getdatarange);
         foreach ($xmlreservations->reservation as $reservation) {
             if ($reservation->roomid == $roomid) {
+//                $errormsg .= "Found an existing reservation: <br/> "
+//                    . "Room ID: "
+//                    . $reservation->roomid
+//                    . " for "
+//                    . $reservation->username
+//                    . " made at "
+//                    . $reservation->timeofrequest
+//                    . " <br />";
                 $errormsg .= "Another room has been reserved during this time.<br/>";
             }
             if ($errormsg == "") {
