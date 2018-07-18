@@ -97,7 +97,7 @@ if ($username != "") {
 //                    . " made at "
 //                    . $reservation->timeofrequest
 //                    . " <br />";
-                $errormsg .= "Another room has been reserved during this time.<br/>";
+                $errormsg .= "Another reservation exists during this time.<br/>";
             }
             if ($errormsg == "") {
                 if ($reservation->username == $username && $isadministrator != "TRUE" && $settings["allow_simultaneous_reservations"] == "false") {
