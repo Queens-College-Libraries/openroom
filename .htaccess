@@ -1,7 +1,0 @@
-Order Deny,Allow
-Allow from all
-
-<Files /index.php>
-    Order Allow,Deny
-    Allow from all
-</Files>
