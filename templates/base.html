@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <script src="/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="/vendor/popperjs/umd/popper.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    {% block head %}{% endblock %}
+    <title>Openroom - {% block title %}{% endblock %}</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top mb-2">
+    <a class="navbar-brand" href="/">Openroom</a>
+    <script>
+			 document.write('<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#site-nav"> \
+				 <span class="navbar-toggler-icon"></span> \
+				 </button>')
+
+
+
+    </script>
+    <div id="site-nav" class="navbar-nav">
+        {% block navbar %}{% endblock %}
+    </div>
+    <script>
+				$("#site-nav").addClass("collapse navbar-collapse")
+
+
+
+    </script>
+</nav>
+{% with flashes = get_flashed_messages() %}
+{% if flashes %}
+<div class="container">
+    {% for message in flashes %}
+    <div class="alert alert-primary">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
+<hr>
+<div class="container-fluid">
+    {% block footer %}{% endblock %}
+    <p class="text-center text-muted">
+        <small>Get the code at <a href="https://github.com/openroom/openroom">openroom</a>!</small>
+    </p>
+</div>
+</body>
+</html>
