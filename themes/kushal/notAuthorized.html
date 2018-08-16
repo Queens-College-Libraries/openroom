@@ -1,0 +1,21 @@
+{% extends "block.html" %}
+
+{% block content %}
+
+<article>
+    <hgroup>
+        <h2>
+            {{ page_title }}
+        </h2>
+    </hgroup>
+    <p>
+        You must be authorized as an administrator to view this page.
+        Please
+        <a href="../">
+            go back
+        </a>.
+        <br/>
+        If you believe you received this message in error, contact an administrator.
+    </p>
+</article>
+{% endblock %}
