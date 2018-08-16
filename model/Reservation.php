@@ -154,12 +154,21 @@ class Reservation
     // "SELECT * FROM reservations ORDER BY timeofrequest DESC;"
 
 
-    public static function get_a_specific_reservation($id)
+    public static function getSpecificReservation($db, $id)
     {
-        $db = Db::getInstance();
         $req = $db->prepare("SELECT reservationid, start, end, roomid, username, numberingroup, timeofrequest FROM reservations WHERE reservationid = :id");
         $req->execute(array('id' => $id));
         $reservation = $req->fetch();
         return new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest']);
+    }
+
+    public static function all($db)
+    {
+        $list = [];
+        $req = $db->query("SELECT reservationid, start, end, roomid, username, numberingroup, timeofrequest FROM reservations");
+        foreach ($req->fetchAll() as $reservation) {
+            $list = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest']);
+        }
+        return $list;
     }
 }

@@ -1,0 +1,47 @@
+{% extends "block.html" %}
+
+{% block content %}
+
+<article>
+    <hgroup>
+        <h2>
+            {{ page_title }}
+        </h2>
+    </hgroup>
+    <h3>
+        List a specific reservation
+    </h3>
+    <p class="text text-muted">
+        {{ reservation.id }}
+    </p>
+    <p class="text text-muted">
+        {{ reservation.startTime }}
+    </p>
+    <p class="text text-muted">
+        {{ reservation.endTime }}
+    </p>
+    <p class="text text-muted">
+        {{ reservation.roomId }}
+    </p>
+    <p class="text text-muted">
+        {{ reservation.userName }}
+    </p>
+    <p class="text text-muted">
+        {{ reservation.numberInGroup }}
+    </p>
+    <p class="text text-muted">
+        {{ reservation.timeOfRequest }}
+    </p>
+    <h3>
+        List all reservations
+    </h3>
+    {{ dump(reservations) }}
+    <!--<ul>-->
+        <!--{% for reservation in reservations %}-->
+        <!--<li>-->
+            <!--{{ reservation.username|e }}-->
+        <!--</li>-->
+        <!--{% endfor %}-->
+    <!--</ul>-->
+</article>
+{% endblock %}
