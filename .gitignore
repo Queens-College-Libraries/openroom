@@ -1,2 +1,6 @@
 /vendor
 .idea/
+node_modules/
+.sass-cache/
+*.css
+*.css.map
