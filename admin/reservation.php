@@ -14,4 +14,4 @@ try {
     var_dump($e);
 }
 echo $template->render(array('title' => \model\Setting::find("instance_name")->get_value(),
-    'page_title' => "Reservations", 'reservation' => \model\Reservation::getSpecificReservation(\model\Db::getInstance(), 299), 'reservations' => \model\Reservation::all(\model\Db::getInstance())));
+    'page_title' => "Reservations", 'reservation' => \model\Reservation::getSpecificReservation(\model\Db::getInstance(), 324), 'reservations' => \model\Reservation::all(\model\Db::getInstance())));
