@@ -157,9 +157,9 @@ class Reservation
     public static function get_a_specific_reservation($id)
     {
         $db = Db::getInstance();
-        $req = $db->prepare('SELECT reservationid, start, end, roomid, username, numberingroup, timeofrequest FROM users WHERE reservationid = :id');
+        $req = $db->prepare("SELECT reservationid, start, end, roomid, username, numberingroup, timeofrequest FROM reservations WHERE reservationid = :id");
         $req->execute(array('id' => $id));
         $reservation = $req->fetch();
-        return new Reservation(reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['numberingroup'], $reservation['timeofrequest']);
+        return new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest']);
     }
 }
