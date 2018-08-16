@@ -10,7 +10,7 @@
             Add an administrator
         </h3>
     </hgroup>
-    <form name="addadministrator" action="/admin/administrator.php" method="POST">
+    <form name="addAdministrator" action="/admin/administrator.php" method="POST">
         <div class="form-group">
             <label for="Administrator">Administrator</label>
             <input type="text" class="form-control" id="Administrator" aria-describedby="administratorHelp"
@@ -24,5 +24,14 @@
             Submit
         </button>
     </form>
+    <hr/>
+    <h3>List all administrators</h3>
+    <ul>
+        {% for administrator in administrators %}
+        <li>
+            {{ administrator.username|e }}
+        </li>
+        {% endfor %}
+    </ul>
 </article>
 {% endblock %}

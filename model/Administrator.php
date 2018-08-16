@@ -14,7 +14,7 @@ class Administrator
     {
         $list = [];
         $db = Db::getInstance();
-        $req = $db->query('SELECT * FROM `administrators`');
+        $req = $db->query('SELECT username FROM administrators');
         foreach ($req->fetchAll() as $administrator) {
             $list[] = new Administrator($administrator['username']);
         }
@@ -25,7 +25,7 @@ class Administrator
     public static function find($username)
     {
         $db = Db::getInstance();
-        $req = $db->prepare('SELECT * FROM `administrators` WHERE username = :username');
+        $req = $db->prepare('SELECT username FROM administrators WHERE username = :username');
         $req->execute(array('username' => $username));
         $administrator = $req->fetch();
 
@@ -36,10 +36,13 @@ class Administrator
     {
         if (!Administrator::exists($username)) {
             $db = Db::getInstance();
-            $req = $db->prepare('INSERT INTO `administrators`(username) VALUES (:username)');
-            $req->bindParam(':username', $username, \PDO::PARAM_STR, 255);
-            $req->execute();
-            return true;
+            if (isset($username) && $username != "")
+            {
+                $req = $db->prepare('INSERT INTO administrators(username) VALUES (:username)');
+                $req->bindParam(':username', $username, \PDO::PARAM_STR, 255);
+                $req->execute();
+                return true;
+            }
         }
         return false;
     }
@@ -47,7 +50,7 @@ class Administrator
     public static function exists($username)
     {
         $db = Db::getInstance();
-        $req = $db->prepare('SELECT exists(SELECT * FROM `administrators` WHERE username = :username)');
+        $req = $db->prepare('SELECT exists(SELECT username FROM administrators WHERE username = :username)');
         $req->execute(array('username' => $username));
         $administrator = $req->fetch();
         return $administrator[0];
@@ -57,7 +60,7 @@ class Administrator
     {
         if (Administrator::exists($username)) {
             $db = Db::getInstance();
-            $req = $db->prepare('DELETE FROM `administrators` WHERE username = :username');
+            $req = $db->prepare('DELETE FROM administrators WHERE username = :username');
             $req->bindParam(':username', $username, \PDO::PARAM_STR, 255);
             $req->execute();
             return true;
