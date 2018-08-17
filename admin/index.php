@@ -35,7 +35,6 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         <?php if ($_SESSION["isadministrator"] == "TRUE") { ?>
             <h3>User Management</h3>
             <ul>
-
                 <li><a href="administrators.php">Administrators</a><em> - Add/Remove users with full administrative
                         access.</em></li>
                 <li><a href="reporters.php">Reporters</a><em> - Add/Remove users with limited administrative
@@ -73,6 +72,8 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                         "Policies".</em></li>
                 <li><a href="reminder.php">Reminder Message</a><em> - The Reminder Message appears at the top of every
                         page.</em></li>
+                <li><a href="truncate-reservations.php">Truncate reservations</a><em> - Delete reservation records.</em>
+                </li>
             </ul>
             <?php
         }
