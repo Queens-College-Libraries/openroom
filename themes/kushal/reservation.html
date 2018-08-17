@@ -9,39 +9,47 @@
         </h2>
     </hgroup>
     <h3>
-        List a specific reservation
-    </h3>
-    <p class="text text-muted">
-        {{ reservation.id }}
-    </p>
-    <p class="text text-muted">
-        {{ reservation.startTime }}
-    </p>
-    <p class="text text-muted">
-        {{ reservation.endTime }}
-    </p>
-    <p class="text text-muted">
-        {{ reservation.roomId }}
-    </p>
-    <p class="text text-muted">
-        {{ reservation.userName }}
-    </p>
-    <p class="text text-muted">
-        {{ reservation.numberInGroup }}
-    </p>
-    <p class="text text-muted">
-        {{ reservation.timeOfRequest }}
-    </p>
-    <h3>
         List all reservations
     </h3>
-    {{ dump(reservations) }}
-    <!--<ul>-->
-        <!--{% for reservation in reservations %}-->
-        <!--<li>-->
-            <!--{{ reservation.username|e }}-->
-        <!--</li>-->
-        <!--{% endfor %}-->
-    <!--</ul>-->
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">start time</th>
+            <th scope="col">end time</th>
+            <th scope="col">room id</th>
+            <th scope="col">user name</th>
+            <th scope="col">number in group</th>
+            <th scope="col">time of request</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+        <tr>
+            <th scope="row">
+                {{ reservation.id|e}}
+            </th>
+            <td>
+                {{ reservation.startTime|e }}
+            </td>
+            <td>
+                {{ reservation.endTime|e }}
+            </td>
+            <td>
+                {{ reservation.roomId|e }}
+            </td>
+            <td>
+                {{ reservation.userName|e }}
+            </td>
+            <td>
+                {{ reservation.numberInGroup|e }}
+            </td>
+            <td>
+                {{ reservation.timeOfRequest|e }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </article>
 {% endblock %}
