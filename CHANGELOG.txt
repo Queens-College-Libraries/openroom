@@ -1,3 +1,7 @@
+WIP (no version number) 8/16/2018
+- Add a new admin screen to allow deleting oldd reservations
+Screenshot: https://screenshotscdn.firefoxusercontent.com/images/e5e2d292-44d0-433c-a569-03e99a473ac6.png
+
 OpenRoom 1.4.1 - 4/18/2012
 ========================================================================
 - Minor fix correcting an html special characters issue.

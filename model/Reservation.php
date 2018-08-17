@@ -167,8 +167,17 @@ class Reservation
         $list = [];
         $req = $db->query("SELECT reservationid, start, end, roomid, username, numberingroup, timeofrequest FROM reservations");
         foreach ($req->fetchAll() as $reservation) {
-            $list = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest']);
+            $list[] = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest']);
         }
         return $list;
+    }
+
+    // delete from openroom.reservations where start < '2018-07-18 14:00:00';
+    public static function truncate($db, $startDate)
+    {
+        $req = $db->prepare('DELETE FROM  reservations where start < (:startDate)');
+        $req->bindParam(':startDate', $startDate, \PDO::PARAM_STR, 255);
+        $req->execute();
+        return true;
     }
 }
