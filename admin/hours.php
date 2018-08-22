@@ -76,7 +76,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                 <br/>
                 <li>
                     Closing time: <br/>
-                    <input type="range" min="0" max="23" step="1" name="endtime" style="width: 80%;"
+                    <input type="range" min="0" max="24" step="1" name="endtime" style="width: 80%;"
                            value="<?php echo $settings["endtime"]; ?>" oninput="endtimeoutput.value = endtime.value"/>
                     <output name="endtimeoutput"><?php echo $settings["endtime"]; ?></output>
                 </li>
