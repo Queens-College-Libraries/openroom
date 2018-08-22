@@ -19,8 +19,8 @@ $getdatarange = include("../or-getdatarange.php");
 $getroominfo = include("../or-getroominfo.php");
 $xmlreservations = new SimpleXMLElement($getdatarange);
 $xmlroominfo = new SimpleXMLElement($getroominfo);
-$current_time = new ClockTime($settings["starttime"] ?? 8, 0, 0);
-$last_time = new ClockTime($settings["endtime"] ?? 23, 59, 59);
+$current_time = new ClockTime((int)\model\Setting::find("starttime")->get_value(), 0, 0 ?? 8, 0, 0);
+$last_time = new ClockTime((int)\model\Setting::find("endtime")->get_value(), 0, 0 ?? 23, 59, 59);
 $currentweekday = strtolower(date('l', $_POST["fromrange"]));
 $currentmdy = date('l, F d, Y', $_POST["fromrange"]);
 if ($_SESSION["username"] != "") {
@@ -73,141 +73,132 @@ if ($_SESSION["username"] != "") {
         $dvout .= "<th>" . $room->name . "</th>";
     }
     $dvout .= "</tr>";
-    // INITIAL TIME PRINTS TWICE; THIS IS A QUICK FIX
-    $i = 0;
     while ($last_time->isGreaterThan($current_time)) {
         //Format time string
         $time_format = $settings["time_format"];
         $current_time_exploded = explode(":", $current_time->getTime());
         $current_time_tf = mktime($current_time_exploded[0], $current_time_exploded[1], $current_time_exploded[2], date("n", $_POST["fromrange"]), date("j", $_POST["fromrange"]), date("Y", $_POST["fromrange"]));
         $time_str = date($time_format, $current_time_tf);
-        //PRINT HOUR START HOUR ON SECOND ITERATION
-        if($i != 0){
-          $dvout .= "<tr onMouseOver=\"javascript:this.className='mousedoverrow';\" onMouseOut=\"javascript:this.className='mousedoutrow';\"><td class=\"dayviewTime\">" . $time_str . "</td>";
-          $current_stop = new ClockTime(0, 0, 0);
-          $current_stop->setMySQLTime((string)$current_time->getTime());
-          $current_stop->addMinutes($settings["interval"] - 1);
-          foreach ($xmlroominfo->room as $room) {
-              eval("\$roomhours = \$room->hours->" . $currentweekday . "->hourset;");
-              $specialroomhours = $room->specialhours->hourset;
-              $collision = "";
-              //Loop runs for all hoursets of this room on this day
-              //Proceed only is room has default hours
-              if(isset($roomhours)) {
-                  foreach ($roomhours as $hourset) {
-                      $roomstart = new ClockTime(0, 0, 0);
-                      $roomstart->setMySQLTime((string)$hourset->start);
-                      $roomstop = new ClockTime(0, 0, 0);
-                      $roomstop->setMySQLTime((string)$hourset->end);
-                      //echo $collision .", ";
-                      //If a good collision (stalactite, bat, spelunker, salamander, stalagmite) has already occured, don't run this function
-                      if ($collision != "bat" && $collision != "stalactite" && $collision != "spelunker" && $collision != "salamander" && $collision != "stalagmite") {
-                          $collision = collisionCave($roomstart, $roomstop, $current_time, $current_stop);
-                      }
-                      //echo $roomstart->getTime() .", ". $roomstop->getTime() .", ". $current_time->getTime() .", ". $current_stop->getTime() .", ". $room->name .", ". $collision ."<br/>";
-                  }
-              }
-              //If special hours exist for this day, throw away previous results and
-              //check special hours instead.
-              if ((string)$specialroomhours->start[0] != "") {
-                  $collision = "";
-                  foreach ($specialroomhours as $hourset) {
-                      $roomstart = new ClockTime(0, 0, 0);
-                      $roomstart->setMySQLTime((string)$hourset->start);
-                      $roomstop = new ClockTime(0, 0, 0);
-                      $roomstop->setMySQLTime((string)$hourset->end);
-                      //echo $collision .", ";
-                      //If a good collision (stalactite, bat, spelunker, salamander, stalagmite) has already occured, don't run this function
-                      if ($collision != "bat" && $collision != "stalactite" && $collision != "spelunker" && $collision != "salamander" && $collision != "stalagmite") {
-                          $collision = collisionCave($roomstart, $roomstop, $current_time, $current_stop);
-                      }
-                      //echo $roomstart->getTime() .", ". $roomstop->getTime() .", ". $current_time->getTime() .", ". $current_stop->getTime() .", ". $room->name .", ". $collision ."<br/>";
-                  }
-              }
-              //If final collision state is stalactite, bat, spelunker, salamander, or stalagmite, the room is open during this time interval.
-              //Check to see if there are any reservations that collide with this time.
-              $rescol = FALSE;
-              if ($collision == "stalactite" || $collision == "bat" || $collision == "spelunker" || $collision == "salamander" || $collision == "stalagmite") {
-                  //Go through each reservation in $xmlreservations, converting start and end to ClockTimes
-                  //Then run collisionCave against them to see if a reservation exists here. Refer to
-                  //reservations by their reservationid when linking to them.
-                  //Use XPath to reduce $xmlreservations to a smaller array of reservations that are only for the current room
-                  $reduced_reservations = $xmlreservations->xpath("/reservations/reservation[roomid=" . $room->id . "]");
-                  foreach ($reduced_reservations as $reservation) {
-                      //foreach($xmlreservations as $reservation){
-                      $reservationstart = new ClockTime(0, 0, 0);
-                      $reservationstart->setMySQLTime(date('H:i:s', (string)$reservation->start));
-                      $reservationend = new ClockTime(0, 0, 0);
-                      $reservationend->setMySQLTime(date('H:i:s', (string)$reservation->end));
-                      //If the timestamp for the reservation extends beyond the day's 23:59:59 timestamp ($_POST["torange"], change reservationend to 23:59:59
-                      if ((int)$reservation->end > $_POST["torange"]) {
-                          $reservationend->setTime(23, 59, 59);
-                      }
-                      //If the timestamp for the reservation begins prior to the day's 00:00:00 timestamp ($_POST["fromrange"], change reservationstart to 00:00:00
-                      if ($_POST["fromrange"] > (int)$reservation->start) {
-                          $reservationstart->setTime(0, 0, 0);
-                      }
-                      $res_collision = collisionCave($reservationstart, $reservationend, $current_time, $current_stop);
-                      //echo $res_collision .", ". $current_time->getTime() .", ". $current_stop->getTime() .", ". $reservationstart->getTime() .", ". $reservationend->getTime() .", ". $reservation->id ."<br/>";
-                      if ((int)$reservation->roomid == (int)$room->id && ($res_collision == "stalactite" || $res_collision == "bat" || $res_collision == "spelunker" || $res_collision == "salamander" || $res_collision == "stalagmite")) {
-                          //Determine if this reservation is the current user's or not
-                          $info = "";
-                          if ($reservation->username != "") {
-                              $info .= "<strong>Username</strong>: " . $reservation->username . "<br/>";
-                          }
-                          foreach ($reservation->optionalfields->optionalfield as $option) {
-                              $strip = array("'", "\"");
-                              $strip_rep = array("\'", "\'");
-                              $info .= "<strong>" . $option->optionname . "</strong>: " . str_replace($strip, $strip_rep, $option->optionvalue) . "<br/>";
-                          }
-                          if ($_SESSION["username"] != (string)$reservation->username && $isadministrator != "TRUE") {
-                              //Display "taken" button that shows public info.
-                              $collision = "<img style=\"cursor: pointer;\" src=\"" . $_SESSION["themepath"] . "images/takenbutton.png\" border=\"0\" onClick=\"showPopUp(this,'" . $info . "');\" />";
-                          } else {
-                              if ($isadministrator == "TRUE" || $_SESSION["username"] == (string)$reservation->username) $info .= "<strong>Time of Request</strong>: " . $reservation->timeofrequest . "<br/><br/><center>Cancel this reservation? <a href=\'javascript:cancel(" . $reservation->id . "," . $_POST["group"] . ");\'>Yes</a> <a href=\'javascript:closePopUp();\'>No</a></center>";
-                              //Display "cancel" button that shows cancellation confirmation.
-                              $collision = "<img style=\"cursor: pointer;\" src=\"" . $_SESSION["themepath"] . "images/cancelbutton.png\" border=\"0\" onClick=\"showPopUp(this,'" . $info . "');\" />";
-                          }
-                          $rescol = TRUE;
-                      }
-                  }
-              }
-              if ($rescol && $collision == "stalactite" || $collision == "bat" || $collision == "spelunker" || $collision == "salamander" || $collision == "stalagmite") {
-                  //Display "reserve" button that shows reservation form.
-                  $limit_total = unserialize($settings["limit_total"]);
-                  $limit_frequency = unserialize($settings["limit_frequency"]);
-                  $current_duration = $settings["interval"];
-                  $durationhtml = "";
-                  while ($current_duration <= $settings["limit_duration"]) {
-                      $durationhtml .= "<option value=\'" . $current_duration . "\'>" . $current_duration . " mins</option>";
-                      $current_duration += $settings["interval"];
-                  }
-                  $capacity = $room->capacity;
-                  $capacity_string = "";
-                  for ($cc = 1; $cc <= $capacity; $cc++) {
-                      $capacity_string .= "<option value=\'" . $cc . "\'>" . $cc . "</option>";
-                  }
-                  //If this user is an administrator, give them the option of inputting and altusername
-                  $altusernamestr = "";
-                  if ($isadministrator == "TRUE") {
-                      $altusernamestr = "<strong>Username</strong>: <input type=\'text\' name=\'altusername\' /><br/><strong>Email Confirmation</strong>: <select name=\'emailconfirmation\'><option value=\'no\'>No</option><option value=\'yes\'>Yes</option></select><br/>";
-                  }
-                  $info = "<strong>Room</strong>: " . $room->name . "<br/><strong>Start Time</strong>: " . $time_str . "<br/><form name=\'reserve\' action=\'javascript:reserve(" . $_POST["group"] . ");\'>" . $altusernamestr . "<input type=\'hidden\' name=\'roomid\' value=\'" . $room->id . "\' /><input type=\'hidden\' name=\'starttime\' value=\'" . strtotime($currentmdy . " " . $current_time->getTime()) . "\' /><input type=\'hidden\' name=\'fullcapacity\' value=\'" . $capacity . "\' /><strong><span class=\'requiredmarker\'>*</span>Duration</strong>: <select name=\'duration\'>" . $durationhtml . "</select><br/><strong><span class=\'requiredmarker\'>*</span>Number in group</strong>: <select name=\'capacity\'>" . $capacity_string . "</select><br/>" . $optionalfields_string . "<br/><center><strong>Reserve this room?</strong>: <a href=\'javascript:reserve(" . $_POST["group"] . ");\'>Yes</a> <a href=\'javascript:closePopUp();\'>No</a></center></form><br/><span class=\'requirednote\'><span class=\'requiredmarker\'>*</span> denotes a required field</span>";
-                  //$collision = "<img style=\"cursor: pointer;\" src=\"". $_SESSION["themepath"] ."images/reservebutton.png\" border=\"0\" onClick=\"showPopUp(this,'". $info ."');\" />";
-                  $collision = "<img style=\"cursor: pointer;\" src=\"" . $_SESSION["themepath"] . "images/reservebutton.png\" border=\"0\" onClick=\"showPopUpReserve(this,'" . $room->name . "','" . $time_str . "','" . $_POST["group"] . "','" . $altusernamestr . "','" . $room->id . "','" . strtotime($currentmdy . " " . $current_time->getTime()) . "','" . $capacity . "','" . $durationhtml . "','" . $capacity_string . "','" . $optionalfields_string . "');\" />\n";
-              } elseif (!$rescol) {
-                  //Display "closed" button that is not interactive.
-                  $collision = "<img src=\"" . $_SESSION["themepath"] . "images/closedbutton.png\" />";
-              }
-              $dvout .= "<td class=\"dayviewTD\" onMouseOver=\"roomDetails('<span id=\'roomdetailsname\'>" . $room->name . "</span><br/><span id=\'roomdetailscapacitylabel\'>Capacity: </span><span id=\'roomdetailscapacity\'>" . $room->capacity . "</span><br/>" . $room->description . "');\">" . $collision . "</td>";
-
+        $dvout .= "<tr onMouseOver=\"javascript:this.className='mousedoverrow';\" onMouseOut=\"javascript:this.className='mousedoutrow';\"><td class=\"dayviewTime\">" . $time_str . "</td>";
+        $current_stop = new ClockTime(0, 0, 0);
+        $current_stop->setMySQLTime((string)$current_time->getTime());
+        $current_stop->addMinutes($settings["interval"] - 1);
+        foreach ($xmlroominfo->room as $room) {
+            eval("\$roomhours = \$room->hours->" . $currentweekday . "->hourset;");
+            $specialroomhours = $room->specialhours->hourset;
+            $collision = "";
+            //Loop runs for all hoursets of this room on this day
+            //Proceed only is room has default hours
+            if (isset($roomhours)) {
+                foreach ($roomhours as $hourset) {
+                    $roomstart = new ClockTime(0, 0, 0);
+                    $roomstart->setMySQLTime((string)$hourset->start);
+                    $roomstop = new ClockTime(0, 0, 0);
+                    $roomstop->setMySQLTime((string)$hourset->end);
+                    //echo $collision .", ";
+                    //If a good collision (stalactite, bat, spelunker, salamander, stalagmite) has already occured, don't run this function
+                    if ($collision != "bat" && $collision != "stalactite" && $collision != "spelunker" && $collision != "salamander" && $collision != "stalagmite") {
+                        $collision = collisionCave($roomstart, $roomstop, $current_time, $current_stop);
+                    }
+                    //echo $roomstart->getTime() .", ". $roomstop->getTime() .", ". $current_time->getTime() .", ". $current_stop->getTime() .", ". $room->name .", ". $collision ."<br/>";
+                }
             }
-            //Increment
-            $i++;
+            //If special hours exist for this day, throw away previous results and
+            //check special hours instead.
+            if ((string)$specialroomhours->start[0] != "") {
+                $collision = "";
+                foreach ($specialroomhours as $hourset) {
+                    $roomstart = new ClockTime(0, 0, 0);
+                    $roomstart->setMySQLTime((string)$hourset->start);
+                    $roomstop = new ClockTime(0, 0, 0);
+                    $roomstop->setMySQLTime((string)$hourset->end);
+                    //echo $collision .", ";
+                    //If a good collision (stalactite, bat, spelunker, salamander, stalagmite) has already occured, don't run this function
+                    if ($collision != "bat" && $collision != "stalactite" && $collision != "spelunker" && $collision != "salamander" && $collision != "stalagmite") {
+                        $collision = collisionCave($roomstart, $roomstop, $current_time, $current_stop);
+                    }
+                    //echo $roomstart->getTime() .", ". $roomstop->getTime() .", ". $current_time->getTime() .", ". $current_stop->getTime() .", ". $room->name .", ". $collision ."<br/>";
+                }
+            }
+            //If final collision state is stalactite, bat, spelunker, salamander, or stalagmite, the room is open during this time interval.
+            //Check to see if there are any reservations that collide with this time.
+            $rescol = FALSE;
+            if ($collision == "stalactite" || $collision == "bat" || $collision == "spelunker" || $collision == "salamander" || $collision == "stalagmite") {
+                //Go through each reservation in $xmlreservations, converting start and end to ClockTimes
+                //Then run collisionCave against them to see if a reservation exists here. Refer to
+                //reservations by their reservationid when linking to them.
+                //Use XPath to reduce $xmlreservations to a smaller array of reservations that are only for the current room
+                $reduced_reservations = $xmlreservations->xpath("/reservations/reservation[roomid=" . $room->id . "]");
+                foreach ($reduced_reservations as $reservation) {
+                    //foreach($xmlreservations as $reservation){
+                    $reservationstart = new ClockTime(0, 0, 0);
+                    $reservationstart->setMySQLTime(date('H:i:s', (string)$reservation->start));
+                    $reservationend = new ClockTime(0, 0, 0);
+                    $reservationend->setMySQLTime(date('H:i:s', (string)$reservation->end));
+                    //If the timestamp for the reservation extends beyond the day's 23:59:59 timestamp ($_POST["torange"], change reservationend to 23:59:59
+                    if ((int)$reservation->end > $_POST["torange"]) {
+                        $reservationend->setTime(23, 59, 59);
+                    }
+                    //If the timestamp for the reservation begins prior to the day's 00:00:00 timestamp ($_POST["fromrange"], change reservationstart to 00:00:00
+                    if ($_POST["fromrange"] > (int)$reservation->start) {
+                        $reservationstart->setTime(0, 0, 0);
+                    }
+                    $res_collision = collisionCave($reservationstart, $reservationend, $current_time, $current_stop);
+                    //echo $res_collision .", ". $current_time->getTime() .", ". $current_stop->getTime() .", ". $reservationstart->getTime() .", ". $reservationend->getTime() .", ". $reservation->id ."<br/>";
+                    if ((int)$reservation->roomid == (int)$room->id && ($res_collision == "stalactite" || $res_collision == "bat" || $res_collision == "spelunker" || $res_collision == "salamander" || $res_collision == "stalagmite")) {
+                        //Determine if this reservation is the current user's or not
+                        $info = "";
+                        if ($reservation->username != "") {
+                            $info .= "<strong>Username</strong>: " . $reservation->username . "<br/>";
+                        }
+                        foreach ($reservation->optionalfields->optionalfield as $option) {
+                            $strip = array("'", "\"");
+                            $strip_rep = array("\'", "\'");
+                            $info .= "<strong>" . $option->optionname . "</strong>: " . str_replace($strip, $strip_rep, $option->optionvalue) . "<br/>";
+                        }
+                        if ($_SESSION["username"] != (string)$reservation->username && $isadministrator != "TRUE") {
+                            //Display "taken" button that shows public info.
+                            $collision = "<img style=\"cursor: pointer;\" src=\"" . $_SESSION["themepath"] . "images/takenbutton.png\" border=\"0\" onClick=\"showPopUp(this,'" . $info . "');\" />";
+                        } else {
+                            if ($isadministrator == "TRUE" || $_SESSION["username"] == (string)$reservation->username) $info .= "<strong>Time of Request</strong>: " . $reservation->timeofrequest . "<br/><br/><center>Cancel this reservation? <a href=\'javascript:cancel(" . $reservation->id . "," . $_POST["group"] . ");\'>Yes</a> <a href=\'javascript:closePopUp();\'>No</a></center>";
+                            //Display "cancel" button that shows cancellation confirmation.
+                            $collision = "<img style=\"cursor: pointer;\" src=\"" . $_SESSION["themepath"] . "images/cancelbutton.png\" border=\"0\" onClick=\"showPopUp(this,'" . $info . "');\" />";
+                        }
+                        $rescol = TRUE;
+                    }
+                }
+            }
+            if ($rescol && $collision == "stalactite" || $collision == "bat" || $collision == "spelunker" || $collision == "salamander" || $collision == "stalagmite") {
+                //Display "reserve" button that shows reservation form.
+                $limit_total = unserialize($settings["limit_total"]);
+                $limit_frequency = unserialize($settings["limit_frequency"]);
+                $current_duration = $settings["interval"];
+                $durationhtml = "";
+                while ($current_duration <= $settings["limit_duration"]) {
+                    $durationhtml .= "<option value=\'" . $current_duration . "\'>" . $current_duration . " mins</option>";
+                    $current_duration += $settings["interval"];
+                }
+                $capacity = $room->capacity;
+                $capacity_string = "";
+                for ($cc = 1; $cc <= $capacity; $cc++) {
+                    $capacity_string .= "<option value=\'" . $cc . "\'>" . $cc . "</option>";
+                }
+                //If this user is an administrator, give them the option of inputting and altusername
+                $altusernamestr = "";
+                if ($isadministrator == "TRUE") {
+                    $altusernamestr = "<strong>Username</strong>: <input type=\'text\' name=\'altusername\' /><br/><strong>Email Confirmation</strong>: <select name=\'emailconfirmation\'><option value=\'no\'>No</option><option value=\'yes\'>Yes</option></select><br/>";
+                }
+                $info = "<strong>Room</strong>: " . $room->name . "<br/><strong>Start Time</strong>: " . $time_str . "<br/><form name=\'reserve\' action=\'javascript:reserve(" . $_POST["group"] . ");\'>" . $altusernamestr . "<input type=\'hidden\' name=\'roomid\' value=\'" . $room->id . "\' /><input type=\'hidden\' name=\'starttime\' value=\'" . strtotime($currentmdy . " " . $current_time->getTime()) . "\' /><input type=\'hidden\' name=\'fullcapacity\' value=\'" . $capacity . "\' /><strong><span class=\'requiredmarker\'>*</span>Duration</strong>: <select name=\'duration\'>" . $durationhtml . "</select><br/><strong><span class=\'requiredmarker\'>*</span>Number in group</strong>: <select name=\'capacity\'>" . $capacity_string . "</select><br/>" . $optionalfields_string . "<br/><center><strong>Reserve this room?</strong>: <a href=\'javascript:reserve(" . $_POST["group"] . ");\'>Yes</a> <a href=\'javascript:closePopUp();\'>No</a></center></form><br/><span class=\'requirednote\'><span class=\'requiredmarker\'>*</span> denotes a required field</span>";
+                //$collision = "<img style=\"cursor: pointer;\" src=\"". $_SESSION["themepath"] ."images/reservebutton.png\" border=\"0\" onClick=\"showPopUp(this,'". $info ."');\" />";
+                $collision = "<img style=\"cursor: pointer;\" src=\"" . $_SESSION["themepath"] . "images/reservebutton.png\" border=\"0\" onClick=\"showPopUpReserve(this,'" . $room->name . "','" . $time_str . "','" . $_POST["group"] . "','" . $altusernamestr . "','" . $room->id . "','" . strtotime($currentmdy . " " . $current_time->getTime()) . "','" . $capacity . "','" . $durationhtml . "','" . $capacity_string . "','" . $optionalfields_string . "');\" />\n";
+            } elseif (!$rescol) {
+                //Display "closed" button that is not interactive.
+                $collision = "<img src=\"" . $_SESSION["themepath"] . "images/closedbutton.png\" />";
+            }
+            $dvout .= "<td class=\"dayviewTD\" onMouseOver=\"roomDetails('<span id=\'roomdetailsname\'>" . $room->name . "</span><br/><span id=\'roomdetailscapacitylabel\'>Capacity: </span><span id=\'roomdetailscapacity\'>" . $room->capacity . "</span><br/>" . $room->description . "');\">" . $collision . "</td>";
+
         }
         $dvout .= "</tr>";
-        //Increment
-        $i++;
         //Increment time by Interval
         $current_time->addMinutes($settings["interval"]);
     }
