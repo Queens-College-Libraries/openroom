@@ -366,19 +366,21 @@ if ($username != "") {
                         $id_a = mysqli_fetch_array($id_res);
                         $reservationid = $id_a["reservationid"];
                         //Then insert the optional field values (reservationoptions table)
-                        foreach ($optional_field_values as $key => $ofvalue) {
-                            //Get the option's name
-                            $opt_name_res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $key . "';");
-                            if ($opt_name_res) {
-                                $opt_name_a = mysqli_fetch_array($opt_name_res);
-                                $opt_name = $opt_name_a["optionname"];
-                                $fixedofvalue = htmlspecialchars($ofvalue, ENT_QUOTES);
-                                $fixedofvalue = str_replace("\\", "", $fixedofvalue);
+                        if (isset($optional_field_values)) {
+                            foreach ($optional_field_values as $key => $ofvalue) {
+                                //Get the option's name
+                                $opt_name_res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $key . "';");
+                                if ($opt_name_res) {
+                                    $opt_name_a = mysqli_fetch_array($opt_name_res);
+                                    $opt_name = $opt_name_a["optionname"];
+                                    $fixedofvalue = htmlspecialchars($ofvalue, ENT_QUOTES);
+                                    $fixedofvalue = str_replace("\\", "", $fixedofvalue);
 
-                                $opt_res = mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO reservationoptions VALUES('" . $opt_name . "','" . $reservationid . "','" . $fixedofvalue . "');");
-                            } else {
-                                //Optional fields not selectable, remove reservation
-                                $errormsg .= "Error in reserving room. Please try again. If you continue to have problems, please contact an administrator.<br/>";
+                                    $opt_res = mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO reservationoptions VALUES('" . $opt_name . "','" . $reservationid . "','" . $fixedofvalue . "');");
+                                } else {
+                                    //Optional fields not selectable, remove reservation
+                                    $errormsg .= "Error in reserving room. Please try again. If you continue to have problems, please contact an administrator.<br/>";
+                                }
                             }
                         }
                     } else {
@@ -452,8 +454,7 @@ if ($username != "") {
                             "E-mail: " . $user_email . "\n\n" .
                             "Room: " . $thisroom->name . "\n\n" .
                             "Date and Time: " . date("F j, Y g:i a", $starttime) . " - " . date("F j, Y g:i a", $endtime) . "\n\n" .
-                            "Number in Group: " . $capacity . "\n\n" .
-                            "Please call (718-997-3900) or email (musiclibrary@qc.cuny.edu) the Music Library if you need further assistance.\n\n";
+                            "Number in Group: " . $capacity . "\n\n";
 
                         foreach ($optional_field_values as $key => $ofval) {
                             $opname = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM optionalfields WHERE optionformname='" . $key . "';"));
