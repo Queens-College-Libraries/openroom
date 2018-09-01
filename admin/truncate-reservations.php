@@ -25,7 +25,15 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         $numberOfReservationsAfter = count(\model\Reservation::all(\model\Db::getInstance()));
         $successmsg .= "Number of reservations after: " . $numberOfReservationsAfter;
         if ($numberOfReservationsBefore == $numberOfReservationsAfter) {
-            $errormsg .= "No change";
+            $errormsg .= "No change in active reservations";
+        }
+        $numberOfCancelledReservationsBefore = count(\model\Cancelled::all(\model\Db::getInstance()));
+        $successmsg .= "Number of cancelled reservations before: " . $numberOfReservationsBefore . " ";
+        \model\Cancelled::truncate(\model\Db::getInstance(), $truncate_before);
+        $numberOfCancelledReservationsAfter = count(\model\Cancelled::all(\model\Db::getInstance()));
+        $successmsg .= "Number of reservations after: " . $numberOfCancelledReservationsAfter;
+        if ($numberOfCancelledReservationsBefore == $numberOfCancelledReservationsAfter) {
+            $errormsg .= "No change in cancelled reservations";
         }
     }
     ?>
@@ -60,7 +68,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             The number represents the number of days before today for which we want to delete records.
             There is no confirmation to delete.
             Please be sure you want to delete this data.
-            Please take a look at the reservation start time in the
+            Please take a look at the reservation start time in the table below:
         </p>
         <form name="truncate" method="POST" action="truncate-reservations.php">
             <label for="number-of-days">
@@ -72,7 +80,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         <?php
         }
         $reservations = \model\Reservation::all(\model\Db::getInstance());
-        $echoString = "Start time";
+        $echoString = "Start time for reservations";
         $echoString .= "<hr>";
         echo $echoString;
         foreach($reservations as $reservation) {
@@ -81,7 +89,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             echo $echoString;
         }
         $cancelled_reservations = \model\Cancelled::all(\model\Db::getInstance());
-        $echoString = "Start time";
+        $echoString = "Start time for cancelled reservations";
         $echoString .= "<hr>";
         echo $echoString;
         foreach ($cancelled_reservations as $cancelled_reservation) {
