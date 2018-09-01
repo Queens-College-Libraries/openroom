@@ -28,7 +28,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $errormsg .= "No change in active reservations <br />";
         }
         $numberOfCancelledReservationsBefore = count(\model\Cancelled::all(\model\Db::getInstance()));
-        $successmsg .= "Number of cancelled reservations before: " . $numberOfReservationsBefore . "<br />";
+        $successmsg .= "Number of cancelled reservations before: " . $numberOfCancelledReservationsBefore . "<br />";
         \model\Cancelled::truncate(\model\Db::getInstance(), $truncate_before);
         $numberOfCancelledReservationsAfter = count(\model\Cancelled::all(\model\Db::getInstance()));
         $successmsg .= "Number of cancelled reservations after: " . $numberOfCancelledReservationsAfter . "<br />";
@@ -83,7 +83,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         $echoString = "Start time for reservations";
         $echoString .= "<hr>";
         echo $echoString;
-        foreach($reservations as $reservation) {
+        foreach ($reservations as $reservation) {
             $echoString = $reservation->getStartTime();
             $echoString .= "<hr>";
             echo $echoString;
