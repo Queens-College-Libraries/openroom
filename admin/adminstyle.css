@@ -3,7 +3,7 @@
 @import "css/bootstrap.css";
 
 body {
-    margin: 0px;
+    margin: 0;
     padding-top: 4px;
     background-color: #FFFFFF;
     font-family: Helvetica, arial, sans-serif;
@@ -20,9 +20,9 @@ body {
 
 #heading {
     background-color: #FFFFFF;
-    border: 0px;
+    border: 0;
     margin: 0 auto;
-    padding: 0px;
+    padding: 0;
     width: 800px;
     text-align: right;
 }
@@ -59,16 +59,12 @@ h3 {
     border: 1px #00ff00 solid;
     background-color: #ccffcc;
     color: #009900;
-    height: 30px;
-    width: 50%;
 }
 
 #errormsg {
     border: 1px #ff0000 solid;
     background-color: #ffcccc;
     color: #990000;
-    height: 30px;
-    width: 50%;
 }
 
 .roomslist tr {
