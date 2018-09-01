@@ -80,6 +80,15 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $echoString .= "<hr>";
             echo $echoString;
         }
+        $cancelled_reservations = \model\Cancelled::all(\model\Db::getInstance());
+        $echoString = "Start time";
+        $echoString .= "<hr>";
+        echo $echoString;
+        foreach ($cancelled_reservations as $cancelled_reservation) {
+            $echoString = $cancelled_reservation->getStartTime();
+            $echoString .= "<hr>";
+            echo $echoString;
+        }
         ?>
     </div>
     </body>
