@@ -31,7 +31,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         $successmsg .= "Number of cancelled reservations before: " . $numberOfReservationsBefore . "<br />";
         \model\Cancelled::truncate(\model\Db::getInstance(), $truncate_before);
         $numberOfCancelledReservationsAfter = count(\model\Cancelled::all(\model\Db::getInstance()));
-        $successmsg .= "Number of reservations after: " . $numberOfCancelledReservationsAfter . "<br />";
+        $successmsg .= "Number of cancelled reservations after: " . $numberOfCancelledReservationsAfter . "<br />";
         if ($numberOfCancelledReservationsBefore == $numberOfCancelledReservationsAfter) {
             $errormsg .= "No change in cancelled reservations <br />";
         }
