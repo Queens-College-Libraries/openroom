@@ -20,20 +20,20 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         $time = strtotime(date("Y-m-d H:i:s") . " - $days days");
         $truncate_before = date("Y-m-d H:i:s", $time);
         $numberOfReservationsBefore = count(\model\Reservation::all(\model\Db::getInstance()));
-        $successmsg .= "Number of reservations before: " . $numberOfReservationsBefore . " ";
+        $successmsg .= "Number of reservations before: " . $numberOfReservationsBefore . "<br />";
         \model\Reservation::truncate(\model\Db::getInstance(), $truncate_before);
         $numberOfReservationsAfter = count(\model\Reservation::all(\model\Db::getInstance()));
-        $successmsg .= "Number of reservations after: " . $numberOfReservationsAfter;
+        $successmsg .= "Number of reservations after: " . $numberOfReservationsAfter . "<br />";
         if ($numberOfReservationsBefore == $numberOfReservationsAfter) {
-            $errormsg .= "No change in active reservations";
+            $errormsg .= "No change in active reservations <br />";
         }
         $numberOfCancelledReservationsBefore = count(\model\Cancelled::all(\model\Db::getInstance()));
-        $successmsg .= "Number of cancelled reservations before: " . $numberOfReservationsBefore . " ";
+        $successmsg .= "Number of cancelled reservations before: " . $numberOfReservationsBefore . "<br />";
         \model\Cancelled::truncate(\model\Db::getInstance(), $truncate_before);
         $numberOfCancelledReservationsAfter = count(\model\Cancelled::all(\model\Db::getInstance()));
-        $successmsg .= "Number of reservations after: " . $numberOfCancelledReservationsAfter;
+        $successmsg .= "Number of reservations after: " . $numberOfCancelledReservationsAfter . "<br />";
         if ($numberOfCancelledReservationsBefore == $numberOfCancelledReservationsAfter) {
-            $errormsg .= "No change in cancelled reservations";
+            $errormsg .= "No change in cancelled reservations <br />";
         }
     }
     ?>
