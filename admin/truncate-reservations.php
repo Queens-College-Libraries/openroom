@@ -79,7 +79,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         </form>
         <?php
         }
-        $echoString = "Number of active reservations: "
+        echo "Number of active reservations: "
             . count(\model\Reservation::all(\model\Db::getInstance()))
             . "<br />";
         $reservations = \model\Reservation::all(\model\Db::getInstance());
@@ -91,7 +91,7 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
             $echoString .= "<hr>";
             echo $echoString;
         }
-        $echoString = "Number of cancelled reservations: "
+        echo "Number of cancelled reservations: "
             . count(\model\Cancelled::all(\model\Db::getInstance()))
             . "<br />";
         $cancelled_reservations = \model\Cancelled::all(\model\Db::getInstance());
