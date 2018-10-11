@@ -45,9 +45,9 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
                                     $ccflag = 0;
                                     //check to see if there any conflicts
                                     while ($record = mysqli_fetch_array($allhoursr)) {
-                                        $tstart = new ClockTime();
+                                        $tstart = new ClockTime($starthour, $startminute, 0);
                                         $tstart->setMySQLTime($record["start"]);
-                                        $tend = new ClockTime();
+                                        $tend = new ClockTime($endhour, $endminute, 0);
                                         $tend->setMySQLTime($record["end"]);
                                         $ccresult = collisionCave($tstart, $tend, $starttime, $endtime);
                                         //acceptable results: sunmilk, ceiling, moonmilk, floor
