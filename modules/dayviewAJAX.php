@@ -72,6 +72,7 @@ if ($_SESSION["username"] != "") {
     foreach ($xmlroominfo->room as $room) {
         $dvout .= "<th>" . $room->name . "</th>";
     }
+    $dvout .= "<th>&nbsp;</th>";
     $dvout .= "</tr>";
     while ($last_time->isGreaterThan($current_time)) {
         //Format time string
