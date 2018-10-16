@@ -210,15 +210,14 @@ p {
 #dayviewTable {
     border-collapse: collapse;
     width: 100%;
-    border:1px solid #212121;
 }
 
 #dayviewTable th {
-    border:1px solid #212121;
+    border-bottom:1px solid #212121;
 }
 
 #dayviewTable td { 
-    border:1px solid #212121;
+    border-bottom:1px solid #212121;
 }
 
 .dayviewTime {
