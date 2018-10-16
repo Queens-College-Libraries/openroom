@@ -196,8 +196,8 @@ if ($_SESSION["username"] != "") {
                 $collision = "<img src=\"" . $_SESSION["themepath"] . "images/closedbutton.png\" />";
             }
             $dvout .= "<td class=\"dayviewTD\" onMouseOver=\"roomDetails('<span id=\'roomdetailsname\'>" . $room->name . "</span><br/><span id=\'roomdetailscapacitylabel\'>Capacity: </span><span id=\'roomdetailscapacity\'>" . $room->capacity . "</span><br/>" . $room->description . "');\">" . $collision . "</td>";
-
         }
+        $dvout .= "<td class=\"dayviewTime\">" . $time_str . "</td>";
         $dvout .= "</tr>";
         //Increment time by Interval
         $current_time->addMinutes($settings["interval"]);
