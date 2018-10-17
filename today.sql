@@ -210,7 +210,7 @@ CREATE TABLE `reservations` (
   `numberingroup` int(11) NOT NULL,
   `timeofrequest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`reservationid`)
-) ENGINE=InnoDB AUTO_INCREMENT=352 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=354 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,9 @@ VALUES (324, '2018-08-27 19:00:00', '2018-08-27 20:59:59', 29, 'ttam', 15, '2018
        (348, '2018-10-18 12:30:00', '2018-10-18 12:59:59', 33, 'faye', 1, '2018-10-17 16:27:46'),
        (349, '2018-10-31 08:00:00', '2018-10-31 08:29:59', 30, 'aaron', 1, '2018-10-17 16:34:13'),
        (350, '2018-10-31 08:30:00', '2018-10-31 08:59:59', 31, 'belle', 1, '2018-10-17 16:34:22'),
-       (351, '2018-10-31 09:00:00', '2018-10-31 09:29:59', 32, 'cait', 1, '2018-10-17 16:34:29');
+       (351, '2018-10-31 09:00:00', '2018-10-31 09:29:59', 32, 'cait', 1, '2018-10-17 16:34:29'),
+       (352, '2018-10-17 14:00:00', '2018-10-17 17:59:59', 28, 'potato', 1, '2018-10-17 20:03:18'),
+       (353, '2018-10-17 09:00:00', '2018-10-17 09:29:59', 31, 'potato', 1, '2018-10-17 20:06:27');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -371,10 +373,10 @@ LOCK TABLES `rooms` WRITE;
 INSERT INTO `rooms`
 VALUES (28, '125a', 0, 8, 6, 'Room 125a'),
        (29, '125c', 1, 16, 6, 'Room 125c'),
-       (30, '1', 0, 2, 7, 'Cubicle 1'),
-       (31, '2', 1, 2, 7, 'Cubicle 1'),
-       (32, '3', 2, 2, 7, 'Cubicle 1'),
-       (33, '4', 2, 2, 7, 'Cubicle 1');
+       (30, 'Narendra Modi Hall', 0, 2, 7, 'Cubicle 1'),
+       (31, 'Sania Mirza Hall', 1, 2, 7, 'Cubicle 1'),
+       (32, 'Sacchin Tendulkar Hall', 2, 2, 7, 'Cubicle 1'),
+       (33, 'Virat Kohli Hall', 2, 2, 7, 'Cubicle 1');
 /*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -491,7 +493,7 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users`
-VALUES ('admin', 'f3bbbd66a63d4bf1747940578ec3d0103530e21d', 'spamkushal+admin@gmail.com', '2018-10-17 19:45:12', '0'),
+VALUES ('admin', 'f3bbbd66a63d4bf1747940578ec3d0103530e21d', 'spamkushal+admin@gmail.com', '2018-10-17 19:53:03', '0'),
        ('banned', 'f3bbbd66a63d4bf1747940578ec3d0103530e21d', 'spamkushal+banned@gmail.com', '2018-07-13 14:08:27',
         '0'),
        ('kushal', 'f3bbbd66a63d4bf1747940578ec3d0103530e21d', 'kushaldeveloper@gmail.com', '2018-08-16 18:33:09', '0'),
@@ -509,4 +511,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-17 15:51:57
+-- Dump completed on 2018-10-17 16:06:58
