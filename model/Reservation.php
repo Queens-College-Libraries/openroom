@@ -27,8 +27,9 @@ class Reservation
     private $userName;
     private $numberInGroup;
     private $timeOfRequest;
+    private $roomName;
 
-    public function __construct($id, $startTime, $endTime, $roomId, $userName, $numberInGroup, $timeOfRequest)
+    public function __construct($id, $startTime, $endTime, $roomId, $userName, $numberInGroup, $timeOfRequest, $roomName)
     {
         $this->id = $id;
         $this->startTime = $startTime;
@@ -37,6 +38,45 @@ class Reservation
         $this->userName = $userName;
         $this->numberInGroup = $numberInGroup;
         $this->timeOfRequest = $timeOfRequest;
+        $this->roomName = $roomName;
+    }
+
+    public static function getSpecificReservation(\PDO $db, $id)
+    {
+        $req = $db->prepare("SELECT reservations.reservationid, reservations.start, reservations.end, reservations.roomid, reservations.username, reservations.numberingroup, reservations.timeofrequest, rooms.roomname FROM reservations INNER JOIN rooms where rooms.roomid = reservations.roomid and reservationid = :id");
+        $req->execute(array('id' => $id));
+        $reservation = $req->fetch();
+        return new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest'], $reservation['roomname']);
+    }
+
+    public static function all(\PDO $db)
+    {
+        $list = [];
+        $req = $db->query("SELECT reservations.reservationid, reservations.start, reservations.end, reservations.roomid, reservations.username, reservations.numberingroup, reservations.timeofrequest, rooms.roomname FROM reservations INNER JOIN rooms where rooms.roomid = reservations.roomid");
+        foreach ($req->fetchAll() as $reservation) {
+            $list[] = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest'], $reservation['roomname']);
+        }
+        return $list;
+    }
+
+    public static function getAllReservationsSinceStartDate(\PDO $db, $startDate)
+    {
+        $list = [];
+        $req = $db->prepare("SELECT reservations.reservationid, reservations.start, reservations.end, reservations.roomid, reservations.username, reservations.numberingroup, reservations.timeofrequest, rooms.roomname FROM reservations INNER JOIN rooms where rooms.roomid = reservations.roomid and start > (:startDate)");
+        $req->bindParam(':startDate', $startDate, \PDO::PARAM_STR, 255);
+        $req->execute();
+        foreach ($req->fetchAll() as $reservation) {
+            $list[] = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest'], $reservation['roomname']);
+        }
+        return $list;
+    }
+
+    public static function truncate(\PDO $db, $startDate)
+    {
+        $req = $db->prepare('DELETE FROM  reservations where start < (:startDate)');
+        $req->bindParam(':startDate', $startDate, \PDO::PARAM_STR, 255);
+        $req->execute();
+        return true;
     }
 
     /**
@@ -119,6 +159,8 @@ class Reservation
         $this->userName = $userName;
     }
 
+    // "SELECT * FROM reservations ORDER BY timeofrequest DESC;"
+
     /**
      * @return mixed
      */
@@ -143,6 +185,8 @@ class Reservation
         return $this->timeOfRequest;
     }
 
+    // delete from openroom.reservations where start < '2018-07-18 14:00:00';
+
     /**
      * @param mixed $timeOfRequest
      */
@@ -151,45 +195,19 @@ class Reservation
         $this->timeOfRequest = $timeOfRequest;
     }
 
-    // "SELECT * FROM reservations ORDER BY timeofrequest DESC;"
-
-
-    public static function getSpecificReservation($db, $id)
+    /**
+     * @return mixed
+     */
+    public function getRoomName()
     {
-        $req = $db->prepare("SELECT reservationid, start, end, roomid, username, numberingroup, timeofrequest FROM reservations WHERE reservationid = :id");
-        $req->execute(array('id' => $id));
-        $reservation = $req->fetch();
-        return new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest']);
+        return $this->roomName;
     }
 
-    public static function all($db)
+    /**
+     * @param mixed $roomName
+     */
+    public function setRoomName($roomName)
     {
-        $list = [];
-        $req = $db->query("SELECT reservationid, start, end, roomid, username, numberingroup, timeofrequest FROM reservations");
-        foreach ($req->fetchAll() as $reservation) {
-            $list[] = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest']);
-        }
-        return $list;
-    }
-
-    public static function getAllReservationsSinceStartDate($db, $startDate)
-    {
-        $list = [];
-        $req = $db->prepare("SELECT reservationid, start, end, roomid, username, numberingroup, timeofrequest FROM reservations WHERE start > (:startDate)");
-        $req->bindParam(':startDate', $startDate, \PDO::PARAM_STR, 255);
-        $req->execute();
-        foreach ($req->fetchAll() as $reservation) {
-            $list[] = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest']);
-        }
-        return $list;
-    }
-
-    // delete from openroom.reservations where start < '2018-07-18 14:00:00';
-    public static function truncate($db, $startDate)
-    {
-        $req = $db->prepare('DELETE FROM  reservations where start < (:startDate)');
-        $req->bindParam(':startDate', $startDate, \PDO::PARAM_STR, 255);
-        $req->execute();
-        return true;
+        $this->roomName = $roomName;
     }
 }

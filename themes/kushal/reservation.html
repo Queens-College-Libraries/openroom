@@ -3,21 +3,24 @@
 {% block content %}
 
 <article>
-    <hgroup>
-        <h2>
-            {{ page_title }}
-        </h2>
-    </hgroup>
+    <h2>
+        {{ page_title }}
+    </h2>
     <h3>
-        List all reservations
+        List all current and future reservations
     </h3>
+    <p>
+        <a href="../modules/logout.php">
+            Log out
+        </a>
+    </p>
     <table class="table table-striped">
         <thead class="thead-dark">
         <tr>
             <th scope="col">id</th>
             <th scope="col">start time</th>
             <th scope="col">end time</th>
-            <th scope="col">room id</th>
+            <th scope="col">room name</th>
             <th scope="col">number in group</th>
             <th scope="col">time of request</th>
         </tr>
@@ -35,7 +38,7 @@
                 {{ reservation.endTime|e }}
             </td>
             <td>
-                {{ reservation.roomId|e }}
+                {{ reservation.roomName|e }}
             </td>
             <td>
                 {{ reservation.numberInGroup|e }}
