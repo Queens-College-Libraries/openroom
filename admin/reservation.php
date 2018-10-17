@@ -54,5 +54,11 @@ if (!isset($_SESSION["username"]) || $_SESSION["username"] == "") {
         var_dump($e);
     }
     echo $template->render(array('title' => \model\Setting::find("instance_name")->get_value(),
-        'page_title' => "Reservations", 'reservations' => \model\Reservation::getAllReservationsSinceStartDate(\model\Db::getInstance(), date("Y-m-d H:i:s"))));
+            'page_title' => "Reservations",
+            'reservations' => \model\Reservation::getAllReservationsSinceStartDate(
+                \model\Db::getInstance(),
+                date("Y-m-d H:i:s"))
+//        'reservations'=> \model\Reservation::all(\model\Db::getInstance())
+        )
+    );
 }
