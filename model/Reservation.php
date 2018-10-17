@@ -172,6 +172,18 @@ class Reservation
         return $list;
     }
 
+    public static function getAllReservationsSinceStartDate($db, $startDate)
+    {
+        $list = [];
+        $req = $db->prepare("SELECT reservationid, start, end, roomid, username, numberingroup, timeofrequest FROM reservations WHERE start > (:startDate)");
+        $req->bindParam(':startDate', $startDate, \PDO::PARAM_STR, 255);
+        $req->execute();
+        foreach ($req->fetchAll() as $reservation) {
+            $list[] = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest']);
+        }
+        return $list;
+    }
+
     // delete from openroom.reservations where start < '2018-07-18 14:00:00';
     public static function truncate($db, $startDate)
     {
