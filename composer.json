@@ -3,11 +3,6 @@
     "twbs/bootstrap": "^4.1",
     "components/jquery": "^3.3",
     "mobiledetect/mobiledetectlib": "^2.8",
-    "php-di/php-di": "^6.0",
-    "relay/relay": "2.x@dev",
-    "zendframework/zend-diactoros": "^1.7",
-    "middlewares/fast-route": "^1.0",
-    "middlewares/request-handler": "^1.1",
     "twig/twig": "^2.5"
   },
   "autoload": {
