@@ -62,7 +62,7 @@ class Reservation
     public static function getAllReservationsSinceStartDate(\PDO $db, $startDate)
     {
         $list = [];
-        $req = $db->prepare("SELECT reservations.reservationid, reservations.start, reservations.end, reservations.roomid, reservations.username, reservations.numberingroup, reservations.timeofrequest, rooms.roomname FROM reservations INNER JOIN rooms where rooms.roomid = reservations.roomid and start > (:startDate)");
+        $req = $db->prepare("SELECT reservations.reservationid, reservations.start, reservations.end, reservations.roomid, reservations.username, reservations.numberingroup, reservations.timeofrequest, rooms.roomname FROM reservations INNER JOIN rooms where rooms.roomid = reservations.roomid and end > (:startDate)");
         $req->bindParam(':startDate', $startDate, \PDO::PARAM_STR, 255);
         $req->execute();
         foreach ($req->fetchAll() as $reservation) {
