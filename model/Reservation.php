@@ -61,12 +61,23 @@ class Reservation
 
     public static function getAllReservationsSinceStartDate(\PDO $db, $startDate)
     {
+        $rooms = [];
+        $req = $db->query("SELECT roomid FROM rooms");
+        foreach ($req->fetchAll(\PDO::FETCH_ASSOC) as $reservation) {
+            $rooms[] = $reservation['roomid'];
+        }
+
         $list = [];
         $req = $db->prepare("SELECT reservations.reservationid, reservations.start, reservations.end, reservations.roomid, reservations.username, reservations.numberingroup, reservations.timeofrequest, rooms.roomname FROM reservations INNER JOIN rooms where rooms.roomid = reservations.roomid and end > (:startDate)");
         $req->bindParam(':startDate', $startDate, \PDO::PARAM_STR, 255);
         $req->execute();
         foreach ($req->fetchAll() as $reservation) {
-            $list[] = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest'], $reservation['roomname']);
+            // $list[] = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest'], $reservation['roomname']);
+            for($i=0;$i<count($rooms);$i++){
+               if($reservation['roomid'] == $rooms[$i]){
+                  $list[$rooms[$i]][] = new Reservation($reservation['reservationid'], $reservation['start'], $reservation['end'], $reservation['roomid'], $reservation['username'], $reservation['numberingroup'], $reservation['timeofrequest'], $reservation['roomname']);
+                }
+            }
         }
         return $list;
     }

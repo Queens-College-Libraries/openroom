@@ -9,7 +9,7 @@
     <h3>
         List all current and future reservations
     </h3>
-    <table class="table table-striped">
+    <!-- <table class="table table-striped">
         <thead class="thead-dark">
         <tr>
             <th scope="col">start time</th>
@@ -32,6 +32,49 @@
         </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> -->
+
+    {% for reservation1 in reservations %}
+        <h4>
+               {{ reservation1[0].roomName|e }}
+           </h4>
+       <div style="padding: 0 25px">
+       <table class="table table-striped" >
+       <thead class="thead-dark">
+       <tr>
+           <th scope="col">id</th>
+           <th scope="col">start time</th>
+           <th scope="col">end time</th>
+           <th scope="col">number in group</th>
+           <th scope="col">time of request</th>
+       </tr>
+       </thead>
+       {% for reservation in reservation1 %}
+       
+       <tbody>
+       <tr>
+           <th scope="row">
+               {{ reservation.id|e}}
+           </th>
+           <td>
+               {{ reservation.startTime|e }}
+           </td>
+           <td>
+               {{ reservation.endTime|e }}
+           </td>
+           
+           <td>
+               {{ reservation.numberInGroup|e }}
+           </td>
+           <td>
+               {{ reservation.timeOfRequest|e }}
+           </td>
+       </tr>
+       </tbody>
+       
+       {% endfor %}
+       </table>
+       </div>
+       {% endfor %}
 </article>
 {% endblock %}
