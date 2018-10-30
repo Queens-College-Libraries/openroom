@@ -9,72 +9,39 @@
     <h3>
         List all current and future reservations
     </h3>
-    <!-- <table class="table table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">start time</th>
-            <th scope="col">end time</th>
-            <th scope="col">room name</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for reservation in reservations %}
-        <tr>
-            <td>
-                {{ reservation.startTime|e }}
-            </td>
-            <td>
-                {{ reservation.endTime|e }}
-            </td>
-            <td>
-                {{ reservation.roomName|e }}
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table> -->
 
     {% for reservation1 in reservations %}
-        <h4>
-               {{ reservation1[0].roomName|e }}
-           </h4>
-       <div style="padding: 0 25px">
-       <table class="table table-striped" >
-       <thead class="thead-dark">
-       <tr>
-           <th scope="col">id</th>
-           <th scope="col">start time</th>
-           <th scope="col">end time</th>
-           <th scope="col">number in group</th>
-           <th scope="col">time of request</th>
-       </tr>
-       </thead>
-       {% for reservation in reservation1 %}
-       
-       <tbody>
-       <tr>
-           <th scope="row">
-               {{ reservation.id|e}}
-           </th>
-           <td>
-               {{ reservation.startTime|e }}
-           </td>
-           <td>
-               {{ reservation.endTime|e }}
-           </td>
-           
-           <td>
-               {{ reservation.numberInGroup|e }}
-           </td>
-           <td>
-               {{ reservation.timeOfRequest|e }}
-           </td>
-       </tr>
-       </tbody>
-       
-       {% endfor %}
-       </table>
-       </div>
-       {% endfor %}
+    <h4>
+        {{ reservation1[0].roomName|e }}
+    </h4>
+    <div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">start time</th>
+                    <th scope="col">end time</th>
+                </tr>
+            </thead>
+            {% for reservation in reservation1 %}
+
+            <tbody>
+                <tr>
+                    <td>
+                        {{ loop.index }}
+                    </td>
+                    <td>
+                        {{ reservation.startTime|e }}
+                    </td>
+                    <td>
+                        {{ reservation.endTime|e }}
+                    </td>
+                </tr>
+            </tbody>
+
+            {% endfor %}
+        </table>
+    </div>
+    {% endfor %}
 </article>
 {% endblock %}
