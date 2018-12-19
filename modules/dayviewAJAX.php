@@ -85,7 +85,8 @@ if ($_SESSION["username"] != "") {
         $current_stop->setMySQLTime((string)$current_time->getTime());
         $current_stop->addMinutes($settings["interval"] - 1);
         foreach ($xmlroominfo->room as $room) {
-            eval("\$roomhours = \$room->hours->" . $currentweekday . "->hourset;");
+            // eval("\$roomhours = \$room->hours->" . $currentweekday . "->hourset;");
+            $roomhours = $room->hours->$currentweekday->hourset;
             $specialroomhours = $room->specialhours->hourset;
             $collision = "";
             //Loop runs for all hoursets of this room on this day

@@ -22,17 +22,29 @@ class User
             $settings[$row['settingname']] = $row['settingvalue'];
         }
         $this->emailaddress = $this->ReturnEmailAddress($this->username, $settings);
-        if ($settings["login_method"] == "ldap") {
+        // if ($settings["login_method"] == "ldap") {
+        if(\model\Setting::find("login_method") == "ldap") {
             $this->password = "LDAP";
-        } else {
-            $this->password = "";
-        }
-        if ($settings["login_method"] == "ldap") {
             $this->activationCode = "LDAP";
+            $this->displayname = $this->ReturnDisplayName($this->username, $settings);
         } else {
-            $this->activationCode = "";
+            $db = Db::getInstance();
+            $req = $db->prepare('SELECT username, password, email, lastlogin, active FROM users WHERE username = :username');
+            $req->execute(array('username' => $username));
+            $user = $req->fetch();
+            $this->username = $user['username'];
+            $this->displayname = $user['username'];
+            $this->password = $user['password'];
+            $this->email = $user['email'];
+            $this->lastlogin = $user['lastlogin'];
+            $this->active = $user['active'];
         }
-        $this->displayname = $this->ReturnDisplayName($this->username, $settings);
+        // if ($settings["login_method"] == "ldap") {
+        //     $this->activationCode = "LDAP";
+        // } else {
+        //     $this->activationCode = "";
+        // }
+        
         if (Administrator::exists($this->username)) {
             $this->isAdministrator = true;
         } else {
@@ -78,21 +90,24 @@ class User
 
     function ReturnParameter($input_username, $input_parameter, $settings)
     {
-        $ldapserver = $settings["ldap_baseDN"];
-        $qc_username = $settings["service_username"];
-        $password = $settings["service_password"];
-        $ldap = ldap_connect($ldapserver);
-        if ($bind = ldap_bind($ldap, $qc_username, $password)) {
-            $result = ldap_search($ldap, "", "(CN=$input_username)") or die ("Error in search query: " . ldap_error($ldap));
-            $data = ldap_get_entries($ldap, $result);
-            if (isset($data[0][$input_parameter][0])) {
-                return $data[0][$input_parameter][0];
+        if ($settings["login_method"] == "ldap") {
+            $ldapserver = $settings["ldap_baseDN"];
+            $qc_username = $settings["service_username"];
+            $password = $settings["service_password"];
+            $ldap = ldap_connect($ldapserver);
+            if ($bind = ldap_bind($ldap, $qc_username, $password)) {
+                $result = ldap_search($ldap, "", "(CN=$input_username)") or die ("Error in search query: " . ldap_error($ldap));
+                $data = ldap_get_entries($ldap, $result);
+                if (isset($data[0][$input_parameter][0])) {
+                    return $data[0][$input_parameter][0];
 
-            } else {
-                return "fail";
+                } else {
+                    return "fail";
+                }
             }
+            ldap_close($ldap);
+            return "fail";
         }
-        ldap_close($ldap);
         return "fail";
     }
 
