@@ -13,7 +13,7 @@ The project is free and open source (GPLv3).
 
 ## Proposed supported web browsers 
 
-* Support current versions of Apple Safari, Google Chrome, Microsoft Edge, and Mozilla Firefox
+* Support current versions of Google Chrome and Mozilla Firefox
 
 ## A demo for twig support 
 Please take a look at 
