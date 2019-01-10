@@ -1,4 +1,6 @@
 {
+  "name": "Openroom",
+  "description": "Openroom is a web application that manages your room reservations.",
   "license": "GPL-3.0-or-later",
   "require": {
     "twbs/bootstrap": "^4.1",
