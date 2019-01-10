@@ -11,11 +11,11 @@ if (!isset($_SESSION["username"]) || $_SESSION["username"] == "") {
     try {
         $template = $twig->load('notLoggedIn.html');
     } catch (Twig_Error_Loader $e) {
-        var_dump($e);
+        error_log("twig Error Loader error " . $e, 0);
     } catch (Twig_Error_Runtime $e) {
-        var_dump($e);
+        error_log("twig Error Runtime error " . $e, 0);
     } catch (Twig_Error_Syntax $e) {
-        var_dump($e);
+        error_log("twig Error Syntax error " . $e, 0);
     }
     echo $template->render(array('title' => \model\Setting::find("instance_name")->get_value(),
         'page_title' => "Please log in"));
@@ -23,11 +23,11 @@ if (!isset($_SESSION["username"]) || $_SESSION["username"] == "") {
     try {
         $template = $twig->load('notLoggedIn.html');
     } catch (Twig_Error_Loader $e) {
-        var_dump($e);
+        error_log("twig Error Loader error " . $e, 0);
     } catch (Twig_Error_Runtime $e) {
-        var_dump($e);
+        error_log("twig Error Runtime error " . $e, 0);
     } catch (Twig_Error_Syntax $e) {
-        var_dump($e);
+        error_log("twig Error Syntax error " . $e, 0);
     }
     echo $template->render(array('title' => \model\Setting::find("instance_name")->get_value(),
         'page_title' => "Not authorized"));
@@ -35,11 +35,11 @@ if (!isset($_SESSION["username"]) || $_SESSION["username"] == "") {
     try {
         $template = $twig->load('notLoggedIn.html');
     } catch (Twig_Error_Loader $e) {
-        var_dump($e);
+        error_log("twig Error Loader error " . $e, 0);
     } catch (Twig_Error_Runtime $e) {
-        var_dump($e);
+        error_log("twig Error Runtime error " . $e, 0);
     } catch (Twig_Error_Syntax $e) {
-        var_dump($e);
+        error_log("twig Error Syntax error " . $e, 0);
     }
     echo $template->render(array('title' => \model\Setting::find("instance_name")->get_value(),
         'page_title' => "You need to log in separately for each application."));
@@ -47,11 +47,11 @@ if (!isset($_SESSION["username"]) || $_SESSION["username"] == "") {
     try {
         $template = $twig->load('reservation.html');
     } catch (Twig_Error_Loader $e) {
-        var_dump($e);
+        error_log("twig Error Loader error " . $e, 0);
     } catch (Twig_Error_Runtime $e) {
-        var_dump($e);
+        error_log("twig Error Runtime error " . $e, 0);
     } catch (Twig_Error_Syntax $e) {
-        var_dump($e);
+        error_log("twig Error Syntax error " . $e, 0);
     }
     echo $template->render(array('title' => \model\Setting::find("instance_name")->get_value(),
             'page_title' => "Reservations",

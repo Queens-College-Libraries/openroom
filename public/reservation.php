@@ -10,11 +10,11 @@ $twig->addExtension(new Twig_Extension_Debug());
 try {
     $template = $twig->load('public_reservation.html');
 } catch (Twig_Error_Loader $e) {
-    var_dump($e);
+    error_log("twig Error Loader error " . $e, 0);
 } catch (Twig_Error_Runtime $e) {
-    var_dump($e);
+    error_log("twig Error Runtime error " . $e, 0);
 } catch (Twig_Error_Syntax $e) {
-    var_dump($e);
+    error_log("twig Error Syntax error " . $e, 0);
 }
 echo $template->render(array('title' => \model\Setting::find("instance_name")->get_value(),
         'page_title' => "Reservations",
