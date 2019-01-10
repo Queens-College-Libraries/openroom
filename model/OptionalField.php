@@ -45,7 +45,7 @@ class OptionalField
         }
     }
 
-    private function check_string_length($input_string, $maximum_length): boolean
+    private function check_string_length($input_string, $maximum_length): \bool
     {
         if (strlen($input_string) < $maximum_length) {
             return false;
