@@ -34,18 +34,18 @@ class OptionalField
                          $input_private,
                          $input_required)
     {
-        $this->set_name($input_name);
-        $this->set_formname($input_formname);
+        $this->setName($input_name);
+        $this->setFormName($input_formname);
     }
 
-    private function set_name($input_name)
+    private function setName($input_name)
     {
-        if ($this->check_string_length($input_name, 255)) {
+        if ($this->checkStringLength($input_name, 255)) {
             $this->name = htmlspecialchars($input_name);
         }
     }
 
-    private function check_string_length($input_string, $maximum_length): \bool
+    private function checkStringLength($input_string, $maximum_length): \bool
     {
         if (strlen($input_string) < $maximum_length) {
             return false;
@@ -57,9 +57,9 @@ class OptionalField
     /**
      * @param $input_formname String Must be all lowercase using only letters a-z, no spaces.
      */
-    private function set_formname($input_formname)
+    private function setFormName($input_formname)
     {
-        if ($this->check_string_length($input_formname, 255)) {
+        if ($this->checkStringLength($input_formname, 255)) {
             if (preg_match("/^[a-z]/", $input_formname)) {
                 $this->formname = htmlspecialchars($input_formname);
             }
@@ -70,7 +70,7 @@ class OptionalField
      * @param $input_type integer '0 = text, 1 = select',
      * Select "Text" to allow any user input. Choose "Selection" to provide limited options.
      */
-    private function set_type($input_type)
+    private function setType($input_type)
     {
         if ($input_type == 0) {
             $this->type = 0;
