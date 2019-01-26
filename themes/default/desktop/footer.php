@@ -5,7 +5,7 @@
 Developed by Ball State University Libraries<br/>
 Copyright (C) 2012 Ball State University Libraries
 <?php 
-echo "Server time: " .  date_format($today,"Y-m-d H:i:s");
+echo "Server time: " .  date_format(new DateTime(),"Y-m-d H:i:s");
 ?>
 </div>
 <div id="themeswitch" onClick="javascript:document.cookie='theme=mobile';location.reload(true);">Switch to Mobile View
