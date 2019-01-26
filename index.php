@@ -14,6 +14,7 @@ include($_SESSION["themepath"] . "header.php");
 
 if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
     include("modules/login.php");
+    include("modules/loggedoutcalendar.php");
 } elseif ($_SESSION["systemid"] == "" || !(isset($_SESSION["systemid"])) || $_SESSION["systemid"] != $settings["systemid"]) {
     include("modules/login.php");
 } else {
