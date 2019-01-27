@@ -41,9 +41,9 @@ if ($activatecode == "" && $activateusername == "") {
     }
     if ($errormsg == "" && $submitted == "1") {
         //Create account for this user
-        $encpass = sha1($password);
+        $hash = password_hash($password, PASSWORD_DEFAULT);
         $activationcode = rand_str();
-        if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO users(username,password,email,active) VALUES('" . $desiredusername . "','" . $encpass . "','" . $email . "','" . $activationcode . "');")) {
+        if (mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO users(username,password,email,active) VALUES('" . $desiredusername . "','" . $hash . "','" . $email . "','" . $activationcode . "');")) {
             $emailmsg = "Please click the following link to activate your account.\n\n" . $_SERVER["HTTP_REFERER"] . "?code=" . $activationcode . "&username=" . $desiredusername . "\n\nThank you!";
             $email_system = $settings["email_system"];
             mail($email, "Account activation for " . $settings["instance_name"], $emailmsg, "MIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\nFrom: " . $email_system . "\r\nReturn-Path: " . $email_system . "\r\nReply-To: " . $email_system);

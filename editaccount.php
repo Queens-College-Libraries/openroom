@@ -18,7 +18,7 @@ if ($_SESSION["systemid"] == $settings["systemid"]) {
                 $errormsg .= "New Password and Conform Password do not match.<br/>";
             } //Passwords have been entered and match so put in a new password
             else {
-                $encpass = sha1($password);
+                $encpass = password_hash($password, PASSWORD_DEFAULT);
             }
         } //No password change, set encpass equal to old password
         else {

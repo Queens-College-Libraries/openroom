@@ -1,6 +1,20 @@
 <?php
 declare(strict_types=1);
 namespace model;
+
+// MariaDB [openroom]> describe users;
+// +-----------+--------------+------+-----+-------------------+-----------------------------+
+// | Field     | Type         | Null | Key | Default           | Extra                       |
+// +-----------+--------------+------+-----+-------------------+-----------------------------+
+// | username  | varchar(255) | NO   | PRI | NULL              |                             |
+// | password  | varchar(255) | NO   |     | NULL              |                             |
+// | email     | varchar(255) | NO   |     | NULL              |                             |
+// | lastlogin | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+// | active    | varchar(255) | NO   |     | 0                 |                             |
+// +-----------+--------------+------+-----+-------------------+-----------------------------+
+// 5 rows in set (0.009 sec)
+
+
 class User
 {
     private $username;
@@ -48,6 +62,22 @@ class User
         } else {
             $this->isReporter = false;
         }
+    }
+
+    public static function getPasswordHash(\PDO $db, string $username): string
+    {
+        $req = $db->prepare("SELECT password FROM users WHERE username = :username");
+        $req->execute(array('username' => $username));
+        $password = $req->fetch();
+        return $password[0];
+    }
+
+    public static function getIsActive(\pdo $db, string $username): int
+    {
+        $req = $db->prepare("SELECT active FROM users WHERE username = :username");
+        $req->execute(array('username' => $username));
+        $active = $req->fetch();
+        return (int)$active[0];
     }
 
     function ReturnEmailAddress($input_username, $settings)
