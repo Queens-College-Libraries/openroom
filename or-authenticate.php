@@ -114,10 +114,11 @@ if ($username != "" && $password != "" && $ajax_indicator != "") {
         }
     } //Normal
     elseif ($settings["login_method"] == "normal") {
-        $encpass = sha1($password);
         $hash = \model\User::getPasswordHash(\model\Db::getInstance(), $username);
         if (password_verify($password, $hash)) {
-            if (mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM bannedusers WHERE username='" . $username . "';")) <= 0 && \model\User::getIsActive(\model\db::getInstance(), $username) == "0") {
+            $isBanned = \model\BannedUser::isBanned(\model\Db::getInstance(), $username);
+            $isActive = \model\User::getIsActive(\model\db::getInstance(), $username);
+            if (!$isBanned && $isActive == "0") {
                 //Set lastlogin time
                 $llresult = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE users SET lastlogin=NOW() WHERE username='" . $username . "';");
                 if ($llresult) {
@@ -148,7 +149,7 @@ if ($username != "" && $password != "" && $ajax_indicator != "") {
                     $output .= "\t<authenticated>false</authenticated>\n\t<errormessage>Could not set last login time.</errormessage>\n";
                 }
             } else {
-                $output .= "\t<errormessage>" . $isactive . "This user has been banned or has not activated their account. Please contact an administrator to fix this problem.</errormessage>\n";
+                $output .= "\t<errormessage>" . $isBanned . "This user has been banned or has not activated their account. Please contact an administrator to fix this problem.</errormessage>\n";
                 $output .= "\t<authenticated>false</authenticated>\n";
                 $_SESSION["systemid"] = "";
                 $_SESSION["username"] = "";
