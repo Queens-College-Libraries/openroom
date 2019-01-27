@@ -16,6 +16,7 @@
 declare(strict_types=1);
 
 namespace model;
+
 class Room
 {
     private $id;
@@ -25,7 +26,7 @@ class Room
     private $groupId;
     private $description;
 
-    public function __construct($id, $name, $position, $capacity, $groupId, $description)
+    public function __construct($id, $name, int $position, int $capacity, int $groupId, $description)
     {
         $this->id = $id;
         $this->name = $name;
@@ -35,12 +36,81 @@ class Room
         $this->description = $description;
     }
 
+    public function save(\PDO $db)
+    {
+        $req = $db->prepare("UPDATE rooms SET roomname = :roomname, roomposition = :position, roomcapacity = :capacity, roomgroupid = :groupId, roomdescription = :roomdescription where roomid = :id");
+        $req->bindValue(":id", $this->getId());
+        $req->bindValue(":roomname", $this->getName());
+        $req->bindValue(":position", $this->getPosition());
+        $req->bindValue(":capacity", $this->getCapacity());
+        $req->bindValue(":groupId", $this->getGroupId());
+        $req->bindValue(":roomdescription", $this->getDescription());
+        $req->execute();
+    }
+
     public static function getSpecificRoom(\PDO $db, int $id)
     {
         $req = $db->prepare("SELECT roomid, roomname, roomposition, roomcapacity, roomgroupid, roomdescription FROM rooms WHERE roomid = :id");
         $req->execute(array('id' => $id));
         $room = $req->fetch();
-        return new Room($room['roomid'], $room['roomname'], $room['roomposition'], $room['roomcapacity'], $room['roomgroupid'], $room['roomdescription']);
+        return new Room((int)$room['roomid'], $room['roomname'], (int)$room['roomposition'], (int)$room['roomcapacity'], (int)$room['roomgroupid'], $room['roomdescription']);
+    }
+
+    public static function getSpecificRoomByPosition(\PDO $db, int $position, int $groupId)
+    {
+        $req = $db->prepare("SELECT roomid, roomname, roomposition, roomcapacity, roomgroupid, roomdescription FROM rooms WHERE roomposition = :position and roomgroupid = :groupId LIMIT 1");
+        $req->execute(array('position' => $position, 'groupId' => $groupId));
+        $room = $req->fetch();
+        return new Room((int)$room['roomid'], $room['roomname'], (int)$room['roomposition'], (int)$room['roomcapacity'], (int)$room['roomgroupid'], $room['roomdescription']);
+    }
+
+    public static function updateRoomPosition(\PDO $db, int $newPosition, int $oldPosition, int $groupId)
+    {
+        $req = $db->prepare("UPDATE rooms SET roomposition = :newPosition where roomposition = :oldPosition and roomgroupid = :groupId");
+        $req->bindValue(":newPosition", $newPosition);
+        $req->bindValue(":oldPosition", $oldPosition);
+        $req->bindValue(":groupId", $groupId);
+        $req->execute();
+    }
+
+    public static function incrementRoomPosition(\PDO $db, int $id)
+    {
+        // get room from room id
+        $currentRoom = \model\Room::getSpecificRoom($db, $id);
+        $nextRoom = \model\Room::getSpecificRoomByPosition($db, $currentRoom->getPosition() + 1, $currentRoom->getGroupId());
+        if($nextRoom->getPosition() < \model\Room::getRoomCountInGroup($db, $nextRoom->getGroupId()))
+        {
+            $currentRoomPosition = $currentRoom->getPosition();
+            $nextRoomPosition = $nextRoom->getPosition();
+            $currentRoom->setPosition($nextRoomPosition);
+            $nextRoom->setPosition($currentRoomPosition);
+            $currentRoom->save($db);
+            $nextRoom->save($db);
+        }
+    }
+
+    public static function decrementRoomPosition(\PDO $db, int $id)
+    {
+        // get room from room id
+        $currentRoom = \model\Room::getSpecificRoom($db, $id);
+        $nextRoom = \model\Room::getSpecificRoomByPosition($db, $currentRoom->getPosition() - 1, $currentRoom->getGroupId());
+        if($currentRoom->getPosition() > 0)
+        {
+            $currentRoomPosition = $currentRoom->getPosition();
+            $nextRoomPosition = $nextRoom->getPosition();
+            $currentRoom->setPosition($nextRoomPosition);
+            $nextRoom->setPosition($currentRoomPosition);
+            $currentRoom->save($db);
+            $nextRoom->save($db);
+        }
+    }
+
+    public static function getRoomCountInGroup(\pdo $db, int $groupId): int
+    {
+        $req = $db->prepare("SELECT count(*) FROM rooms WHERE roomgroupid = :groupId");
+        $req->execute(array('groupId' => $groupId));
+        $count = $req->fetch();
+        return (int)$count[0];
     }
 
     /**

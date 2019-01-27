@@ -18,28 +18,14 @@ if (!(isset($_SESSION["username"])) || $_SESSION["username"] == "") {
         case "incorder":
             $opid = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
             if ($opid != "") {
-                $thisroom = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid=" . $opid . ";"));
-                $thispos = $thisroom["roomposition"];
-                $nextpos = $thispos + 1;
-                $thisgroupcount = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid=" . $thisroom["roomgroupid"] . ";"));
-                if ($nextpos < $thisgroupcount) {
-                    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomposition=" . $thispos . " WHERE roomposition=" . $nextpos . ";");
-                    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomposition=" . $nextpos . " WHERE roomid=" . $opid . ";");
-                }
+                \model\Room::incrementRoomPosition(\model\Db::getInstance(), (int)$opid);
             }
             break;
         //Swap roomposition values with room having position--
         case "decorder":
             $opid = isset($_REQUEST["id"]) ? $_REQUEST["id"] : "";
             if ($opid != "") {
-                $thisroom = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomid=" . $opid . ";"));
-                $thispos = $thisroom["roomposition"];
-                $prevpos = $thispos - 1;
-                $thisgroupcount = mysqli_num_rows(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rooms WHERE roomgroupid=" . $thisroom["roomgroupid"] . ";"));
-                if ($prevpos >= 0) {
-                    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomposition=" . $thispos . " WHERE roomposition=" . $prevpos . ";");
-                    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE rooms SET roomposition=" . $prevpos . " WHERE roomid=" . $opid . ";");
-                }
+                \model\Room::decrementRoomPosition(\model\Db::getInstance(), (int)$opid);
             }
             break;
         //Add a new room
