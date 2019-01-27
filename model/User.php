@@ -22,7 +22,6 @@ class User
             $settings[$row['settingname']] = $row['settingvalue'];
         }
         $this->emailaddress = $this->ReturnEmailAddress($this->username, $settings);
-        // if ($settings["login_method"] == "ldap") {
         if(\model\Setting::find("login_method") == "ldap") {
             $this->password = "LDAP";
             $this->activationCode = "LDAP";
@@ -39,12 +38,6 @@ class User
             $this->lastlogin = $user['lastlogin'];
             $this->active = $user['active'];
         }
-        // if ($settings["login_method"] == "ldap") {
-        //     $this->activationCode = "LDAP";
-        // } else {
-        //     $this->activationCode = "";
-        // }
-        
         if (Administrator::exists($this->username)) {
             $this->isAdministrator = true;
         } else {
@@ -55,32 +48,6 @@ class User
         } else {
             $this->isReporter = false;
         }
-        // if(!User::exists($this->username))
-        // {
-        //     try 
-        //     {
-        //         $db = Db::getInstance();
-        //         echo $this->username . " " . $this->password ." " . $this->emailaddress ." " . $this->activationCode;
-        //         $req = $db->prepare('INSERT INTO `users`(`username`, `password`, `email`, `active`) VALUES (:username, :password, :emailaddress, :activationCode)');
-        //         $req->bindParam(':username', $this->username, \PDO::PARAM_STR, 255);
-        //         $req->bindParam(':password', $this->password, \PDO::PARAM_STR, 255);
-        //         $req->bindParam(':emailaddress', $this->emailaddress, \PDO::PARAM_STR, 255);
-        //         $req->bindParam(':actvationCode', $this->activationCode, \PDO::PARAM_STR, 255);
-        //         $req->execute();
-        //     } catch (PDOException $e) 
-        //     {
-        //         echo 'Database connection has failed. Contact system administrator to resolve this issue!<br>';
-        //         $e->getMessage();
-        //         die();
-        //     }
-        // }
-        // else
-        // {
-        //     $db = Db::getInstance();
-        //     $req = $db->prepare('update `users` set lastlogin = now() where username = :username');
-        //     $req->bindParam(':username', $this->get_username(), \PDO::PARAM_STR, 255);
-        //     $req->execute();
-        // }
     }
 
     function ReturnEmailAddress($input_username, $settings)
