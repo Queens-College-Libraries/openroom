@@ -9,3 +9,7 @@ if(password_verify('eejohk3aer','$2y$10$cuOcw19BExoXTM8H3zfQtekhQoo8GKd9XDeGmY5f
 {
     echo "good job!";
 }
+
+$data = \model\User::getAllUsers(\model\Db::getInstance());
+
+highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");

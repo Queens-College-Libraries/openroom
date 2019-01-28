@@ -113,17 +113,12 @@ class User
         return $this->ReturnParameter($input_username, "displayname", $settings);
     }
 
-    public static function get_all_users()
+    public static function getAllUsers(\PDO $db)
     {
-        $list = [];
-        $db = Db::getInstance();
         $req = $db->query('SELECT * FROM `users`');
-
-        // we create a list of Post objects from the database results
         foreach ($req->fetchAll() as $user) {
             $list[] = new User($user['username']);
         }
-
         return $list;
     }
 
