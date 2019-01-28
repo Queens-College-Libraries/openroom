@@ -117,7 +117,7 @@ class Reservation
     public static function getAllReservationsForUser(\PDO $db, string $username)
     {
         $list = [];
-        $req = $db->prepare("SELECT reservations.reservationid, reservations.start, reservations.end, reservations.roomid, reservations.username, reservations.numberingroup, reservations.timeofrequest, rooms.roomname, rooms.roomid, rooms.roomname, rooms.roomposition, rooms.roomcapacity, rooms.roomgroupid, rooms.roomdescription FROM reservations LEFT JOIN rooms ON reservations.roomid = rooms.roomid WHERE username = :username AND start >= CURRENT_TIMESTAMP()ORDER BY reservations.start ASC;");
+        $req = $db->prepare("SELECT reservations.reservationid, reservations.start, reservations.end, reservations.roomid, reservations.username, reservations.numberingroup, reservations.timeofrequest, rooms.roomname, rooms.roomid, rooms.roomname, rooms.roomposition, rooms.roomcapacity, rooms.roomgroupid, rooms.roomdescription FROM reservations LEFT JOIN rooms ON reservations.roomid = rooms.roomid WHERE username = :username AND reservations.end >= CURRENT_TIMESTAMP() ORDER BY reservations.start ASC;");
         $req->execute(array('username' => $username));
         foreach ($req->fetchAll() as $reservation) 
         {
