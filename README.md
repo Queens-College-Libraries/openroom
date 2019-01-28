@@ -42,9 +42,14 @@ This is only a demonstration of my vision.
 
 The PHP `\model` namespace is not fully implemented yet. 
 One problem I noticed is I need to make a better use of object-oriented PHP. 
-For instance, the reservation object is incomplete without a reference to the room object and the user object. 
+For instance, a reservation is for a particular room and a particular user. 
+The reservation object is incomplete without a reference to the room object and the user object. 
 When I give you an object of `\model\Reservation`, you should be able to have full access 
 to the information about the room and the user without any further access to the database (and indeed not even care what database we use). 
+On another hand, Openroom is flexible. 
+This is the reason why administrator is a separate class and not a property of user. 
+Under the current scheme, we need to be able to make a username an administrator without that user ever existing. 
+This is also essential in case of LDAP authentication where we don't control user authentication.  
 
 # Thoughts? 
 
