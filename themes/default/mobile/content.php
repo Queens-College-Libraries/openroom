@@ -226,25 +226,18 @@ switch ($op) {
         <div id="confirm"></div>
         <span class="mobilelabel">Your Reservations</span>
         <?php
-
-        $query = "SELECT * FROM reservations 
-				LEFT JOIN rooms ON reservations.roomid = rooms.roomid
-				WHERE username='" . $_SESSION["username"] . "'
-				AND
-				start >= CURRENT_TIMESTAMP()
-				ORDER BY reservations.start ASC;";
-
-    $your_reservations = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-
-    if (mysqli_num_rows($your_reservations) < 1) {
+        
+        $your_reservations = \model\Reservation::getAllReservationsForUser(\model\Db::getInstance(), $_SESSION["username"]);
+        
+        if (sizeof($your_reservations) < 1) {
             ?>
             <div id="noreservations">
                 You have no upcoming reservations.
             </div>
             <?php
         }
-
-    while ($your_res = mysqli_fetch_array($your_reservations)) {
+        
+        foreach($your_reservations as $your_res) {
             $start_timestamp = strtotime($your_res["start"]);
             $end_timestamp = strtotime($your_res["end"]);
             $duration = ($end_timestamp - $start_timestamp + 1) / 60;

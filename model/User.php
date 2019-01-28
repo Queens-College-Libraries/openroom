@@ -64,7 +64,7 @@ class User
         }
     }
 
-    public static function getPasswordHash(\PDO $db, string $username): string
+    public static function getPasswordHash(\PDO $db, string $username)
     {
         $req = $db->prepare("SELECT password FROM users WHERE username = :username");
         $req->execute(array('username' => $username));
