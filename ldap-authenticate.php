@@ -10,7 +10,6 @@ function ConnectLdap($name, $password, $settings)
     $password = trim(htmlspecialchars($password));
     $ldap = ldap_connect($ldapserver);
     if (!IsNotNullOrEmptyString($name) && !IsNotNullOrEmptyString($password)) {
-        sleep(1);
         if ($bind = ldap_bind($ldap, $qc_username, $password)) {
             return true;
         } else if ($bind = ldap_bind($ldap, $instr_username, $password)) {
