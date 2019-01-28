@@ -6,6 +6,16 @@ This version of openroom is a work-in-progress.
 We have a lot of enhancements planned. 
 The project is free and open source (GPLv3). 
 
+## Implemented changes 
+
+Please help test "normal" mode (as opposed to ldap) of the application. 
+Openroom now has preliminary support for `password_hash()` and `password_verify()`. 
+This is a long overdue change and it is as important as fixing our SQL injection vulnerabilities. 
+This means anyone who is using normal mode before today (hopefully not in production), 
+should inform their users that we need to rehash their passwords. 
+This is also a good time to ask the users to change their passwords. 
+Please take it for a spin today and tell me if you face any bugs! 
+
 ## Proposed technologies 
 
 * PHP 7.1 for a better PHP 
