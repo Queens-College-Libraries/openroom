@@ -19,8 +19,9 @@ The project is free and open source (GPLv3).
 
 ## A demo for twig support 
 Please take a look at 
-[this screen shot](https://screenshotscdn.firefoxusercontent.com/images/96f9ffe5-68db-4368-b678-4939906c9968.png). 
-![List of reservations](https://screenshotscdn.firefoxusercontent.com/images/96f9ffe5-68db-4368-b678-4939906c9968.png) 
+
+[this screen shot](https://i.imgur.com/gQxtCB5.png). 
+![List of reservations](https://i.imgur.com/gQxtCB5.png) 
 
 It is just an example to show you what I want you to be able to do with your own custom theme.
 This form is not functional and likely will not be in 2018. 
