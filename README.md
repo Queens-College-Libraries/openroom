@@ -22,6 +22,7 @@ Please take it for a spin today and tell me if you face any bugs!
 * PDO for database interaction 
 * Twig for templating and better theme support  
 * jQuery and bootstrap for front end 
+* Rework the PHP objects. 
 
 ## Proposed supported web browsers 
 
@@ -36,6 +37,14 @@ Please take a look at
 It is just an example to show you what I want you to be able to do with your own custom theme.
 This form is not functional and likely will not be in 2018. 
 This is only a demonstration of my vision. 
+
+## Rework the PHP objects 
+
+The PHP `\model` namespace is not fully implemented yet. 
+One problem I noticed is I need to make a better use of object-oriented PHP. 
+For instance, the reservation object is incomplete without a reference to the room object and the user object. 
+When I give you an object of `\model\Reservation`, you should be able to have full access 
+to the information about the room and the user without any further access to the database (and indeed not even care what database we use). 
 
 # Thoughts? 
 
