@@ -173,12 +173,7 @@ class User
 
     private function set_user_details()
     {
-        $settings = [];
-        $db = Db::getInstance();
-        $q = $db->query('SELECT * FROM `settings`');
-        foreach ($q->fetchAll() as $row) {
-            $settings[$row['settingname']] = $row['settingvalue'];
-        }
+        $settings = model\Setting::fetch_all();
         $this->emailaddress = ReturnEmailAddress($this->username, $settings);
         if ($settings["login_method"] == "ldap") {
             $this->password = "LDAP";
