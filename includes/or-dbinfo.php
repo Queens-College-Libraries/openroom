@@ -19,7 +19,7 @@ $dbuser = "openroomdemo";
 $dbpass = "53PVs7nj2i2AD5FXNLNpZyW3B3sG31WGPThmPCntdldKwxZ5vvb3Pg266HSN8NG";
 $dbdatabase = "openroom";
 
-($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost, $dbuser, $dbpass)) or die('Can\'t connect to the database. Error: ' . mysqli_error($GLOBALS["___mysqli_ston"]));
+($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost, $dbuser, $dbpass)) || die('Can\'t connect to the database. Error: ' . mysqli_error($GLOBALS["___mysqli_ston"]));
 mysqli_select_db($GLOBALS["___mysqli_ston"], $dbdatabase) or die('Can\'t connect to the database. Error: ' . mysqli_error($GLOBALS["___mysqli_ston"]));
 require_once(__DIR__ . '/../vendor/autoload.php');
 $settings = [];
