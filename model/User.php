@@ -93,7 +93,7 @@ class User
             $password = $settings["service_password"];
             $ldap = ldap_connect($ldapserver);
             if ($bind = ldap_bind($ldap, $qc_username, $password)) {
-                $result = ldap_search($ldap, "", "(CN=$input_username)") or die ("Error in search query: " . ldap_error($ldap));
+                $result = ldap_search($ldap, "", "(CN=$input_username)") || die ("Error in search query: " . ldap_error($ldap));
                 $data = ldap_get_entries($ldap, $result);
                 if (isset($data[0][$input_parameter][0])) {
                     return $data[0][$input_parameter][0];
