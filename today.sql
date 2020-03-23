@@ -1,13 +1,13 @@
--- MySQL dump 10.16  Distrib 10.3.8-MariaDB, for osx10.13 (x86_64)
+-- MySQL dump 10.17  Distrib 10.3.22-MariaDB, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: openroom
+-- Host: localhost    Database: openroom
 -- ------------------------------------------------------
--- Server version	5.7.21
+-- Server version	10.3.22-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -75,7 +75,7 @@ CREATE TABLE `cancelled` (
   `roomid` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `timeofrequest` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `timeofcancel` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `timeofcancel` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`reservationid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -130,8 +130,8 @@ CREATE TABLE `optionalfields` (
   `optionchoices` varchar(700) NOT NULL COMMENT '";" delimited',
   `optionorder` int(11) NOT NULL,
   `optionquestion` varchar(255) NOT NULL,
-  `optionprivate` tinyint(1) NOT NULL DEFAULT '0',
-  `optionrequired` tinyint(1) NOT NULL DEFAULT '0',
+  `optionprivate` tinyint(1) NOT NULL DEFAULT 0,
+  `optionrequired` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`optionname`),
   UNIQUE KEY `optionformname` (`optionformname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -208,9 +208,9 @@ CREATE TABLE `reservations` (
   `roomid` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `numberingroup` int(11) NOT NULL,
-  `timeofrequest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `timeofrequest` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`reservationid`)
-) ENGINE=InnoDB AUTO_INCREMENT=354 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=357 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -219,35 +219,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations`
-VALUES (324, '2018-08-27 19:00:00', '2018-08-27 20:59:59', 29, 'ttam', 15, '2018-07-12 15:21:19'),
-       (325, '2018-07-18 14:00:00', '2018-07-18 14:29:59', 28, 'admin', 1, '2018-07-18 19:40:30'),
-       (326, '2018-07-18 15:00:00', '2018-07-18 15:29:59', 28, 'admin', 1, '2018-07-18 19:41:39'),
-       (327, '2018-07-18 15:30:00', '2018-07-18 15:59:59', 28, 'admin', 1, '2018-07-18 19:42:18'),
-       (329, '2018-07-19 01:00:00', '2018-07-19 01:29:59', 28, 'admin', 1, '2018-07-18 20:35:53'),
-       (330, '2018-07-20 01:00:00', '2018-07-20 01:29:59', 28, 'admin', 1, '2018-07-18 20:35:53'),
-       (331, '2018-07-21 01:00:00', '2018-07-21 01:29:59', 28, 'admin', 1, '2018-07-18 20:35:53'),
-       (332, '2018-07-22 01:00:00', '2018-07-22 01:29:59', 28, 'admin', 1, '2018-07-18 20:35:53'),
-       (333, '2018-07-23 01:00:00', '2018-07-23 01:29:59', 28, 'admin', 1, '2018-07-18 20:35:53'),
-       (335, '2018-07-19 00:00:00', '2018-07-19 00:29:59', 28, 'admin', 1, '2018-07-18 20:41:15'),
-       (336, '2018-07-20 00:00:00', '2018-07-20 00:29:59', 28, 'admin', 1, '2018-07-18 20:41:15'),
-       (337, '2018-07-21 00:00:00', '2018-07-21 00:29:59', 28, 'admin', 1, '2018-07-18 20:41:15'),
-       (338, '2018-07-22 00:00:00', '2018-07-22 00:29:59', 28, 'admin', 1, '2018-07-18 20:41:15'),
-       (339, '2018-07-23 00:00:00', '2018-07-23 00:29:59', 28, 'admin', 1, '2018-07-18 20:41:15'),
-       (340, '2018-10-17 08:30:00', '2018-10-17 12:29:59', 30, 'sravan', 2, '2018-10-17 14:20:29'),
-       (341, '2018-10-18 09:00:00', '2018-10-18 09:29:59', 28, 'sravan', 1, '2018-10-17 16:25:21'),
-       (342, '2018-10-18 07:00:00', '2018-10-18 07:29:59', 30, 'adam', 1, '2018-10-17 16:26:57'),
-       (343, '2018-10-18 07:00:00', '2018-10-18 07:29:59', 31, 'bob', 1, '2018-10-17 16:27:04'),
-       (344, '2018-10-18 09:30:00', '2018-10-18 09:59:59', 32, 'caitlin', 1, '2018-10-17 16:27:18'),
-       (345, '2018-10-18 09:30:00', '2018-10-18 09:59:59', 33, 'danielle', 1, '2018-10-17 16:27:26'),
-       (346, '2018-10-18 11:30:00', '2018-10-18 11:59:59', 30, 'ethan', 1, '2018-10-17 16:27:32'),
-       (347, '2018-10-18 12:00:00', '2018-10-18 12:29:59', 31, 'rudy', 1, '2018-10-17 16:27:38'),
-       (348, '2018-10-18 12:30:00', '2018-10-18 12:59:59', 33, 'faye', 1, '2018-10-17 16:27:46'),
-       (349, '2018-10-31 08:00:00', '2018-10-31 08:29:59', 30, 'aaron', 1, '2018-10-17 16:34:13'),
-       (350, '2018-10-31 08:30:00', '2018-10-31 08:59:59', 31, 'belle', 1, '2018-10-17 16:34:22'),
-       (351, '2018-10-31 09:00:00', '2018-10-31 09:29:59', 32, 'cait', 1, '2018-10-17 16:34:29'),
-       (352, '2018-10-17 14:00:00', '2018-10-17 17:59:59', 28, 'potato', 1, '2018-10-17 20:03:18'),
-       (353, '2018-10-17 09:00:00', '2018-10-17 09:29:59', 31, 'potato', 1, '2018-10-17 20:06:27');
+INSERT INTO `reservations` VALUES (324,'2018-08-27 19:00:00','2018-08-27 20:59:59',29,'ttam',15,'2018-07-12 15:21:19'),(325,'2018-07-18 14:00:00','2018-07-18 14:29:59',28,'admin',1,'2018-07-18 19:40:30'),(326,'2018-07-18 15:00:00','2018-07-18 15:29:59',28,'admin',1,'2018-07-18 19:41:39'),(327,'2018-07-18 15:30:00','2018-07-18 15:59:59',28,'admin',1,'2018-07-18 19:42:18'),(329,'2018-07-19 01:00:00','2018-07-19 01:29:59',28,'admin',1,'2018-07-18 20:35:53'),(330,'2018-07-20 01:00:00','2018-07-20 01:29:59',28,'admin',1,'2018-07-18 20:35:53'),(331,'2018-07-21 01:00:00','2018-07-21 01:29:59',28,'admin',1,'2018-07-18 20:35:53'),(332,'2018-07-22 01:00:00','2018-07-22 01:29:59',28,'admin',1,'2018-07-18 20:35:53'),(333,'2018-07-23 01:00:00','2018-07-23 01:29:59',28,'admin',1,'2018-07-18 20:35:53'),(335,'2018-07-19 00:00:00','2018-07-19 00:29:59',28,'admin',1,'2018-07-18 20:41:15'),(336,'2018-07-20 00:00:00','2018-07-20 00:29:59',28,'admin',1,'2018-07-18 20:41:15'),(337,'2018-07-21 00:00:00','2018-07-21 00:29:59',28,'admin',1,'2018-07-18 20:41:15'),(338,'2018-07-22 00:00:00','2018-07-22 00:29:59',28,'admin',1,'2018-07-18 20:41:15'),(339,'2018-07-23 00:00:00','2018-07-23 00:29:59',28,'admin',1,'2018-07-18 20:41:15'),(340,'2018-10-17 08:30:00','2018-10-17 12:29:59',30,'sravan',2,'2018-10-17 14:20:29'),(341,'2018-10-18 09:00:00','2018-10-18 09:29:59',28,'sravan',1,'2018-10-17 16:25:21'),(342,'2018-10-18 07:00:00','2018-10-18 07:29:59',30,'adam',1,'2018-10-17 16:26:57'),(343,'2018-10-18 07:00:00','2018-10-18 07:29:59',31,'bob',1,'2018-10-17 16:27:04'),(344,'2018-10-18 09:30:00','2018-10-18 09:59:59',32,'caitlin',1,'2018-10-17 16:27:18'),(345,'2018-10-18 09:30:00','2018-10-18 09:59:59',33,'danielle',1,'2018-10-17 16:27:26'),(346,'2018-10-18 11:30:00','2018-10-18 11:59:59',30,'ethan',1,'2018-10-17 16:27:32'),(347,'2018-10-18 12:00:00','2018-10-18 12:29:59',31,'rudy',1,'2018-10-17 16:27:38'),(348,'2018-10-18 12:30:00','2018-10-18 12:59:59',33,'faye',1,'2018-10-17 16:27:46'),(349,'2018-10-31 08:00:00','2018-10-31 08:29:59',30,'aaron',1,'2018-10-17 16:34:13'),(350,'2018-10-31 08:30:00','2018-10-31 08:59:59',31,'belle',1,'2018-10-17 16:34:22'),(351,'2018-10-31 09:00:00','2018-10-31 09:29:59',32,'cait',1,'2018-10-17 16:34:29'),(352,'2018-10-17 14:00:00','2018-10-17 17:59:59',28,'potato',1,'2018-10-17 20:03:18'),(353,'2018-10-17 09:00:00','2018-10-17 09:29:59',31,'potato',1,'2018-10-17 20:06:27'),(354,'2020-05-15 18:30:00','2020-05-15 20:29:59',30,'kushal',1,'2020-03-23 19:54:18'),(355,'2020-05-15 19:30:00','2020-05-15 21:29:59',31,'kushal',1,'2020-03-23 19:54:27'),(356,'2020-05-18 17:30:00','2020-05-18 18:59:59',31,'kushal',2,'2020-03-23 19:54:53');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,9 +243,7 @@ CREATE TABLE `roomgroups` (
 
 LOCK TABLES `roomgroups` WRITE;
 /*!40000 ALTER TABLE `roomgroups` DISABLE KEYS */;
-INSERT INTO `roomgroups`
-VALUES (6, 'Rooms'),
-       (7, 'Cubicles');
+INSERT INTO `roomgroups` VALUES (6,'Rooms'),(7,'Cubicles');
 /*!40000 ALTER TABLE `roomgroups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,49 +270,7 @@ CREATE TABLE `roomhours` (
 
 LOCK TABLES `roomhours` WRITE;
 /*!40000 ALTER TABLE `roomhours` DISABLE KEYS */;
-INSERT INTO `roomhours`
-VALUES (317, 28, 6, '02:00:00', '23:00:00'),
-       (319, 29, 1, '02:00:00', '23:00:00'),
-       (320, 29, 2, '02:00:00', '23:00:00'),
-       (321, 29, 3, '02:00:00', '23:00:00'),
-       (322, 29, 4, '02:00:00', '23:00:00'),
-       (323, 29, 5, '02:00:00', '23:00:00'),
-       (324, 29, 6, '02:00:00', '23:00:00'),
-       (325, 28, 1, '07:00:00', '23:00:00'),
-       (326, 28, 2, '07:00:00', '23:00:00'),
-       (327, 28, 3, '07:00:00', '23:00:00'),
-       (328, 28, 4, '07:00:00', '23:00:00'),
-       (329, 28, 5, '07:00:00', '23:00:00'),
-       (332, 28, 0, '07:00:00', '20:00:00'),
-       (333, 29, 0, '07:00:00', '20:00:00'),
-       (334, 30, 0, '09:00:00', '16:00:00'),
-       (335, 30, 1, '09:00:00', '16:00:00'),
-       (336, 30, 2, '09:00:00', '16:00:00'),
-       (337, 30, 3, '09:00:00', '16:00:00'),
-       (338, 30, 4, '09:00:00', '16:00:00'),
-       (339, 30, 5, '09:00:00', '16:00:00'),
-       (340, 30, 6, '09:00:00', '16:00:00'),
-       (341, 31, 0, '09:00:00', '16:00:00'),
-       (342, 31, 1, '09:00:00', '16:00:00'),
-       (343, 31, 2, '09:00:00', '16:00:00'),
-       (344, 31, 3, '09:00:00', '16:00:00'),
-       (345, 31, 4, '09:00:00', '16:00:00'),
-       (346, 31, 5, '09:00:00', '16:00:00'),
-       (347, 31, 6, '09:00:00', '16:00:00'),
-       (348, 32, 0, '09:00:00', '16:00:00'),
-       (349, 32, 1, '09:00:00', '16:00:00'),
-       (350, 32, 2, '09:00:00', '16:00:00'),
-       (351, 32, 3, '09:00:00', '16:00:00'),
-       (352, 32, 4, '09:00:00', '16:00:00'),
-       (353, 32, 5, '09:00:00', '16:00:00'),
-       (354, 32, 6, '09:00:00', '16:00:00'),
-       (355, 33, 0, '09:00:00', '16:00:00'),
-       (356, 33, 1, '09:00:00', '16:00:00'),
-       (357, 33, 2, '09:00:00', '16:00:00'),
-       (358, 33, 3, '09:00:00', '16:00:00'),
-       (359, 33, 4, '09:00:00', '16:00:00'),
-       (360, 33, 5, '09:00:00', '16:00:00'),
-       (361, 33, 6, '09:00:00', '16:00:00');
+INSERT INTO `roomhours` VALUES (317,28,6,'02:00:00','23:00:00'),(319,29,1,'02:00:00','23:00:00'),(320,29,2,'02:00:00','23:00:00'),(321,29,3,'02:00:00','23:00:00'),(322,29,4,'02:00:00','23:00:00'),(323,29,5,'02:00:00','23:00:00'),(324,29,6,'02:00:00','23:00:00'),(325,28,1,'07:00:00','23:00:00'),(326,28,2,'07:00:00','23:00:00'),(327,28,3,'07:00:00','23:00:00'),(328,28,4,'07:00:00','23:00:00'),(329,28,5,'07:00:00','23:00:00'),(332,28,0,'07:00:00','20:00:00'),(333,29,0,'07:00:00','20:00:00'),(334,30,0,'09:00:00','16:00:00'),(335,30,1,'09:00:00','16:00:00'),(336,30,2,'09:00:00','16:00:00'),(337,30,3,'09:00:00','16:00:00'),(338,30,4,'09:00:00','16:00:00'),(339,30,5,'09:00:00','16:00:00'),(340,30,6,'09:00:00','16:00:00'),(341,31,0,'09:00:00','16:00:00'),(342,31,1,'09:00:00','16:00:00'),(343,31,2,'09:00:00','16:00:00'),(344,31,3,'09:00:00','16:00:00'),(345,31,4,'09:00:00','16:00:00'),(346,31,5,'09:00:00','16:00:00'),(347,31,6,'09:00:00','16:00:00'),(348,32,0,'09:00:00','16:00:00'),(349,32,1,'09:00:00','16:00:00'),(350,32,2,'09:00:00','16:00:00'),(351,32,3,'09:00:00','16:00:00'),(352,32,4,'09:00:00','16:00:00'),(353,32,5,'09:00:00','16:00:00'),(354,32,6,'09:00:00','16:00:00'),(355,33,0,'09:00:00','16:00:00'),(356,33,1,'09:00:00','16:00:00'),(357,33,2,'09:00:00','16:00:00'),(358,33,3,'09:00:00','16:00:00'),(359,33,4,'09:00:00','16:00:00'),(360,33,5,'09:00:00','16:00:00'),(361,33,6,'09:00:00','16:00:00');
 /*!40000 ALTER TABLE `roomhours` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,13 +298,7 @@ CREATE TABLE `rooms` (
 
 LOCK TABLES `rooms` WRITE;
 /*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
-INSERT INTO `rooms`
-VALUES (28, '125a', 0, 8, 6, 'Room 125a'),
-       (29, '125c', 1, 16, 6, 'Room 125c'),
-       (30, 'Narendra Modi Hall', 0, 2, 7, 'Cubicle 1'),
-       (31, 'Sania Mirza Hall', 1, 2, 7, 'Cubicle 1'),
-       (32, 'Sacchin Tendulkar Hall', 2, 2, 7, 'Cubicle 1'),
-       (33, 'Virat Kohli Hall', 2, 2, 7, 'Cubicle 1');
+INSERT INTO `rooms` VALUES (28,'125a',0,8,6,'Room 125a'),(29,'125c',1,16,6,'Room 125c'),(30,'Narendra Modi Hall',0,2,7,'Cubicle 1'),(31,'Sania Mirza Hall',1,2,7,'Cubicle 1'),(32,'Sacchin Tendulkar Hall',2,2,7,'Cubicle 1'),(33,'Virat Kohli Hall',2,2,7,'Cubicle 1');
 /*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -427,45 +349,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings`
-VALUES ('allow_past_reservations', 'false'),
-       ('allow_simultaneous_reservations', 'false'),
-       ('email_can_gef', 'a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),
-       ('email_can_terse', 'a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),
-       ('email_can_verbose', 'a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),
-       ('email_condition', ''),
-       ('email_condition_value', ''),
-       ('email_cond_gef', 'a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),
-       ('email_cond_terse', 'a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),
-       ('email_cond_verbose', 'a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),
-       ('email_filter', 'a:2:{i:0;s:11:\"qc.cuny.edu\";i:1;s:14:\"qmail.cuny.edu\";}'),
-       ('email_res_gef', 'a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),
-       ('email_res_terse', 'a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),
-       ('email_res_verbose', 'a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),
-       ('email_system', 'kushalpublic@gmail.com'),
-       ('endtime', '24'),
-       ('https', 'true'),
-       ('instance_name', 'My Openroom'),
-       ('instance_url', 'openroom.loc'),
-       ('interval', '30'),
-       ('ldap_baseDN', 'ldap://149.4.100.201:3268'),
-       ('ldap_host', 'DC=qc,DC=ads'),
-       ('limit_duration', '240'),
-       ('limit_frequency', 'a:2:{i:0;s:1:\"0\";i:1;s:3:\"day\";}'),
-       ('limit_openingday', ''),
-       ('limit_total', 'a:2:{i:0;s:3:\"240\";i:1;s:3:\"day\";}'),
-       ('limit_window', 'a:2:{i:0;s:2:\"10\";i:1;s:4:\"year\";}'),
-       ('login_method', 'normal'),
-       ('phone_number', '7165015874'),
-       ('policies',
-        'The Music Library has two rooms (125a and 125c) available to students for group study on a â€œfirst-come, first-serveâ€ basis. Only patrons with a valid Queens College ID may use these rooms.\r\n\r\nPatrons may reserve rooms via the online reservation system with their Queens College user account. Walk-in room requests are also available at the circulation desk. Classes, senior concentration exams, and room reservations will take priority over walk-in requests.\r\n\r\nNOTE: To reserve a room, use your QC/CAMS account to log in.\r\n\r\nIf you have reserved one of the rooms, at the time of your reservation go to the circulation desk for access. A staff member will open the room for you.\r\n\r\nIf you would like to use a room but did not make a reservation ask the circulation desk if a room is available. If one is, you may request to use it and a staff member will open the room for you.\r\n\r\nRooms can be reserved for up to two hours at a time. You may â€œrenewâ€ the room by checking in with the circulation desk. If the room has not been reserved for classes or other use you may continue using it. If not, you will need to vacate the room prior to the next class or reservation.\r\n\r\nWhen using group study rooms please observe the following guidelines:\r\n\r\n    * Do not bring or eat food in the room.\r\n    * Drinks in sealable containers, such as screw-top bottles, are allowed (paper coffee cups with lids are not allowed).\r\n    * Please keep the noise to a minimum as a courtesy of those using the Media Center.\r\n    * Wireless headphones are available for use in room 125a. If you would like to listen to music or watch a video please check out these headphones from the circulation desk. The speakers in both rooms are not for student use without permission from the Music Library staff.\r\n    * The pianos may not be used. If you need a piano, please request a practice room from the Aaron Copland School of Music office.\r\n'),
-       ('remindermessage', 'This is a reminder message!'),
-       ('service_password', 'Nicaragua1942!'),
-       ('service_username', 'library2sa'),
-       ('starttime', '7'),
-       ('systemid', '80zhh73n5'),
-       ('theme', 'default'),
-       ('time_format', 'g:i a');
+INSERT INTO `settings` VALUES ('allow_past_reservations','false'),('allow_simultaneous_reservations','false'),('email_can_gef','a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),('email_can_terse','a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),('email_can_verbose','a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),('email_condition',''),('email_condition_value',''),('email_cond_gef','a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),('email_cond_terse','a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),('email_cond_verbose','a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),('email_filter','a:2:{i:0;s:11:\"qc.cuny.edu\";i:1;s:14:\"qmail.cuny.edu\";}'),('email_res_gef','a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),('email_res_terse','a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),('email_res_verbose','a:1:{i:0;s:22:\"kushalpublic@gmail.com\";}'),('email_system','kushalpublic@gmail.com'),('endtime','24'),('https','true'),('instance_name','My Openroom'),('instance_url','openroom.loc'),('interval','30'),('ldap_baseDN','ldap://149.4.100.201:3268'),('ldap_host','DC=qc,DC=ads'),('limit_duration','240'),('limit_frequency','a:2:{i:0;s:1:\"0\";i:1;s:3:\"day\";}'),('limit_openingday',''),('limit_total','a:2:{i:0;s:3:\"240\";i:1;s:3:\"day\";}'),('limit_window','a:2:{i:0;s:2:\"10\";i:1;s:4:\"year\";}'),('login_method','normal'),('phone_number','7165015874'),('policies','The Music Library has two rooms (125a and 125c) available to students for group study on a â€œfirst-come, first-serveâ€ basis. Only patrons with a valid Queens College ID may use these rooms.\r\n\r\nPatrons may reserve rooms via the online reservation system with their Queens College user account. Walk-in room requests are also available at the circulation desk. Classes, senior concentration exams, and room reservations will take priority over walk-in requests.\r\n\r\nNOTE: To reserve a room, use your QC/CAMS account to log in.\r\n\r\nIf you have reserved one of the rooms, at the time of your reservation go to the circulation desk for access. A staff member will open the room for you.\r\n\r\nIf you would like to use a room but did not make a reservation ask the circulation desk if a room is available. If one is, you may request to use it and a staff member will open the room for you.\r\n\r\nRooms can be reserved for up to two hours at a time. You may â€œrenewâ€ the room by checking in with the circulation desk. If the room has not been reserved for classes or other use you may continue using it. If not, you will need to vacate the room prior to the next class or reservation.\r\n\r\nWhen using group study rooms please observe the following guidelines:\r\n\r\n    * Do not bring or eat food in the room.\r\n    * Drinks in sealable containers, such as screw-top bottles, are allowed (paper coffee cups with lids are not allowed).\r\n    * Please keep the noise to a minimum as a courtesy of those using the Media Center.\r\n    * Wireless headphones are available for use in room 125a. If you would like to listen to music or watch a video please check out these headphones from the circulation desk. The speakers in both rooms are not for student use without permission from the Music Library staff.\r\n    * The pianos may not be used. If you need a piano, please request a practice room from the Aaron Copland School of Music office.\r\n'),('remindermessage','This is a reminder message!'),('service_password','Nicaragua1942!'),('service_username','library2sa'),('starttime','7'),('systemid','80zhh73n5'),('theme','default'),('time_format','g:i a');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -480,7 +364,7 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `lastlogin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lastlogin` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `active` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -492,13 +376,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users`
-VALUES ('admin', 'f3bbbd66a63d4bf1747940578ec3d0103530e21d', 'spamkushal+admin@gmail.com', '2018-10-17 19:53:03', '0'),
-       ('banned', 'f3bbbd66a63d4bf1747940578ec3d0103530e21d', 'spamkushal+banned@gmail.com', '2018-07-13 14:08:27',
-        '0'),
-       ('kushal', 'f3bbbd66a63d4bf1747940578ec3d0103530e21d', 'kushaldeveloper@gmail.com', '2018-08-16 18:33:09', '0'),
-       ('reporter', 'f3bbbd66a63d4bf1747940578ec3d0103530e21d', 'spamkushal+reporter@gmail.com', '2018-07-13 14:09:09',
-        '0');
+INSERT INTO `users` VALUES ('admin','$2y$10$.3PPCui/0kTbU8ra8fT7m.FqnoCEYmeUqyMy3ju38rVD8.nSKFRYe','spamkushal+admin@gmail.com','2020-03-23 19:45:38','0'),('banned','$2y$10$.3PPCui/0kTbU8ra8fT7m.FqnoCEYmeUqyMy3ju38rVD8.nSKFRYe','spamkushal+banned@gmail.com','2020-03-23 19:45:16','0'),('kushal','$2y$10$.3PPCui/0kTbU8ra8fT7m.FqnoCEYmeUqyMy3ju38rVD8.nSKFRYe','kushaldeveloper@gmail.com','2020-03-23 19:46:49','0'),('reporter','$2y$10$.3PPCui/0kTbU8ra8fT7m.FqnoCEYmeUqyMy3ju38rVD8.nSKFRYe','spamkushal+reporter@gmail.com','2020-03-23 19:45:16','0');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -511,4 +389,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-17 16:06:58
+-- Dump completed on 2020-03-23 13:55:03
