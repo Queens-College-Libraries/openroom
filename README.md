@@ -55,43 +55,23 @@ This is also essential in case of LDAP authentication where we don't control use
 
 Please feel free to open an issue or a pull request on github. 
 
-Freebie commit April 30, 2019 
-Freebie commit May 28, 2019
-Freebie commit May 29, 2019 
-Freebie commit July 24, 2019
 
+On your development machine, log in to the mysql server as root and: 
+
+```sql
 create user openroomdemo@localhost identified by '53PVs7nj2i2AD5FXNLNpZyW3B3sG31WGPThmPCntdldKwxZ5vvb3Pg266HSN8NG';
 drop database if exists openroom;
 create database openroom;
 grant all privileges on openroom.* to openroomdemo@localhost;
-
-```bash
-[root@ideapadflex-kushal ~]# mysql
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 9
-Server version: 10.3.22-MariaDB MariaDB Server
-
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-MariaDB [(none)]> create user openroomdemo@localhost identified by '53PVs7nj2i2AD5FXNLNpZyW3B3sG31WGPThmPCntdldKwxZ5vvb3Pg266HSN8NG';
-Query OK, 0 rows affected (0.001 sec)
-
-MariaDB [(none)]> drop database if exists openroom;
-Query OK, 0 rows affected, 1 warning (0.000 sec)
-
-MariaDB [(none)]> create database openroom;
-Query OK, 1 row affected (0.000 sec)
-
-MariaDB [(none)]> grant all privileges on openroom.* to openroomdemo@localhost;
-Query OK, 0 rows affected (0.000 sec)
-
-MariaDB [(none)]> \q
-Bye
-[root@ideapadflex-kushal ~]# 
 ```
 
 ```sql
 mysql --defaults-extra-file=mylogin.cnf -u openroomdemo
+```
+
+now you can install today.sql
+
+```mysql
+use openroom;
+source today.sql;
 ```
