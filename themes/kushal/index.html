@@ -1,0 +1,18 @@
+{% extends "block.html" %}
+
+
+{% block nav %}
+{{ parent() }}
+{% endblock %}
+
+{% block content %}
+
+<article>
+    <h2>
+        {{ page_title }}
+    </h2>
+    <p>
+        This is a preview of the future home page for {{ title }}. 
+    </p>
+</article>
+{% endblock %}
